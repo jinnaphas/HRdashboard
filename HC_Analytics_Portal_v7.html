@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PCC Human Capital Analytics Portal v6 | Interactive Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;font-size:14px;line-height:1.5;}
+.topbar{background:linear-gradient(90deg,#0A1628 0%,#1A2B4A 100%);padding:12px 28px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 12px rgba(0,0,0,.2);position:sticky;top:0;z-index:200;}
+.logo-circle{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#F26522,#FF8533);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;}
+.brand h1{color:#fff;font-size:16px;font-weight:800;line-height:1.1;}
+.brand p{color:rgba(255,255,255,.55);font-size:10px;margin-top:2px;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.btn-top{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;padding:7px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.btn-top:hover,.btn-top.active{background:rgba(242,101,34,.8);border-color:#F26522;}
+.hero{background:linear-gradient(135deg,#0A1628 0%,#1A2B4A 35%,#0B3D6E 70%,#0077B6 100%);padding:22px 28px;color:#fff;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.04);}
+.hero-content{position:relative;z-index:2;}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.hero h2{font-size:20px;font-weight:900;}
+.hero h2 span{color:#F26522;}
+.hero-sub{color:rgba(255,255,255,.6);font-size:11px;margin-top:3px;}
+.update-badge{background:rgba(72,187,120,.2);border:1px solid rgba(72,187,120,.4);color:#9AE6B4;padding:4px 10px;border-radius:10px;font-size:10px;font-weight:700;}
+.bsc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.bsc-card{background:rgba(255,255,255,.07);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:13px;transition:all .25s;cursor:default;}
+.bsc-card:hover{background:rgba(255,255,255,.13);transform:translateY(-1px);}
+.bsc-head{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.bsc-icon{font-size:17px;}
+.bsc-title{font-size:10px;font-weight:900;letter-spacing:.6px;color:#fff;}
+.bsc-sub{font-size:9px;color:rgba(255,255,255,.5);margin-top:1px;}
+.bsc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.bsc-stat{text-align:center;padding:6px 3px;background:rgba(0,0,0,.18);border-radius:6px;}
+.bsc-stat .v{font-size:13px;font-weight:900;color:#fff;line-height:1;}
+.bsc-stat .v.acc{color:#F59E0B;} .bsc-stat .v.green{color:#68D391;} .bsc-stat .v.red{color:#FC8181;}
+.bsc-stat .l{font-size:8px;color:rgba(255,255,255,.55);margin-top:2px;}
+.alert-strip{background:#fff;border-bottom:1px solid #E2E8F0;padding:9px 28px;display:flex;gap:10px;flex-wrap:wrap;}
+.alert-pill{display:flex;align-items:center;gap:8px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;flex:1;min-width:190px;}
+.alert-pill.crit{background:#FFF5F5;color:#C53030;border:1px solid #FED7D7;}
+.alert-pill.warn{background:#FFFAF0;color:#C05621;border:1px solid #FEEBC8;}
+.alert-pill.good{background:#F0FFF4;color:#2F855A;border:1px solid #C6F6D5;}
+.alert-pill.info{background:#EBF8FF;color:#2C5282;border:1px solid #BEE3F8;}
+.alert-tag{padding:2px 6px;border-radius:4px;font-size:9px;font-weight:800;text-transform:uppercase;}
+.alert-pill.crit .alert-tag{background:#C53030;color:#fff;}
+.alert-pill.warn .alert-tag{background:#DD6B20;color:#fff;}
+.alert-pill.good .alert-tag{background:#38A169;color:#fff;}
+.alert-pill.info .alert-tag{background:#3182CE;color:#fff;}
+.filter-bar{background:#fff;border-bottom:1px solid #E2E8F0;padding:9px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:64px;z-index:190;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.filter-label{font-size:10px;font-weight:800;color:#718096;text-transform:uppercase;letter-spacing:.5px;}
+.filter-select{background:#F5F7FA;border:1.5px solid #E2E8F0;border-radius:7px;padding:4px 9px;font-size:11px;font-family:inherit;color:#2D3748;cursor:pointer;font-weight:700;}
+.filter-select:focus{outline:none;border-color:#0077B6;}
+.last-update-sm{margin-left:auto;font-size:10px;color:#718096;display:flex;align-items:center;gap:5px;}
+.live-dot{width:6px;height:6px;background:#48BB78;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.nav-tabs{background:#fff;border-bottom:2px solid #E2E8F0;padding:0 28px;display:flex;gap:0;overflow-x:auto;}
+.nav-tab{padding:10px 16px;font-size:11px;font-weight:800;color:#718096;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.nav-tab:hover{color:#1A2B4A;background:#F7FAFC;}
+.nav-tab.active{color:#0077B6;border-bottom-color:#0077B6;}
+.nav-tab .tab-count{background:#EDF2F7;color:#4A5568;padding:1px 6px;border-radius:8px;font-size:9px;}
+.nav-tab.active .tab-count{background:#EBF8FF;color:#2B6CB0;}
+.main-area{padding:20px 28px;}
+.section-view{display:none;}
+.section-view.active{display:block;}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:18px;}
+.kpi-card{background:#fff;border-radius:12px;padding:14px;border:1px solid #E2E8F0;position:relative;overflow:hidden;transition:all .2s;}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.07);}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--kc,#0077B6);}
+.kpi-icon{font-size:18px;margin-bottom:6px;}
+.kpi-val{font-size:24px;font-weight:900;color:#1A2B4A;line-height:1;}
+.kpi-unit{font-size:11px;color:#718096;font-weight:600;margin-left:2px;}
+.kpi-label{font-size:10px;color:#718096;margin-top:4px;}
+.kpi-chg{font-size:10px;font-weight:800;margin-top:5px;display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:5px;}
+.kpi-chg.up{background:#E8F7EE;color:#2F855A;}
+.kpi-chg.dn{background:#FFF5F5;color:#C53030;}
+.kpi-chg.neu{background:#EDF2F7;color:#4A5568;}
+.kpi-chg.warn{background:#FFFAF0;color:#C05621;}
+.charts-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;margin-bottom:18px;}
+.chart-box{background:#fff;border-radius:12px;padding:16px;border:1px solid #E2E8F0;}
+.chart-box h4{font-size:12px;font-weight:800;color:#1A2B4A;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.chart-box canvas{max-height:240px;}
+.dtbl-wrap{background:#fff;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;margin-bottom:16px;}
+.dtbl-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #E2E8F0;}
+.dtbl-head h4{font-size:12px;font-weight:800;color:#1A2B4A;}
+.dtbl-wrap table{width:100%;border-collapse:collapse;}
+.dtbl-wrap th{background:#F7FAFC;font-size:10px;font-weight:800;color:#4A5568;text-transform:uppercase;letter-spacing:.4px;padding:8px 12px;text-align:left;border-bottom:1px solid #E2E8F0;}
+.dtbl-wrap td{padding:8px 12px;font-size:11px;border-bottom:1px solid #EDF2F7;color:#2D3748;}
+.dtbl-wrap tr:last-child td{border-bottom:none;}
+.dtbl-wrap tr:hover td{background:#FAFBFC;}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:9px;font-weight:800;}
+.bg{background:#E8F7EE;color:#2F855A;} .bo{background:#FFFAF0;color:#C05621;} .bb{background:#EBF8FF;color:#2C5282;}
+.bgr{background:#EDF2F7;color:#4A5568;} .br{background:#FFF5F5;color:#C53030;} .bp{background:#FAF5FF;color:#553C9A;}
+.insight-box{background:linear-gradient(135deg,#EBF8FF,#F0FFF4);border:1px solid #BEE3F8;border-radius:12px;padding:16px 20px;margin-bottom:16px;}
+.insight-title{font-size:13px;font-weight:800;color:#1A2B4A;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.insight-box ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;}
+.insight-box li{padding:7px 10px;border-radius:7px;font-size:11px;background:#fff;border-left:3px solid transparent;}
+.insight-box li.good{border-color:#38A169;background:#F0FFF4;color:#22543D;}
+.insight-box li.warn{border-color:#DD6B20;background:#FFFAF0;color:#744210;}
+.insight-box li.bad{border-color:#C53030;background:#FFF5F5;color:#742A2A;}
+.insight-box li.info{border-color:#3182CE;background:#EBF8FF;color:#2A4365;}
+.sec-title{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.sec-title h3{font-size:15px;font-weight:800;color:#1A2B4A;}
+.sec-title .s-badge{background:#1A2B4A;color:#fff;padding:2px 9px;border-radius:10px;font-size:9px;font-weight:700;}
+.sec-title::after{content:'';flex:1;height:1px;background:#E2E8F0;margin-left:8px;}
+.month-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:800;margin:1px;}
+.mp-jan{background:#EBF8FF;color:#2B6CB0;}.mp-feb{background:#FAF5FF;color:#553C9A;}.mp-mar{background:#F0FFF4;color:#276749;}.mp-apr{background:#FFFAF0;color:#744210;}.mp-may{background:#FFF5F5;color:#742A2A;}
+/* Education Matrix */
+.edu-matrix-wrap{background:#fff;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;margin-bottom:16px;}
+.edu-matrix-wrap table{width:100%;border-collapse:collapse;}
+.edu-matrix-wrap th{background:#1A2B4A;color:#fff;font-size:10px;font-weight:800;padding:9px 8px;text-align:center;letter-spacing:.3px;}
+.edu-matrix-wrap th.row-head{background:#0077B6;text-align:left;padding-left:12px;min-width:180px;}
+.matrix-cell{padding:8px 6px;text-align:center;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;border:1px solid #EDF2F7;position:relative;}
+.matrix-cell:hover{transform:scale(1.08);z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.15);}
+.matrix-cell .mc-val{font-size:14px;font-weight:900;line-height:1;}
+.matrix-cell .mc-pct{font-size:9px;font-weight:600;margin-top:2px;opacity:.8;}
+.matrix-cell.empty{background:#F7FAFC;color:#CBD5E0;cursor:default;}
+.matrix-cell.empty:hover{transform:none;box-shadow:none;}
+/* Drill-down panel */
+.drill-panel{background:#fff;border:2px solid #0077B6;border-radius:12px;padding:16px;margin-bottom:16px;display:none;}
+.drill-panel.open{display:block;}
+.drill-title{font-size:13px;font-weight:800;color:#1A2B4A;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.drill-close{background:#EDF2F7;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;font-weight:700;color:#4A5568;}
+.drill-bars{display:flex;flex-direction:column;gap:6px;}
+.drill-bar-row{display:flex;align-items:center;gap:8px;font-size:11px;}
+.drill-bar-label{width:200px;color:#2D3748;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;}
+.drill-bar-track{flex:1;height:18px;background:#EDF2F7;border-radius:4px;overflow:hidden;}
+.drill-bar-fill{height:100%;background:#0077B6;border-radius:4px;transition:width .4s;}
+.drill-bar-cnt{width:40px;text-align:right;font-weight:800;color:#1A2B4A;}
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(8,15,30,.88);backdrop-filter:blur(4px);flex-direction:column;}
+.modal-overlay.open{display:flex;}
+.modal-header{background:linear-gradient(90deg,#0A1628,#1A2B4A);padding:14px 22px;display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.mh-icon{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.mh-text{flex:1;}
+.mh-title{color:#fff;font-size:17px;font-weight:800;}
+.mh-sub{color:rgba(255,255,255,.5);font-size:11px;margin-top:1px;}
+.modal-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:rgba(255,255,255,.25);}
+.modal-body{flex:1;overflow-y:auto;padding:20px 22px;background:#F0F4F8;}
+/* Portal cards */
+.portal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px;}
+.portal-card{background:#fff;border:1.5px solid #E2E8F0;border-radius:14px;padding:18px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.portal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
+.portal-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(0,0,0,.09);border-color:var(--accent);}
+.card-icon{width:44px;height:44px;border-radius:11px;background:var(--accent-l);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px;}
+.card-title{font-size:14px;font-weight:800;color:#1A2B4A;margin-bottom:2px;}
+.card-sub{font-size:10px;color:#718096;margin-bottom:12px;line-height:1.4;}
+.card-metrics{display:flex;gap:7px;}
+.card-metric{background:#F5F7FA;border-radius:7px;padding:7px 7px;flex:1;text-align:center;}
+.card-metric .m-val{font-size:14px;font-weight:900;color:var(--accent);line-height:1;}
+.card-metric .m-lbl{font-size:8px;color:#718096;margin-top:2px;text-transform:uppercase;}
+.card-arrow{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:var(--accent-l);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:14px;font-weight:900;transition:all .2s;}
+.portal-card:hover .card-arrow{background:var(--accent);color:#fff;}
+.data-tag{position:absolute;top:14px;right:48px;padding:2px 7px;border-radius:5px;font-size:8px;font-weight:900;}
+.dt-live{background:#C6F6D5;color:#276749;} .dt-plan{background:#EDF2F7;color:#4A5568;} .dt-new{background:#FEEBC8;color:#7B341E;}
+
+/* WFP styles */
+.wfp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-bottom:18px;}
+.bu-row{display:flex;align-items:center;gap:6px;padding:7px 0;border-bottom:1px solid #EDF2F7;font-size:11px;}
+.bu-row:last-child{border-bottom:none;}
+.bu-name{width:220px;font-weight:700;color:#2D3748;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bu-bar{flex:1;height:14px;background:#EDF2F7;border-radius:3px;overflow:hidden;}
+.bu-bar-inner{height:100%;border-radius:3px;transition:width .4s;}
+.bu-cnt{width:32px;text-align:right;font-weight:800;color:#1A2B4A;}
+.stack-bar{display:flex;height:24px;border-radius:5px;overflow:hidden;margin-bottom:2px;}
+.stack-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;}
+.co-card{background:#fff;border:1.5px solid #E2E8F0;border-radius:10px;padding:12px;transition:all .2s;}
+.co-card:hover{border-color:#0077B6;box-shadow:0 4px 14px rgba(0,0,0,.07);}
+.co-card-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.co-badge{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;flex-shrink:0;}
+.co-name{font-size:11px;font-weight:800;color:#1A2B4A;line-height:1.3;}
+.co-sub{font-size:9px;color:#718096;}
+.co-total{font-size:22px;font-weight:900;color:#1A2B4A;text-align:center;margin-bottom:4px;}
+.pyramid-row{display:flex;align-items:center;justify-content:center;gap:6px;margin:3px 0;}
+.pyramid-bar-wrap{display:flex;justify-content:center;}
+.pyramid-bar{height:16px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;min-width:30px;transition:width .4s;}
+
+.footer{padding:14px 28px;text-align:center;font-size:10px;color:#A0AEC0;border-top:1px solid #E2E8F0;background:#fff;}
+@media(max-width:900px){.bsc-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo-circle">PCC</div>
+  <div class="brand"><h1>Human Capital Analytics Portal</h1><p>Precise Corporation Group · v7.0 · Real Data Jan–May 2026</p></div>
+  <div class="topbar-right">
+    <button class="btn-top" onclick="goTab('home')">🏠 Portal</button>
+    <button class="btn-top" onclick="goTab('hc')">👥 Headcount</button>
+    <button class="btn-top" onclick="goTab('resign')">📉 Turnover</button>
+  </div>
+</div>
+
+<!-- HERO / BSC -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-top">
+      <div><h2>HC Analytics · <span>Precise Group</span></h2><div class="hero-sub">ข้อมูลจริงจากระบบ HR · อัพเดท May 2026</div></div>
+      <span class="update-badge">✅ v6 · Real Data + WFP · All Modules</span>
+    </div>
+    <div class="bsc-grid">
+      <div class="bsc-card">
+        <div class="bsc-head"><span class="bsc-icon">👥</span><div><div class="bsc-title">WORKFORCE</div><div class="bsc-sub">Headcount & Structure</div></div></div>
+        <div class="bsc-stats">
+          <div class="bsc-stat"><div class="v">797</div><div class="l">HC (May)</div></div>
+          <div class="bsc-stat"><div class="v green">64.6%</div><div class="l">ชาย</div></div>
+          <div class="bsc-stat"><div class="v acc">9 บ.</div><div class="l">บริษัท</div></div>
+        </div>
+      </div>
+      <div class="bsc-card">
+        <div class="bsc-head"><span class="bsc-icon">📉</span><div><div class="bsc-title">TURNOVER</div><div class="bsc-sub">Resign & Retention</div></div></div>
+        <div class="bsc-stats">
+          <div class="bsc-stat"><div class="v red">33</div><div class="l">YTD ราย</div></div>
+          <div class="bsc-stat"><div class="v green">95.9%</div><div class="l">Retention</div></div>
+          <div class="bsc-stat"><div class="v acc">0.82%</div><div class="l">Avg Rate</div></div>
+        </div>
+      </div>
+      <div class="bsc-card">
+        <div class="bsc-head"><span class="bsc-icon">📚</span><div><div class="bsc-title">LEARNING</div><div class="bsc-sub">Training & OT</div></div></div>
+        <div class="bsc-stats">
+          <div class="bsc-stat"><div class="v green">2,677</div><div class="l">ชม. (YTD)</div></div>
+          <div class="bsc-stat"><div class="v acc">3.36</div><div class="l">ชม./คน</div></div>
+          <div class="bsc-stat"><div class="v">5,706</div><div class="l">OT ใบ</div></div>
+        </div>
+      </div>
+      <div class="bsc-card">
+        <div class="bsc-head"><span class="bsc-icon">💰</span><div><div class="bsc-title">COMPENSATION</div><div class="bsc-sub">Salary & Payroll</div></div></div>
+        <div class="bsc-stats">
+          <div class="bsc-stat"><div class="v green">37.4K</div><div class="l">Avg (Apr)</div></div>
+          <div class="bsc-stat"><div class="v acc">30.3MB</div><div class="l">Total (Apr)</div></div>
+          <div class="bsc-stat"><div class="v">4.02</div><div class="l">Engage /5</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT STRIP -->
+<div class="alert-strip">
+  <div class="alert-pill crit"><span class="alert-tag">ALERT</span>Apr Turnover Rate 1.24% เกิน Target — SBP สูงสุด</div>
+  <div class="alert-pill warn"><span class="alert-tag">WATCH</span>OT Mar สูงสุด 1,817 ใบ — PEM 72% ของทั้งหมด</div>
+  <div class="alert-pill good"><span class="alert-tag">GOOD</span>Engagement 2568 ฟื้นตัว 4.02/5 — สูงสุดใน 3 ปี</div>
+  <div class="alert-pill info"><span class="alert-tag">INFO</span>Training YTD 2,677 ชม. · 3.36 ชม./คน Jan–Apr 2026</div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">🔎 ช่วงเวลา</span>
+  <select class="filter-select" id="periodFilter" onchange="onPeriodChange(this.value)">
+    <option value="ALL">ทั้งหมด (Jan–May 2026)</option>
+    <option value="Jan">January 2026</option>
+    <option value="Feb">February 2026</option>
+    <option value="Mar">March 2026</option>
+    <option value="Apr">April 2026</option>
+    <option value="May">May 2026</option>
+  </select>
+  <span class="filter-label" style="margin-left:8px">👥 บริษัท</span>
+  <select class="filter-select" id="companyFilter" onchange="onCompanyChange(this.value)">
+    <option value="ALL">ทุกบริษัท</option>
+    <option value="PEM">PEM — พรีไซซ อีเลคตริค</option>
+    <option value="PSP">PSP — พรีไซซ ซิสเท็ม</option>
+    <option value="SBP">SBP — สงขลาไบโอเพาเวอร์</option>
+    <option value="PDE">PDE — พรีไซซ ดิจิตอล</option>
+    <option value="PCC">PCC — พรีไซซ คอร์ป</option>
+  </select>
+  <div class="last-update-sm"><div class="live-dot"></div><span id="filterLabel">v7 · All Months (Jan–May 26)</span></div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <div class="nav-tab active" data-tab="home" onclick="goTab('home')">🏠 Portal</div>
+  <div class="nav-tab" data-tab="hc" onclick="goTab('hc')">👥 Headcount <span class="tab-count">797</span></div>
+  <div class="nav-tab" data-tab="ot" onclick="goTab('ot')">⏱️ OT <span class="tab-count">5,706</span></div>
+  <div class="nav-tab" data-tab="salary" onclick="goTab('salary')">💰 Salary</div>
+  <div class="nav-tab" data-tab="resign" onclick="goTab('resign')">📉 Turnover <span class="tab-count">33</span></div>
+  <div class="nav-tab" data-tab="training" onclick="goTab('training')">📚 Training <span class="tab-count">2,677h</span></div>
+  <div class="nav-tab" data-tab="engage" onclick="goTab('engage')">💚 Engagement</div>
+  <div class="nav-tab" data-tab="edu" onclick="goTab('edu')">🎓 Education</div>
+  <div class="nav-tab" data-tab="wfp" onclick="goTab('wfp')">🏗️ Workforce Plan</div>
+  <div class="nav-tab" data-tab="perf" onclick="goTab('perf')">⭐ Performance</div>
+</div>
+
+<div class="main-area">
+<!-- ========== HOME / PORTAL ========== -->
+<div id="view-home" class="section-view active">
+  <div class="sec-title"><span style="font-size:18px">🏠</span><h3>HR Analytics Portal — เลือก Module</h3><span class="s-badge">v6.0 Real Data</span></div>
+  <div class="portal-grid" id="portalGrid"></div>
+</div>
+
+<!-- ========== HEADCOUNT ========== -->
+<div id="view-hc" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">👥</span><h3>Headcount Analytics Dashboard</h3><span class="s-badge" id="hc-period-badge">Data Jan–May 2026</span></div>
+  <div class="kpi-row" id="hc-kpi-row">
+    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👥</div><div class="kpi-val" id="hc-kpi-total">797</div><div class="kpi-label">Total Headcount</div><span class="kpi-chg dn" id="hc-kpi-chg">▼ -16 จาก Jan</span></div>
+    <div class="kpi-card" style="--kc:#D53F8C"><div class="kpi-icon">👩</div><div class="kpi-val">282<span class="kpi-unit">คน</span></div><div class="kpi-label">พนักงานหญิง (May)</div><span class="kpi-chg neu">35.4%</span></div>
+    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👨</div><div class="kpi-val">515<span class="kpi-unit">คน</span></div><div class="kpi-label">พนักงานชาย (May)</div><span class="kpi-chg neu">64.6%</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">🏢</div><div class="kpi-val">762<span class="kpi-unit">คน</span></div><div class="kpi-label">พนักงานประจำ (May)</div><span class="kpi-chg up">95.6%</span></div>
+    <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">📋</div><div class="kpi-val">35<span class="kpi-unit">คน</span></div><div class="kpi-label">สัญญาจ้าง (May)</div><span class="kpi-chg neu">4.4%</span></div>
+    <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">📍</div><div class="kpi-val">5<span class="kpi-unit">แห่ง</span></div><div class="kpi-label">Locations</div><span class="kpi-chg neu">ปทุมธานีสูงสุด</span></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>📈 Headcount Trend (Jan–May 2026)</h4><canvas id="hc-monthly"></canvas></div>
+    <div class="chart-box"><h4>🏢 Headcount by Company (May 2026)</h4><canvas id="hc-company"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>👤 Employee Group (May 2026)</h4><canvas id="hc-group"></canvas></div>
+    <div class="chart-box"><h4>📋 ประเภทสัญญาจ้าง (May 2026)</h4><canvas id="hc-emptype"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>🎂 Age Distribution (May 2026)</h4><canvas id="hc-age"></canvas></div>
+    <div class="chart-box"><h4>⏳ Service Year Distribution (May 2026)</h4><canvas id="hc-service"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>🗺️ Revenue Stream (Apr 2026)</h4><canvas id="hc-rs"></canvas></div>
+    <div class="chart-box"><h4>📍 Location Distribution (May 2026)</h4><canvas id="hc-loc"></canvas></div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-title">🤖 Headcount Analytics Insight</div>
+    <ul>
+      <li class="warn">⚠️ HC ลดลง 16 คนจาก Jan (813 → 797) — Turnover > New Hire สุทธิ ต้องเร่ง Recruitment</li>
+      <li class="info">📊 กลุ่ม ปฏิบัติการ 398 คน (49.9%) เป็น Core Workforce — ส่วนใหญ่อยู่ที่ PEM และ SBP</li>
+      <li class="good">✅ พนักงานประจำ 762 คน (95.6%) สะท้อน Workforce Stability ที่ดี</li>
+      <li class="info">📊 Service Year 10+ ปี มี 381 คน (47.8%) — Experienced Workforce สูง ต้อง Plan Succession</li>
+    </ul>
+  </div>
+
+  <!-- Movement Flow Section -->
+  <div class="sec-title" style="margin-top:4px;"><span style="font-size:15px">🔄</span><h3 style="font-size:14px;">Workforce Movement — New Hire & Separation Flow</h3></div>
+  <div class="charts-row">
+    <div class="chart-box" style="grid-column:1/-1"><h4>📊 HC Movement Flow: เข้าใหม่ vs ออก (Jan–May 2026) — จาก Database Comparison</h4><canvas id="hc-flow" style="max-height:200px"></canvas></div>
+  </div>
+  <div class="kpi-row" style="margin-bottom:10px;">
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">🆕</div><div class="kpi-val" id="nh-kpi-total">32</div><div class="kpi-label">New Hires YTD (Jan–May)</div><span class="kpi-chg up">Jan–May 2026</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">🚪</div><div class="kpi-val" id="sep-kpi-total">41</div><div class="kpi-label">Separations YTD</div><span class="kpi-chg dn">All Reasons</span></div>
+    <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">📉</div><div class="kpi-val" id="net-kpi-total">-9</div><div class="kpi-label">Net HC Movement (Feb–May)</div><span class="kpi-chg dn">804+12-19=797</span></div>
+    <div class="kpi-card" style="--kc:#F6AD55"><div class="kpi-icon">🔄</div><div class="kpi-val">78%</div><div class="kpi-label">New Hire ปฏิบัติการ+วิชาชีพ</div><span class="kpi-chg neu">25/32 คน</span></div>
+  </div>
+  <div class="dtbl-wrap">
+    <div class="dtbl-head"><h4 id="nh-tbl-title">รายชื่อพนักงานเข้าใหม่ (Jan–May 2026)</h4><span class="badge bg" id="nh-tbl-count">32 รายการ</span></div>
+    <table><thead><tr><th>รหัสพนักงาน</th><th>ชื่อ-สกุล</th><th>บริษัท</th><th>กลุ่มพนักงาน</th><th>วันเริ่มงาน</th><th>เดือน</th></tr></thead>
+    <tbody id="nh-tbl"></tbody></table>
+  </div>
+
+  <div class="dtbl-wrap">
+    <div class="dtbl-head"><h4>Company Headcount Summary (May 2026)</h4><span class="badge bb">797 คน</span></div>
+    <table><thead><tr><th>บริษัท</th><th>Code</th><th>Revenue Stream</th><th style="text-align:right">HC (May)</th><th style="text-align:right">%</th><th>Scale</th></tr></thead>
+    <tbody id="hc-company-tbl"></tbody></table>
+  </div>
+</div>
+
+<!-- ========== OT ========== -->
+<div id="view-ot" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">⏱️</span><h3>Overtime Control Dashboard</h3><span class="s-badge" id="ot-period-badge">Data Jan–Apr 2026</span></div>
+  <div class="kpi-row" id="ot-kpi-row">
+    <div class="kpi-card" style="--kc:#DD6B20"><div class="kpi-icon">📋</div><div class="kpi-val" id="ot-kpi-total">5,706</div><div class="kpi-label">OT Requests (Jan–Apr)</div><span class="kpi-chg neu">ทั้งหมด Approved</span></div>
+    <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">👥</div><div class="kpi-val" id="ot-kpi-emp">907</div><div class="kpi-label">รวม Unique Emp (session)</div><span class="kpi-chg neu">Max 262 คน/เดือน</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">💰</div><div class="kpi-val" id="ot-kpi-cost">2.67</div><div class="kpi-label">Est. OT Cost (MB, YTD)</div><span class="kpi-chg warn">Salary/30 × 3h × 1.5x</span></div>
+    <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">🏭</div><div class="kpi-val">1,817</div><div class="kpi-label">Peak OT — Mar 2026</div><span class="kpi-chg dn">PEM 72%</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">📊</div><div class="kpi-val">1,427</div><div class="kpi-label">Avg OT/เดือน</div><span class="kpi-chg neu">Jan–Apr</span></div>
+    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👤</div><div class="kpi-val">238</div><div class="kpi-label">Max Unique Emp (Apr)</div><span class="kpi-chg neu">29.9% ของ HC</span></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>📊 OT Requests Trend (Jan–Apr 2026)</h4><canvas id="ot-monthly"></canvas></div>
+    <div class="chart-box"><h4>🏢 OT by Company (Jan–Apr YTD)</h4><canvas id="ot-company"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>👤 OT by Employee Group</h4><canvas id="ot-group"></canvas></div>
+    <div class="chart-box"><h4>💰 Est. OT Cost Trend (MB)</h4><canvas id="ot-cost"></canvas></div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-title">🤖 OT Control Insight</div>
+    <ul>
+      <li class="warn">⚠️ OT พุ่งสูงสุดในเดือน Mar (1,817 ใบ) เพิ่มขึ้น 118% จาก Feb — ต้องวิเคราะห์ Production Load</li>
+      <li class="info">📊 กลุ่ม ปฏิบัติการ ทำ OT สูงสุด (~83%) สอดคล้องกับ Shop Floor Operations</li>
+      <li class="info">📊 PEM สูงสุดทุกเดือน (57-72% ของ OT ทั้งหมด) — สะท้อน Production Volume ที่สูง</li>
+      <li class="warn">⚠️ Est. OT Cost เฉลี่ย 0.67MB/เดือน — ควรมี OT Budget Tracking อย่างเป็นระบบ</li>
+    </ul>
+  </div>
+  <div class="dtbl-wrap">
+    <div class="dtbl-head"><h4 id="ot-tbl-title">OT Summary by Month (Jan–Apr 2026)</h4><span class="badge bo" id="ot-tbl-count">4 เดือน</span></div>
+    <table><thead><tr><th>เดือน</th><th style="text-align:right">OT Requests</th><th style="text-align:right">Unique Emp</th><th style="text-align:right">Est. Cost (บาท)</th><th style="text-align:right">Est. Cost (MB)</th><th>Peak Company</th></tr></thead>
+    <tbody id="ot-tbl"></tbody></table>
+  </div>
+</div>
+
+<!-- ========== SALARY ========== -->
+<div id="view-salary" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">💰</span><h3>Salary & Compensation Dashboard</h3><span class="s-badge" id="sal-period-badge">Data Jan–Apr 2026</span></div>
+  <div class="kpi-row" id="sal-kpi-row">
+    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">💰</div><div class="kpi-val" id="sal-kpi-avg">37,368</div><div class="kpi-label">Avg Basic Salary (Apr)</div><span class="kpi-chg neu">บาท/เดือน</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">📊</div><div class="kpi-val" id="sal-kpi-total">30.27</div><div class="kpi-label">Total Basic (Apr)</div><span class="kpi-chg neu">ล้านบาท</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">👤</div><div class="kpi-val" id="sal-kpi-count">810</div><div class="kpi-label">จำนวนในทะเบียน (Apr)</div><span class="kpi-chg neu">คน</span></div>
+    <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">🏆</div><div class="kpi-val">204,519</div><div class="kpi-label">Avg บริหาร/Expert (Apr)</div><span class="kpi-chg up">5.5x vs ปฏิบัติการ</span></div>
+    <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">⬇️</div><div class="kpi-val">24,272</div><div class="kpi-label">Avg ปฏิบัติการ (Apr)</div><span class="kpi-chg neu">403 คน</span></div>
+    <div class="kpi-card" style="--kc:#D53F8C"><div class="kpi-icon">📈</div><div class="kpi-val">67,598</div><div class="kpi-label">Avg จัดการ/PM (Apr)</div><span class="kpi-chg up">113 คน</span></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>📊 Total Basic Rate Trend (Jan–Apr, MB)</h4><canvas id="sal-trend"></canvas></div>
+    <div class="chart-box"><h4>🏢 Total Basic by Revenue Stream (Apr)</h4><canvas id="sal-rs"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>📍 Total Basic by Location (Apr, MB)</h4><canvas id="sal-loc"></canvas></div>
+    <div class="chart-box"><h4>💵 Salary Distribution — Basic Rate (Apr)</h4><canvas id="sal-dist"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box" style="grid-column:1/-1"><h4>👥 Average Salary by Employee Group (Apr)</h4><canvas id="sal-group" style="max-height:180px"></canvas></div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-title">🤖 Compensation Analytics Insight</div>
+    <ul>
+      <li class="warn">⚠️ Total Basic ลดลงต่อเนื่อง 31.96 → 30.27 MB (Jan→Apr) สะท้อน HC ที่ลดลง</li>
+      <li class="info">📊 PEM + PSP รวมกัน 75.4% ของ Total Payroll — Concentrate ใน 2 บริษัทหลัก</li>
+      <li class="warn">⚠️ ช่องว่าง Salary บริหาร/Expert (avg 204K) vs ปฏิบัติการ (avg 24K) กว้างถึง 8.4 เท่า</li>
+      <li class="good">✅ กลุ่ม 20-30K มีมากสุด 424 คน (52.3%) สะท้อน Market Rate ที่สอดคล้อง</li>
+    </ul>
+  </div>
+  <div class="dtbl-wrap">
+    <div class="dtbl-head"><h4>Salary by Employee Group (Apr 2026)</h4><span class="badge bb">Real Data</span></div>
+    <table><thead><tr><th>Employee Group</th><th style="text-align:right">จำนวน (คน)</th><th style="text-align:right">Avg Basic</th><th style="text-align:right">Total (MB)</th><th style="text-align:right">% Payroll</th></tr></thead>
+    <tbody id="sal-group-tbl"></tbody></table>
+  </div>
+</div>
+
+<!-- ========== RESIGN ========== -->
+<div id="view-resign" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">📉</span><h3>Resign & Turnover Dashboard</h3><span class="s-badge">Real Data Jan–May 2026</span></div>
+  <div class="kpi-row" id="rsn-kpi-row">
+    <div class="kpi-card" style="--kc:#C53030"><div class="kpi-icon">📉</div><div class="kpi-val" id="rsn-kpi-total">33</div><div class="kpi-label">YTD Resign (Jan–May)</div><span class="kpi-chg dn">สะสม 5 เดือน</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">📊</div><div class="kpi-val" id="rsn-kpi-rate">0.82</div><div class="kpi-label">Avg Turnover Rate (%)</div><span class="kpi-chg warn">Annualized ~9.8%</span></div>
+    <div class="kpi-card" style="--kc:#2F855A"><div class="kpi-icon">🛡</div><div class="kpi-val">95.9<span class="kpi-unit">%</span></div><div class="kpi-label">Retention Rate YTD</div><span class="kpi-chg up">764/797</span></div>
+    <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">📋</div><div class="kpi-val">10</div><div class="kpi-label">Peak Resign — Apr</div><span class="kpi-chg dn">Rate 1.24%</span></div>
+    <div class="kpi-card" style="--kc:#DD6B20"><div class="kpi-icon">⚠️</div><div class="kpi-val">11</div><div class="kpi-label">เลิกจ้าง (Termination)</div><span class="kpi-chg warn">33.3% ของทั้งหมด</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">✅</div><div class="kpi-val">4</div><div class="kpi-label">May Resign (ต่ำสุด)</div><span class="kpi-chg up">Rate 0.50%</span></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>📊 Monthly Resign & Rate</h4><canvas id="rsn-monthly"></canvas></div>
+    <div class="chart-box"><h4>🔍 Resign Reasons (Jan–May)</h4><canvas id="rsn-reason"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>📋 Resign by Reason (Stacked)</h4><canvas id="rsn-stacked"></canvas></div>
+    <div class="chart-box"><h4>📈 Turnover Rate Trend vs Target</h4><canvas id="rsn-rate"></canvas></div>
+  </div>
+
+  <!-- Movement Overview -->
+  <div class="charts-row">
+    <div class="chart-box"><h4>🔄 Workforce Flow — เข้าใหม่ vs ออก vs Net (Jan–May)</h4><canvas id="rsn-flow"></canvas></div>
+    <div class="chart-box"><h4>📊 Net HC Movement vs Target (±0)</h4><canvas id="rsn-net"></canvas></div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-title">🤖 Turnover Analytics Insight</div>
+    <ul>
+      <li class="bad">❌ Apr Rate 1.24% เกิน Target 0.8% อย่างมีนัย — ต้องหาสาเหตุ Exit Interview เพิ่มเติม</li>
+      <li class="warn">⚠️ เลิกจ้าง/วินัย รวม 11 ราย (33.3%) — สัดส่วนสูง ต้องทบทวน Screening & Culture</li>
+      <li class="info">📊 "ไม่ระบุสาเหตุ" 18 ราย (54.5%) — HR ต้องเก็บ Exit Interview ให้ครบถ้วนกว่านี้</li>
+      <li class="good">✅ May Rate 0.50% ต่ำสุดใน 5 เดือน — สัญญาณที่ดี แต่ยังต้องติดตาม</li>
+    </ul>
+  </div>
+  <div class="dtbl-wrap">
+    <div class="dtbl-head"><h4 id="rsn-tbl-title">รายชื่อผู้ลาออก (Jan–May 2026)</h4><span class="badge br" id="rsn-tbl-count">33 รายการ</span></div>
+    <table><thead><tr><th>เลขที่เอกสาร</th><th>ชื่อ-สกุล</th><th>วันสิ้นสุด</th><th>เดือน</th><th>เหตุผล</th></tr></thead>
+    <tbody id="rsn-tbl"></tbody></table>
+  </div>
+</div>
+
+<!-- ========== TRAINING ========== -->
+<div id="view-training" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">📚</span><h3>Learning & Development Dashboard</h3><span class="s-badge" id="tr-period-badge">Real Data Jan–Apr 2026</span></div>
+  <div class="kpi-row" id="tr-kpi-row">
+    <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">⏱️</div><div class="kpi-val" id="tr-kpi-hrs">2,677</div><div class="kpi-label">Total Training Hours (YTD)</div><span class="kpi-chg up">Jan–Apr 2026</span></div>
+    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👤</div><div class="kpi-val" id="tr-kpi-hperemp">3.36</div><div class="kpi-label">Hrs/พนักงาน (YTD)</div><span class="kpi-chg up">vs HC 797</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">📝</div><div class="kpi-val">1,784</div><div class="kpi-label">Training Records (YTD)</div><span class="kpi-chg neu">Jan–Apr</span></div>
+    <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">🏫</div><div class="kpi-val">86</div><div class="kpi-label">หลักสูตรทั้งหมด (YTD)</div><span class="kpi-chg neu">เฉลี่ย 22/เดือน</span></div>
+    <div class="kpi-card" style="--kc:#DD6B20"><div class="kpi-icon">🔒</div><div class="kpi-val">1,681</div><div class="kpi-label">Internal Training</div><span class="kpi-chg neu">94.2% ของทั้งหมด</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">🌐</div><div class="kpi-val">103</div><div class="kpi-label">External Training</div><span class="kpi-chg neu">5.8%</span></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>📊 Training Hours Trend (Jan–Apr)</h4><canvas id="tr-monthly"></canvas></div>
+    <div class="chart-box"><h4>👥 Training by Employee Group (YTD Hours)</h4><canvas id="tr-group"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>🔄 Internal vs External Training</h4><canvas id="tr-type"></canvas></div>
+    <div class="chart-box"><h4>📈 Hrs/คน รายเดือน vs HC</h4><canvas id="tr-ratio"></canvas></div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-title">🤖 L&D Analytics Insight</div>
+    <ul>
+      <li class="good">✅ YTD Training 2,677 ชั่วโมง / 3.36 ชม./คน — สะท้อน Commitment ด้าน L&D</li>
+      <li class="info">📊 Internal Training 94.2% — ประหยัดงบ แต่ควรเพิ่ม External สำหรับ Strategic Skills</li>
+      <li class="warn">⚠️ Apr สูงสุด (791 ชม.) — ส่วนใหญ่เป็น Mandatory (ข้อบังคับ+สุขภาพ) ไม่ใช่ Strategic</li>
+      <li class="good">✅ กลุ่ม ปฏิบัติการ ได้รับ Training 1,073 ชม. (40%) — Core Skill Development ต่อเนื่อง</li>
+    </ul>
+  </div>
+  <div class="dtbl-wrap">
+    <div class="dtbl-head"><h4 id="tr-tbl-title">Training Summary by Month</h4><span class="badge bp" id="tr-tbl-count">4 เดือน</span></div>
+    <table><thead><tr><th>เดือน</th><th style="text-align:right">Records</th><th style="text-align:right">Unique Emp</th><th style="text-align:right">หลักสูตร</th><th style="text-align:right">Total Hours</th><th style="text-align:right">Hrs/HC</th><th>Internal/External</th></tr></thead>
+    <tbody id="tr-tbl"></tbody></table>
+  </div>
+</div>
+
+<!-- ========== ENGAGEMENT ========== -->
+<div id="view-engage" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">💚</span><h3>Engagement & Retention Dashboard</h3><span class="s-badge">Survey 2566–2568</span></div>
+  <div class="kpi-row">
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">💚</div><div class="kpi-val">4.02<span class="kpi-unit">/5</span></div><div class="kpi-label">Avg Engagement 2568</div><span class="kpi-chg up">▲ +0.85 จาก 2567</span></div>
+    <div class="kpi-card" style="--kc:#2F855A"><div class="kpi-icon">🏆</div><div class="kpi-val">4.27<span class="kpi-unit">/5</span></div><div class="kpi-label">Employee Performance (สูงสุด)</div><span class="kpi-chg up">Best Dimension</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">⚠️</div><div class="kpi-val">3.82<span class="kpi-unit">/5</span></div><div class="kpi-label">Work Environment (ต่ำสุด)</div><span class="kpi-chg warn">ต้อง Improve</span></div>
+    <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">📊</div><div class="kpi-val">3.17<span class="kpi-unit">/5</span></div><div class="kpi-label">Avg Score ปี 2567 (ต่ำสุด)</div><span class="kpi-chg dn">ปีที่ตกต่ำสุด</span></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>📈 Engagement Score 3-Year Trend (2566–2568)</h4><canvas id="eng-trend"></canvas></div>
+    <div class="chart-box"><h4>🎯 7 Dimensions Radar (2568 vs 2567 vs 2566)</h4><canvas id="eng-radar"></canvas></div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-title">🤖 Engagement Analytics Insight</div>
+    <ul>
+      <li class="bad">❌ ปี 2567 ตกต่ำมาก (3.17 avg) — ลดลงจาก 3.88 ทุก Dimension ต้องวิเคราะห์ Root Cause</li>
+      <li class="good">✅ ปี 2568 ฟื้นตัวแรงมาก 4.02 avg — Recovery สำเร็จ สะท้อน Culture Program ที่มีผล</li>
+      <li class="warn">⚠️ Work Environment 3.82 ต่ำสุดใน 2568 — ต้อง Improve Physical & Psychological Workspace</li>
+      <li class="good">✅ Employee Performance 4.27 สูงสุด — พนักงาน Committed & Performing สูง</li>
+    </ul>
+  </div>
+  <div class="dtbl-wrap">
+    <div class="dtbl-head"><h4>Engagement 7 Dimensions (2566–2568)</h4><span class="badge bb">Survey Data จริง</span></div>
+    <table><thead><tr><th>Dimension</th><th style="text-align:right">2566</th><th style="text-align:right">2567</th><th style="text-align:right">2568</th><th>Trend</th><th>Status 2568</th></tr></thead>
+    <tbody id="eng-tbl"></tbody></table>
+  </div>
+</div>
+
+<!-- ========== EDUCATION ========== -->
+<div id="view-edu" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">🎓</span><h3>Education & Analytics Matrix</h3><span class="s-badge">Real Data · May 2026 · 797 คน</span></div>
+  <div class="kpi-row">
+    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">🎓</div><div class="kpi-val">339<span class="kpi-unit">คน</span></div><div class="kpi-label">ปริญญาตรี</div><span class="kpi-chg up">42.5%</span></div>
+    <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">📜</div><div class="kpi-val">39<span class="kpi-unit">คน</span></div><div class="kpi-label">ปริญญาโท+เอก</div><span class="kpi-chg neu">5.0%</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">🔧</div><div class="kpi-val">208<span class="kpi-unit">คน</span></div><div class="kpi-label">ปวส.+ปวช.</div><span class="kpi-chg neu">26.1%</span></div>
+    <div class="kpi-card" style="--kc:#F6AD55"><div class="kpi-icon">📖</div><div class="kpi-val">119<span class="kpi-unit">คน</span></div><div class="kpi-label">ม.6</div><span class="kpi-chg neu">14.9%</span></div>
+    <div class="kpi-card" style="--kc:#FC8181"><div class="kpi-icon">⚠️</div><div class="kpi-val">48<span class="kpi-unit">คน</span></div><div class="kpi-label">ไม่ระบุ</div><span class="kpi-chg dn">6.0% ต้องอัพเดท</span></div>
+    <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">⚡</div><div class="kpi-val">108<span class="kpi-unit">คน</span></div><div class="kpi-label">สาขาวิศวกรรมไฟฟ้า</div><span class="kpi-chg up">13.5% Core Skill</span></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>🎓 Education Level Distribution (May 2026)</h4><canvas id="edu-level"></canvas></div>
+    <div class="chart-box"><h4>📚 Top 10 สาขาวิชา</h4><canvas id="edu-major"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box"><h4>🏫 Top 10 สถาบันการศึกษา</h4><canvas id="edu-school"></canvas></div>
+    <div class="chart-box"><h4>📊 สัดส่วนกลุ่มการศึกษา</h4><canvas id="edu-pie"></canvas></div>
+  </div>
+  <!-- ANALYTICS MATRIX -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <h3 style="font-size:14px;font-weight:800;color:#1A2B4A;">🔬 Analytics Matrix: Employee Group × ระดับการศึกษา</h3>
+      <span style="font-size:10px;color:#718096;background:#EDF2F7;padding:3px 8px;border-radius:6px;font-weight:700;">คลิกที่ Cell เพื่อ Drill Down ดูสาขาวิชา</span>
+    </div>
+    <div class="edu-matrix-wrap">
+      <table id="edu-matrix-table">
+        <thead>
+          <tr>
+            <th class="row-head">Employee Group</th>
+            <th>ปริญญาตรี</th>
+            <th>ปวส.</th>
+            <th>ม.6</th>
+            <th>ปวช.</th>
+            <th>ปริญญาโท</th>
+            <th>ม.3</th>
+            <th>ประถม</th>
+            <th>ปริญญาเอก</th>
+            <th>ไม่ระบุ</th>
+            <th style="background:#0A1628">รวม</th>
+          </tr>
+        </thead>
+        <tbody id="edu-matrix-body"></tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Drill-down panel -->
+  <div class="drill-panel" id="drill-panel">
+    <div class="drill-title">
+      <span id="drill-title-text">📊 Top สาขาวิชา</span>
+      <button class="drill-close" onclick="closeDrill()">✕ ปิด</button>
+    </div>
+    <div class="drill-bars" id="drill-bars"></div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-title">🤖 Education Analytics Insight</div>
+    <ul>
+      <li class="info">📊 กลุ่ม ปฏิบัติการ (398 คน): ม.6+ปวส.+ปวช. รวม 76% — สายวิชาชีพ เหมาะกับงาน Shop Floor</li>
+      <li class="good">✅ กลุ่ม วิชาชีพ (192 คน): ปริญญาตรี 79.2% — คุณวุฒิสูง สอดคล้องกับ Professional Role</li>
+      <li class="good">✅ กลุ่ม จัดการ/PM (113 คน): ป.ตรี+โท 98.2% — Leadership Pipeline แข็งแกร่ง</li>
+      <li class="bad">❌ 48 คน (6%) ไม่มีข้อมูลการศึกษา — ต้องเก็บข้อมูลเพิ่มสำหรับ People Analytics</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ========== WORKFORCE PLANNING ========== -->
+<div id="view-wfp" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">🏗️</span><h3>Workforce Planning Dashboard</h3><span class="s-badge">Structure Unit · May 2026 · 797 คน</span></div>
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">🏢</div><div class="kpi-val">9</div><div class="kpi-label">บริษัทในเครือ</div><span class="kpi-chg neu">9 Companies</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">🏗️</div><div class="kpi-val">34</div><div class="kpi-label">Business Units (L3)</div><span class="kpi-chg neu">May 2026</span></div>
+    <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">👑</div><div class="kpi-val">14</div><div class="kpi-label">บริหาร/ผู้เชี่ยวชาญ</div><span class="kpi-chg warn">1.8% Exec Layer</span></div>
+    <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">📐</div><div class="kpi-val">28.5</div><div class="kpi-label">Avg Span of Control</div><span class="kpi-chg up">Ops Layer</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">⚠️</div><div class="kpi-val">10.5%</div><div class="kpi-label">HC ลดลง YTD</div><span class="kpi-chg dn">813→797 (-16 คน)</span></div>
+    <div class="kpi-card" style="--kc:#4FD1C5"><div class="kpi-icon">📊</div><div class="kpi-val">49.9%</div><div class="kpi-label">กลุ่ม ปฏิบัติการ</div><span class="kpi-chg neu">Core Workforce</span></div>
+  </div>
+
+  <!-- Workforce Pyramid + Company Mix -->
+  <div class="charts-row">
+    <div class="chart-box"><h4>🔺 Workforce Pyramid — Employee Group (May 2026)</h4>
+      <div id="wfp-pyramid" style="padding:8px 0;"></div>
+    </div>
+    <div class="chart-box"><h4>📊 HC by Company — Trend (Jan–May 2026)</h4><canvas id="wfp-co-trend"></canvas></div>
+  </div>
+
+  <!-- BU Structure by Company -->
+  <div class="sec-title" style="margin-top:8px;"><span style="font-size:15px">🏗️</span><h3 style="font-size:14px;">Structure Unit Breakdown by Company (May 2026)</h3></div>
+
+  <!-- Company Cards Grid -->
+  <div id="wfp-co-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;margin-bottom:20px;"></div>
+
+  <!-- Age & Service Distribution -->
+  <div class="charts-row">
+    <div class="chart-box"><h4>🎂 Age Distribution (May 2026) — WFP Insight</h4><canvas id="wfp-age"></canvas></div>
+    <div class="chart-box"><h4>⏳ Service Year Distribution (May 2026) — Retention Risk</h4><canvas id="wfp-svc"></canvas></div>
+  </div>
+
+  <!-- HC Trend by Company stacked -->
+  <div class="chart-box" style="margin-bottom:16px;"><h4>📊 Workforce Structure — Employee Group Mix per Company (May 2026)</h4><canvas id="wfp-co-group" style="max-height:220px;"></canvas></div>
+
+  <!-- WFP Insights -->
+  <div class="insight-box">
+    <div class="insight-title">🤖 Workforce Planning Insight</div>
+    <ul>
+      <li class="warn">⚠️ Exec Ratio 1.8% (14 คน) — Lean แต่ Span of Control กว้าง ควร Plan Succession ให้ชัดเจน</li>
+      <li class="info">📊 PEM เป็น Core 50.9% ของ HC ทั้งหมด — กลุ่ม ปฏิบัติการ 67.2% ของ PEM สะท้อน Production-Heavy</li>
+      <li class="good">✅ PSP Workforce 73.5% Prof+MgrPM — Knowledge Worker Intensive ตรงกับ Project Business Model</li>
+      <li class="bad">❌ Age 30-34 สูงสุด 190 คน (23.8%) + Service 5-10ปี 273 คน (34.3%) — High Attrition Risk Window ต้อง Retention Program</li>
+      <li class="warn">⚠️ 131 คน (16.4%) อายุงาน 20+ ปี — Succession Planning เร่งด่วนสำหรับ Critical Roles</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========== PERFORMANCE ========== -->
+<div id="view-perf" class="section-view">
+  <div class="sec-title"><span style="font-size:18px">⭐</span><h3>Performance & Potential Dashboard</h3><span class="s-badge">รอข้อมูล 2026</span></div>
+  <div style="background:#fff;border:2px dashed #E2E8F0;border-radius:12px;padding:40px 24px;text-align:center;margin-bottom:16px;">
+    <div style="font-size:40px;margin-bottom:10px">⭐</div>
+    <div style="font-size:16px;font-weight:800;color:#4A5568;margin-bottom:5px">Performance Dashboard · โครงสร้างพร้อม</div>
+    <div style="font-size:12px;color:#A0AEC0;margin-bottom:16px">กรุณาอัพเดทไฟล์ใน 08_Performance/2026/ เพื่อแสดง KPI, 9-Box, Bell Curve</div>
+    <div style="display:inline-block;background:#EDF2F7;color:#4A5568;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;">🔧 Ready · อัพเดทข้อมูลเพื่อ Activate</div>
+  </div>
+</div>
+</div><!-- end main-area -->
+
+<div class="footer">PCC Group · HC Analytics Portal v7.0 · Real HR Data Jan–May 2026 · Employee Group / Type / Company · OT Cost Calc · Education Matrix Drill-Down · Built by Earth (HR Strategy & OD) · <span style="color:#F26522">Powered by Claude AI</span></div>
+<script>
+
+// ===================== HC MONTHLY DATA (per company, per month) =====================
+const HC_MONTHLY_CO = {
+  Jan:{
+    PEM:{total:413,byGroup:{Ops:280,Prof:49,MgrPM:43,Mgr:38,Exec:3},byType:{Perm:410,ContD:3},byLoc:{'เมืองปทุมธานี':409,'ปากเกร็ด':4},byGender:{M:280,F:133}},
+    PSP:{total:214,byGroup:{Ops:57,Prof:88,MgrPM:40,Mgr:25,Exec:4},byType:{Perm:206,ContM:7,RetM:1},byLoc:{'ปากเกร็ด':214},byGender:{M:144,F:70}},
+    SBP:{total:73,byGroup:{Ops:48,Prof:17,MgrPM:2,Mgr:5,Exec:1},byType:{Perm:56,ContM:4,ContSp:11,ContD:2},byLoc:{'จะนะ':72,'บางซื่อ':1},byGender:{M:50,F:23}},
+    PDE:{total:46,byGroup:{Ops:0,Prof:27,MgrPM:7,Mgr:11,Exec:1},byType:{Perm:45,RetM:1},byLoc:{'ปากเกร็ด':43,'จะนะ':3},byGender:{M:26,F:20}},
+    PCC:{total:42,byGroup:{Ops:11,Prof:8,MgrPM:14,Mgr:5,Exec:4},byType:{Perm:40,RetM:2},byLoc:{'บางซื่อ':40,'ศรีเทพ':1,'เมืองปทุมธานี':1},byGender:{M:13,F:29}},
+    PCE:{total:9,byGroup:{Ops:6,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:8,ContM:1},byLoc:{'จะนะ':9},byGender:{M:6,F:3}},
+    PSL:{total:6,byGroup:{Ops:3,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:6},byLoc:{'ศรีเทพ':6},byGender:{M:3,F:3}},
+    PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
+    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
+  },
+  Feb:{
+    PEM:{total:414,byGroup:{Ops:280,Prof:50,MgrPM:45,Mgr:36,Exec:3},byType:{Perm:411,ContD:3},byLoc:{'เมืองปทุมธานี':410,'ปากเกร็ด':4},byGender:{M:280,F:134}},
+    PSP:{total:210,byGroup:{Ops:57,Prof:86,MgrPM:42,Mgr:21,Exec:4},byType:{Perm:202,ContM:7,RetM:1},byLoc:{'ปากเกร็ด':210},byGender:{M:140,F:70}},
+    SBP:{total:73,byGroup:{Ops:48,Prof:17,MgrPM:2,Mgr:5,Exec:1},byType:{Perm:56,ContM:4,ContSp:11,ContD:2},byLoc:{'จะนะ':72,'บางซื่อ':1},byGender:{M:50,F:23}},
+    PDE:{total:44,byGroup:{Ops:0,Prof:27,MgrPM:7,Mgr:9,Exec:1},byType:{Perm:43,RetM:1},byLoc:{'ปากเกร็ด':41,'จะนะ':3},byGender:{M:25,F:19}},
+    PCC:{total:43,byGroup:{Ops:11,Prof:9,MgrPM:14,Mgr:5,Exec:4},byType:{Perm:41,RetM:2},byLoc:{'บางซื่อ':39,'ศรีเทพ':2,'เมืองปทุมธานี':2},byGender:{M:14,F:29}},
+    PCE:{total:9,byGroup:{Ops:6,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:8,ContM:1},byLoc:{'จะนะ':9},byGender:{M:6,F:3}},
+    PSL:{total:6,byGroup:{Ops:3,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:6},byLoc:{'ศรีเทพ':6},byGender:{M:3,F:3}},
+    PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
+    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
+  },
+  Mar:{
+    PEM:{total:413,byGroup:{Ops:279,Prof:51,MgrPM:44,Mgr:36,Exec:3},byType:{Perm:410,ContD:3},byLoc:{'เมืองปทุมธานี':409,'ปากเกร็ด':4},byGender:{M:279,F:134}},
+    PSP:{total:211,byGroup:{Ops:57,Prof:86,MgrPM:43,Mgr:21,Exec:4},byType:{Perm:202,ContM:7,ContSp:1,RetM:1},byLoc:{'ปากเกร็ด':211},byGender:{M:140,F:71}},
+    SBP:{total:67,byGroup:{Ops:46,Prof:13,MgrPM:2,Mgr:5,Exec:1},byType:{Perm:50,ContM:4,ContSp:11,ContD:2},byLoc:{'จะนะ':66,'บางซื่อ':1},byGender:{M:48,F:19}},
+    PDE:{total:44,byGroup:{Ops:0,Prof:27,MgrPM:7,Mgr:9,Exec:1},byType:{Perm:43,RetM:1},byLoc:{'ปากเกร็ด':41,'จะนะ':3},byGender:{M:25,F:19}},
+    PCC:{total:43,byGroup:{Ops:11,Prof:9,MgrPM:14,Mgr:5,Exec:4},byType:{Perm:41,RetM:2},byLoc:{'บางซื่อ':39,'ศรีเทพ':2,'เมืองปทุมธานี':2},byGender:{M:14,F:29}},
+    PCE:{total:10,byGroup:{Ops:6,Prof:2,MgrPM:1,Mgr:1},byType:{Perm:9,ContM:1},byLoc:{'จะนะ':10},byGender:{M:6,F:4}},
+    PSL:{total:6,byGroup:{Ops:3,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:6},byLoc:{'ศรีเทพ':6},byGender:{M:3,F:3}},
+    PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
+    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
+  },
+  Apr:{
+    PEM:{total:413,byGroup:{Ops:279,Prof:51,MgrPM:44,Mgr:36,Exec:3},byType:{Perm:410,ContD:3},byLoc:{'เมืองปทุมธานี':409,'ปากเกร็ด':4},byGender:{M:279,F:134}},
+    PSP:{total:211,byGroup:{Ops:57,Prof:86,MgrPM:43,Mgr:21,Exec:4},byType:{Perm:202,ContM:7,ContSp:1,RetM:1},byLoc:{'ปากเกร็ด':211},byGender:{M:140,F:71}},
+    SBP:{total:67,byGroup:{Ops:46,Prof:13,MgrPM:2,Mgr:5,Exec:1},byType:{Perm:50,ContM:4,ContSp:11,ContD:2},byLoc:{'จะนะ':66,'บางซื่อ':1},byGender:{M:48,F:19}},
+    PDE:{total:44,byGroup:{Ops:0,Prof:27,MgrPM:7,Mgr:9,Exec:1},byType:{Perm:43,RetM:1},byLoc:{'ปากเกร็ด':41,'จะนะ':3},byGender:{M:25,F:19}},
+    PCC:{total:43,byGroup:{Ops:11,Prof:9,MgrPM:14,Mgr:5,Exec:4},byType:{Perm:41,RetM:2},byLoc:{'บางซื่อ':39,'ศรีเทพ':2,'เมืองปทุมธานี':2},byGender:{M:14,F:29}},
+    PCE:{total:10,byGroup:{Ops:6,Prof:2,MgrPM:1,Mgr:1},byType:{Perm:9,ContM:1},byLoc:{'จะนะ':10},byGender:{M:6,F:4}},
+    PSL:{total:6,byGroup:{Ops:3,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:6},byLoc:{'ศรีเทพ':6},byGender:{M:3,F:3}},
+    PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
+    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
+  },
+  May:{
+    PEM:{total:406,byGroup:{Ops:273,Prof:51,MgrPM:44,Mgr:35,Exec:3},byType:{Perm:404,ContD:2},byLoc:{'เมืองปทุมธานี':402,'ปากเกร็ด':4},byGender:{M:275,F:131}},
+    PSP:{total:211,byGroup:{Ops:57,Prof:86,MgrPM:43,Mgr:21,Exec:4},byType:{Perm:202,ContM:6,ContSp:2,RetM:1},byLoc:{'ปากเกร็ด':211},byGender:{M:139,F:72}},
+    SBP:{total:64,byGroup:{Ops:44,Prof:13,MgrPM:1,Mgr:5,Exec:1},byType:{Perm:47,ContM:4,ContSp:11,ContD:2},byLoc:{'จะนะ':63,'บางซื่อ':1},byGender:{M:45,F:19}},
+    PDE:{total:45,byGroup:{Ops:0,Prof:28,MgrPM:7,Mgr:9,Exec:1},byType:{Perm:44,RetM:1},byLoc:{'ปากเกร็ด':42,'จะนะ':3},byGender:{M:25,F:20}},
+    PCC:{total:43,byGroup:{Ops:10,Prof:9,MgrPM:14,Mgr:6,Exec:4},byType:{Perm:41,RetM:2},byLoc:{'บางซื่อ':38,'ศรีเทพ':3,'เมืองปทุมธานี':2},byGender:{M:13,F:30}},
+    PCE:{total:9,byGroup:{Ops:5,Prof:2,MgrPM:1,Mgr:1},byType:{Perm:8,ContM:1},byLoc:{'จะนะ':9},byGender:{M:6,F:3}},
+    PSL:{total:9,byGroup:{Ops:4,Prof:2,MgrPM:1,Mgr:2},byType:{Perm:6,ContM:3},byLoc:{'ศรีเทพ':9},byGender:{M:3,F:6}},
+    PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
+    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
+  },
+};
+
+const WFP_BU_DATA = {
+  PEM:{color:'#0077B6',rs:'Power Dist & EM',units:[
+    {n:'Switchgear & Switchboard / Digital Eng.',Ops:36,Prof:12,MgrPM:4,Mgr:5,Exec:0},
+    {n:'Distribution Transformer Business',Ops:49,Prof:1,MgrPM:2,Mgr:1,Exec:0},
+    {n:'Corporate (CEO/COO)',Ops:16,Prof:16,MgrPM:13,Mgr:5,Exec:2},
+    {n:'Metal Fabrication & Enclosure',Ops:46,Prof:2,MgrPM:1,Mgr:1,Exec:0},
+    {n:'Customer Capital & Channel Mgmt.',Ops:26,Prof:6,MgrPM:9,Mgr:8,Exec:0},
+    {n:'Instrument Transformer Business',Ops:38,Prof:4,MgrPM:1,Mgr:1,Exec:0},
+    {n:'Polymer Product & Electrical Equip.',Ops:29,Prof:0,MgrPM:2,Mgr:2,Exec:0},
+    {n:'SF6 free LBS & Switching Device',Ops:23,Prof:0,MgrPM:3,Mgr:2,Exec:0},
+    {n:'CFO Office',Ops:7,Prof:8,MgrPM:4,Mgr:8,Exec:0},
+    {n:'Product & Digital Eng. Dev.',Ops:3,Prof:2,MgrPM:4,Mgr:2,Exec:0},
+    {n:'PMO',Ops:0,Prof:0,MgrPM:1,Mgr:0,Exec:1},
+  ]},
+  PSP:{color:'#48BB78',rs:'Intelligent Grid',units:[
+    {n:'Corporate (CEO/CTO/CXO)',Ops:19,Prof:22,MgrPM:18,Mgr:6,Exec:4},
+    {n:'SCADA Digital Engineering (PSP101)',Ops:17,Prof:25,MgrPM:6,Mgr:5,Exec:0},
+    {n:'Power System & Regional Dev (PSP102)',Ops:11,Prof:27,MgrPM:6,Mgr:6,Exec:0},
+    {n:'CFO Office',Ops:7,Prof:6,MgrPM:10,Mgr:2,Exec:0},
+    {n:'AMI Business (PSP103)',Ops:3,Prof:4,MgrPM:1,Mgr:1,Exec:0},
+    {n:'High Quality Power & EMS (PSP104)',Ops:0,Prof:2,MgrPM:2,Mgr:1,Exec:0},
+  ]},
+  SBP:{color:'#F26522',rs:'Renewable Energy',units:[
+    {n:'Power Plant Operation Office',Ops:31,Prof:7,MgrPM:0,Mgr:3,Exec:0},
+    {n:'Corporate (MD)',Ops:9,Prof:6,MgrPM:1,Mgr:2,Exec:1},
+    {n:'Power Plant Operation Unit',Ops:4,Prof:0,MgrPM:0,Mgr:0,Exec:0},
+  ]},
+  PDE:{color:'#ED64A6',rs:'Digital & ESG',units:[
+    {n:'CTO Office',Ops:0,Prof:23,MgrPM:5,Mgr:4,Exec:0},
+    {n:'COO Office',Ops:0,Prof:5,MgrPM:2,Mgr:5,Exec:1},
+  ]},
+  PCC:{color:'#9F7AEA',rs:'Precise (Corporate)',units:[
+    {n:'Corporate Investment Management',Ops:9,Prof:1,MgrPM:2,Mgr:2,Exec:0},
+    {n:'Financial Capital & Physical Capital',Ops:0,Prof:6,MgrPM:5,Mgr:2,Exec:1},
+    {n:'Corporate (Holding)',Ops:0,Prof:0,MgrPM:2,Mgr:0,Exec:1},
+    {n:'Internal Audit',Ops:0,Prof:1,MgrPM:1,Mgr:1,Exec:0},
+    {n:'Company Secretary',Ops:0,Prof:0,MgrPM:2,Mgr:0,Exec:1},
+    {n:'Digital & Automation Transform.',Ops:1,Prof:0,MgrPM:1,Mgr:1,Exec:0},
+    {n:'PMO',Ops:0,Prof:1,MgrPM:1,Mgr:0,Exec:0},
+    {n:'Governance & Sustainable Dev.',Ops:0,Prof:0,MgrPM:0,Mgr:0,Exec:1},
+  ]},
+  PCE:{color:'#F6AD55',rs:'Renewable Energy',units:[{n:'Managing Director Office',Ops:5,Prof:1,MgrPM:1,Mgr:1,Exec:0},{n:'Corporate',Ops:0,Prof:1,MgrPM:1,Mgr:0,Exec:0}]},
+  PSL:{color:'#4FD1C5',rs:'BCG',units:[{n:'Corporate (All)',Ops:4,Prof:2,MgrPM:1,Mgr:2,Exec:0}]},
+  PPP:{color:'#FC8181',rs:'Renewable Energy',units:[{n:'Corporate / COO / CTO',Ops:3,Prof:0,MgrPM:3,Mgr:1,Exec:1}]},
+  CMI:{color:'#CBD5E0',rs:'Intelligent Grid',units:[{n:'Corporate',Ops:3,Prof:1,MgrPM:0,Mgr:0,Exec:0}]},
+};
+
+// Helper: get HC data for current period+company filter
+function getHCData(){
+  const month = currentPeriod === 'ALL' ? 'May' : currentPeriod;
+  const mData = HC_MONTHLY_CO[month] || HC_MONTHLY_CO['May'];
+  if(currentCompany === 'ALL'){
+    // Aggregate all companies
+    const agg = {total:0,byGroup:{Ops:0,Prof:0,MgrPM:0,Mgr:0,Exec:0},byType:{Perm:0,ContM:0,ContSp:0,ContD:0,RetM:0},byLoc:{},byGender:{M:0,F:0}};
+    for(const co of Object.keys(mData)){
+      const d = mData[co];
+      agg.total += d.total;
+      for(const k in d.byGroup) agg.byGroup[k] = (agg.byGroup[k]||0)+(d.byGroup[k]||0);
+      for(const k in d.byType)  agg.byType[k]  = (agg.byType[k]||0)+(d.byType[k]||0);
+      for(const k in d.byLoc)   agg.byLoc[k]   = (agg.byLoc[k]||0)+(d.byLoc[k]||0);
+      for(const k in d.byGender)agg.byGender[k] = (agg.byGender[k]||0)+(d.byGender[k]||0);
+    }
+    return agg;
+  } else {
+    return mData[currentCompany] || {total:0,byGroup:{},byType:{},byLoc:{},byGender:{}};
+  }
+}
+
+// ===================== CORE DATA =====================
+const MONTHS_ALL = ['Jan','Feb','Mar','Apr','May'];
+const MONTHS_OT  = ['Jan','Feb','Mar','Apr'];
+const HC_DATA  = {Jan:813,Feb:809,Mar:804,Apr:804,May:797};
+const HC_ARR   = [813,809,804,804,797];
+const RESIGN_DATA = {Jan:7,Feb:6,Mar:6,Apr:10,May:4};
+const RESIGN_ARR  = [7,6,6,10,4];
+const RATE_DATA   = {Jan:0.86,Feb:0.74,Mar:0.75,Apr:1.24,May:0.50};
+const RATE_ARR    = [0.86,0.74,0.75,1.24,0.50];
+
+const COMPANIES = [
+  {code:'PEM',name:'พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง',n:406,rs:'Power Dist & EM',color:'#0077B6'},
+  {code:'PSP',name:'พรีไซซ ซิสเท็ม แอนด์ โปรเจ็ค',n:211,rs:'Intelligent Grid',color:'#48BB78'},
+  {code:'SBP',name:'สงขลาไบโอเพาเวอร์',n:64,rs:'Renewable Energy',color:'#F26522'},
+  {code:'PDE',name:'พรีไซซ ดิจิตอล อีโคโนมี่',n:45,rs:'Digital & ESG',color:'#ED64A6'},
+  {code:'PCC',name:'พรีไซซ คอร์ปอเรชั่น',n:43,rs:'Precise',color:'#9F7AEA'},
+  {code:'PCE',name:'พรีไซซ คลีน เอ็นเนอร์จี',n:9,rs:'Renewable Energy',color:'#F6AD55'},
+  {code:'PSL',name:'พรีไซซ สมาร์ท ไลฟ์',n:9,rs:'BCG',color:'#4FD1C5'},
+  {code:'PPP',name:'พรีไซซ เพาเวอร์ โปรดิวเซอร์',n:6,rs:'Renewable Energy',color:'#FC8181'},
+  {code:'CMI',name:'โคเอลเม่ อินเตอร์เนชั่นแนล',n:4,rs:'Intelligent Grid',color:'#CBD5E0'},
+];
+
+const EMP_GROUP = [
+  {name:'กลุ่ม ปฏิบัติการ',n:398,color:'#0077B6'},
+  {name:'กลุ่ม วิชาชีพ',n:192,color:'#48BB78'},
+  {name:'จัดการ/ชำนาญการ',n:80,color:'#9F7AEA'},
+  {name:'จัดการ/ชำนาญการ/PM',n:113,color:'#F26522'},
+  {name:'บริหาร/ผู้เชี่ยวชาญ',n:14,color:'#E53E3E'},
+];
+
+const EMP_TYPE = [
+  {name:'ประจำ-รายเดือน',n:762,color:'#0077B6'},
+  {name:'สัญญาจ้างกำหนดระยะ-รายเดือน',n:14,color:'#F6AD55'},
+  {name:'สัญญาจ้างพิเศษ-รายเดือน',n:13,color:'#F26522'},
+  {name:'หลังเกษียน-รายเดือน',n:4,color:'#CBD5E0'},
+  {name:'สัญญาจ้าง-รายวัน',n:4,color:'#FC8181'},
+];
+
+const LOCATION = [
+  {name:'เมืองปทุมธานี',n:408,color:'#0077B6'},
+  {name:'ปากเกร็ด',n:257,color:'#48BB78'},
+  {name:'จะนะ',n:76,color:'#F26522'},
+  {name:'บางซื่อ',n:44,color:'#9F7AEA'},
+  {name:'ศรีเทพ',n:12,color:'#4FD1C5'},
+];
+
+const OT_DATA = {
+  Jan:{requests:1520,unique_emp:246,cost_est:705262,top_co:'PEM (876)'},
+  Feb:{requests:831, unique_emp:161,cost_est:397048,top_co:'PEM (467)'},
+  Mar:{requests:1817,unique_emp:262,cost_est:857923,top_co:'PEM (1308)'},
+  Apr:{requests:1538,unique_emp:238,cost_est:711809,top_co:'PEM (1165)'},
+};
+const OT_BY_COMPANY_YTD = [
+  {name:'PEM',n:3816,color:'#0077B6'},
+  {name:'PSP',n:705,color:'#48BB78'},
+  {name:'SBP',n:646,color:'#F26522'},
+  {name:'PCC',n:314,color:'#9F7AEA'},
+  {name:'PCE+PPP',n:57,color:'#4FD1C5'},
+  {name:'อื่นๆ',n:91,color:'#CBD5E0'},
+];
+const OT_BY_GROUP_YTD = [
+  {name:'กลุ่ม ปฏิบัติการ',n:4869,color:'#0077B6'},
+  {name:'กลุ่ม วิชาชีพ',n:613,color:'#48BB78'},
+  {name:'จัดการ/ชำนาญการ',n:129,color:'#F26522'},
+  {name:'จัดการ/ชำนาญการ/PM',n:4,color:'#9F7AEA'},
+  {name:'ไม่ระบุ',n:91,color:'#CBD5E0'},
+];
+
+const SALARY_DATA = {
+  months:['Jan','Feb','Mar','Apr'],
+  totalBasic:[31.96,30.43,30.33,30.27],
+  avgBasic:[37122,37429,37404,37368],
+  count:[861,813,811,810],
+  byRS_Apr:{
+    labels:['Power Dist & EM','Intelligent Grid','Precise','Renewable','Digital & ESG','BCG'],
+    data:[13.10,9.17,3.14,2.58,1.82,0.18],
+  },
+  byLoc_Apr:{
+    labels:['เมืองปทุมธานี','ปากเกร็ด','บางซื่อ','จะนะ','ศรีเทพ'],
+    data:[12.98,11.22,3.62,2.11,0.34],
+  },
+  byGroup_Apr:[
+    {name:'กลุ่ม ปฏิบัติการ', n:403, avg:24272, total:9.78, color:'#0077B6'},
+    {name:'กลุ่ม วิชาชีพ',    n:190, avg:32517, total:6.18, color:'#48BB78'},
+    {name:'จัดการ/ชำนาญการ', n:79,  avg:44797, total:3.54, color:'#9F7AEA'},
+    {name:'จัดการ/ชำนาญการ/PM',n:113,avg:67598, total:7.64, color:'#F26522'},
+    {name:'บริหาร/ผู้เชี่ยวชาญ',n:14,avg:204519,total:2.86, color:'#E53E3E'},
+    {name:'ไม่ระบุ',          n:11,  avg:24262, total:0.27, color:'#CBD5E0'},
+  ],
+  distLabels:['< 15K','15-20K','20-30K','30-50K','50-80K','80K+'],
+  distData:[10,18,424,218,106,34],
+};
+
+const ENG_DATA = {
+  dims:['Job Satisfaction','Org Commitment','Teamwork','Supervisor','Rewards','Work Environ.','Perf & Commit'],
+  y66:[3.754,4.128,3.980,3.681,3.746,3.665,4.218],
+  y67:[3.120,3.239,3.239,3.157,3.140,3.121,3.200],
+  y68:[3.888,4.148,4.175,3.939,3.901,3.817,4.271],
+};
+
+const TRAINING_DATA = {
+  months:['Jan','Feb','Mar','Apr'],
+  records:[796,248,320,420],
+  unique_emp:[618,237,312,358],
+  courses:[17,25,24,20],
+  total_hrs:[716.8,496.6,673.0,791.0],
+  hc:[813,809,804,804],
+  internal:[781,218,298,384],
+  external:[15,30,22,36],
+  byGroup_ytd:[
+    {name:'กลุ่ม ปฏิบัติการ', hrs:1073, color:'#0077B6'},
+    {name:'กลุ่ม วิชาชีพ',    hrs:465.3, color:'#48BB78'},
+    {name:'จัดการ/ชำนาญการ', hrs:334.0, color:'#9F7AEA'},
+    {name:'จัดการ/ชำนาญการ/PM',hrs:479.1, color:'#F26522'},
+    {name:'บริหาร/ผู้เชี่ยวชาญ',hrs:210.0, color:'#E53E3E'},
+    {name:'ไม่ระบุ',          hrs:118.0, color:'#CBD5E0'},
+  ],
+};
+
+const EDU_MATRIX = {
+  'กลุ่ม ปฏิบัติการ':{
+    'ปริญญาตรี':{total:23,top:[{n:'การจัดการ',c:3},{n:'เทคโนโลยีสารสนเทศ',c:2},{n:'วิชาการตลาด',c:2},{n:'เทคโนโลยีวัสดุ',c:1}]},
+    'ปวส.':{total:110,top:[{n:'ช่างไฟฟ้ากำลัง',c:36},{n:'ไฟฟ้ากำลัง',c:28},{n:'คอมพิวเตอร์ธุรกิจ',c:12},{n:'อิเล็กทรอนิกส์',c:10},{n:'ยานยนต์',c:5}]},
+    'ม.6':{total:119,top:[{n:'ม.6 (สายสามัญ)',c:97},{n:'สังคมวิทยา',c:3}]},
+    'ปวช.':{total:74,top:[{n:'ปวช.ช่างยนต์',c:11},{n:'ปวช.ไฟฟ้า',c:10},{n:'ปวช.อิเล็กทรอนิกส์',c:8},{n:'ปวช.ช่างเชื่อม',c:4},{n:'ปวช.คอมพิวเตอร์',c:3}]},
+    'ม.3':{total:33,top:[{n:'ม.ต้น (สายสามัญ)',c:27}]},
+    'ประถม':{total:10,top:[{n:'ป.6',c:7},{n:'ป.4',c:2}]},
+    'ไม่ระบุ':{total:29,top:[]},
+  },
+  'กลุ่ม วิชาชีพ':{
+    'ปริญญาตรี':{total:152,top:[{n:'ไฟฟ้ากำลัง',c:24},{n:'วิศวกรรมไฟฟ้า',c:22},{n:'วิศวกรรมคอมพิวเตอร์',c:13},{n:'การบัญชี',c:12},{n:'วิศวกรรมอุตสาหการ',c:10},{n:'การตลาด',c:9}]},
+    'ปวส.':{total:21,top:[{n:'คอมพิวเตอร์ธุรกิจ',c:7},{n:'ไฟฟ้ากำลัง',c:5},{n:'การบัญชี',c:4},{n:'การตลาด',c:3}]},
+    'ปริญญาโท':{total:5,top:[{n:'การจัดการทางวิศวกรรม',c:2},{n:'การจัดการโลจิสติกส์',c:1},{n:'ไฟฟ้ากำลัง',c:1},{n:'บริหารธุรกิจ',c:1}]},
+    'ไม่ระบุ':{total:13,top:[]},
+    'ปวช.':{total:1,top:[{n:'ช่างไฟฟ้ากำลัง',c:1}]},
+  },
+  'จัดการ/ชำนาญการ/PM':{
+    'ปริญญาตรี':{total:88,top:[{n:'วิศวกรรมไฟฟ้า',c:20},{n:'วิศวกรรมไฟฟ้ากำลัง',c:14},{n:'การบัญชี',c:10},{n:'วิศวกรรมอุตสาหการ',c:8},{n:'วิศวกรรมคอมพิวเตอร์',c:7}]},
+    'ปริญญาโท':{total:23,top:[{n:'การเงิน',c:5},{n:'การจัดการทางวิศวกรรม',c:5},{n:'บริหารธุรกิจ',c:4},{n:'เทคโนโลยีอุตสาหกรรม',c:3}]},
+    'ปวส.':{total:1,top:[{n:'อิเล็กทรอนิกส์',c:1}]},
+    'ไม่ระบุ':{total:1,top:[]},
+  },
+  'จัดการ/ชำนาญการ':{
+    'ปริญญาตรี':{total:68,top:[{n:'วิศวกรรมไฟฟ้า',c:15},{n:'การบัญชี',c:12},{n:'วิศวกรรมคอมพิวเตอร์',c:8},{n:'การจัดการ',c:7},{n:'บริหารธุรกิจ',c:6}]},
+    'ปริญญาโท':{total:6,top:[{n:'บริหารธุรกิจ',c:3},{n:'เทคโนโลยีอุตสาหกรรม',c:2}]},
+    'ปวส.':{total:1,top:[{n:'การตลาด',c:1}]},
+    'ไม่ระบุ':{total:5,top:[]},
+  },
+  'บริหาร/ผู้เชี่ยวชาญ':{
+    'ปริญญาตรี':{total:8,top:[{n:'วิศวกรรมไฟฟ้า',c:3},{n:'วิศวกรรมไฟฟ้ากำลัง',c:2},{n:'เทคโนโลยีการผลิต',c:1},{n:'เครื่องกลไฟฟ้า',c:1}]},
+    'ปริญญาโท':{total:5,top:[{n:'ธุรกิจระหว่างประเทศ',c:2},{n:'บริหารธุรกิจ',c:2}]},
+    'ปริญญาเอก':{total:1,top:[{n:'วิศวกรรมโยธาและสิ่งแวดล้อม',c:1}]},
+  },
+};
+
+const RESIGN_RECORDS = [
+  {doc:'RSN001382',name:'สุริยา ถาประมาตย์',endDate:'31/01/26',reason:'ใกล้บ้าน/งานถนัด',month:'Jan'},
+  {doc:'RSN001386',name:'ธนกฤต อุบลเฉลา',endDate:'13/01/26',reason:'ไม่ระบุสาเหตุ',month:'Jan'},
+  {doc:'RSN001392',name:'พงศธร ชื่นศิริ',endDate:'27/01/26',reason:'เลิกจ้าง',month:'Jan'},
+  {doc:'RSN001393',name:'สมพล ม่วงบุญ',endDate:'27/01/26',reason:'เลิกจ้าง',month:'Jan'},
+  {doc:'RSN001394',name:'ธัญพิชชา เจริญเดช',endDate:'30/01/26',reason:'ไม่ระบุสาเหตุ',month:'Jan'},
+  {doc:'RSN001395',name:'นฤพล ปันกอ',endDate:'30/01/26',reason:'ไม่ระบุสาเหตุ',month:'Jan'},
+  {doc:'RSN001396',name:'ศุภัทรา ยอดสร้อย',endDate:'30/01/26',reason:'ไม่ระบุสาเหตุ',month:'Jan'},
+  {doc:'RSN001390',name:'ขจรยศ แพ่งดิษฐ',endDate:'15/02/26',reason:'ไม่ระบุสาเหตุ',month:'Feb'},
+  {doc:'RSN001401',name:'วงศกร รัตน์นิยมชัย',endDate:'24/02/26',reason:'ไม่ระบุสาเหตุ',month:'Feb'},
+  {doc:'RSN001397',name:'วีรภัทร สินธุ์อุดม',endDate:'24/02/26',reason:'ไม่ระบุสาเหตุ',month:'Feb'},
+  {doc:'RSN001398',name:'สราลี ล่องนาวา',endDate:'24/02/26',reason:'ไม่ระบุสาเหตุ',month:'Feb'},
+  {doc:'RSN001399',name:'อุกฤต น้อยเขมา',endDate:'24/02/26',reason:'ไม่ระบุสาเหตุ',month:'Feb'},
+  {doc:'RSN001400',name:'ชนมาศ หมิยิ',endDate:'24/02/26',reason:'ไม่ระบุสาเหตุ',month:'Feb'},
+  {doc:'RSN001412',name:'จิรทีปต์ บัวจันทร์',endDate:'31/03/26',reason:'ไม่ระบุสาเหตุ',month:'Mar'},
+  {doc:'RSN001415',name:'ฮัสรียาณีย์ สะเม๊าะ',endDate:'26/03/26',reason:'ไม่ระบุสาเหตุ',month:'Mar'},
+  {doc:'RSN001416',name:'นพดล อุหมาหมัน',endDate:'26/03/26',reason:'ไม่ระบุสาเหตุ',month:'Mar'},
+  {doc:'RSN001417',name:'อนุสรณ์ เพ็งเจ',endDate:'26/03/26',reason:'ไม่ระบุสาเหตุ',month:'Mar'},
+  {doc:'RSN001418',name:'รณชัย สุวรรณรัตน์',endDate:'26/03/26',reason:'ไม่ระบุสาเหตุ',month:'Mar'},
+  {doc:'RSN001421',name:'มนตรี แสงอร่าม',endDate:'31/03/26',reason:'เลิกจ้าง',month:'Mar'},
+  {doc:'RSN001405',name:'Phonepaseuth Xay Asa',endDate:'30/04/26',reason:'ดูแลครอบครัว',month:'Apr'},
+  {doc:'RSN001406',name:'ธนาภรณ์ แวดอุดม',endDate:'17/04/26',reason:'ได้งานใหม่',month:'Apr'},
+  {doc:'RSN001408',name:'วิภาริณี อติชาติวิศิษฏ์',endDate:'30/04/26',reason:'ไม่ระบุสาเหตุ',month:'Apr'},
+  {doc:'RSN001413',name:'ธนรัตน์ วงษ์ช่างซื้อ',endDate:'30/04/26',reason:'ได้งานใหม่',month:'Apr'},
+  {doc:'RSN001420',name:'รมิตา มัชเรศ',endDate:'30/04/26',reason:'ธุรกิจส่วนตัว',month:'Apr'},
+  {doc:'RSN001424',name:'ทศพล วรเนตร',endDate:'09/04/26',reason:'เลิกจ้าง',month:'Apr'},
+  {doc:'RSN001423',name:'รัฐฐภัทร นนทนาคร',endDate:'10/04/26',reason:'ได้งานใหม่',month:'Apr'},
+  {doc:'RSN001425',name:'ชญชล พงษนนวัฒน์',endDate:'10/04/26',reason:'ไม่ระบุสาเหตุ',month:'Apr'},
+  {doc:'RSN001427',name:'บัวตอง ชาลี',endDate:'30/04/26',reason:'ดูแลครอบครัว',month:'Apr'},
+  {doc:'RSN001434',name:'ลัภนพฤทธิ์ ศิรินพ',endDate:'24/04/26',reason:'เลิกจ้าง',month:'Apr'},
+  {doc:'RSN001428',name:'พิษณุวรรต ขันเขต',endDate:'31/05/26',reason:'ไม่ระบุสาเหตุ',month:'May'},
+  {doc:'RSN001435',name:'บุญเลี่ยม มวลชัยภูมิ',endDate:'05/05/26',reason:'เลิกจ้าง (วินัย)',month:'May'},
+  {doc:'RSN001436',name:'ณรงค์ โพดพลัด',endDate:'05/05/26',reason:'เลิกจ้าง (วินัย)',month:'May'},
+  {doc:'RSN001437',name:'อนันท์ ปิดสุวรรณ์',endDate:'05/05/26',reason:'เลิกจ้าง (วินัย)',month:'May'},
+];
+
+// ===================== NEW HIRE & FLOW DATA =====================
+// Source: Month-over-Month HC Database Comparison + Service Date (Jan)
+const NEW_HIRE_DATA = {
+  Jan:{new:14,sep:7,  byCo:{SBP:11,PEM:1,PSL:1,PDE:1},  byGrp:{ปฏิบัติการ:12,'จัดการ/PM':1,บริหาร:1}},
+  Feb:{new:2, sep:6,  byCo:{PCC:1,PEM:1},                byGrp:{วิชาชีพ:2}},
+  Mar:{new:4, sep:9,  byCo:{PSP:2,PCE:1,PEM:1},          byGrp:{วิชาชีพ:3,'จัดการ/PM':1}},
+  Apr:{new:0, sep:0,  byCo:{},                            byGrp:{}},
+  May:{new:12,sep:19, byCo:{PSL:3,PSP:3,PCC:2,PDE:2,PEM:2},byGrp:{วิชาชีพ:7,ปฏิบัติการ:3,จัดการ:2}},
+};
+// Note: Apr sep=0 because Apr resignees (end date 30 Apr) appear in May diff (sep=19 includes Apr leavers)
+// Total YTD: New=32, Separated=41 (includes all reasons: resign, terminate, contract end)
+
+const NEW_HIRE_RECORDS = [
+  {ec:'360055',name:'เจือทิพย์ ลักษณะโยธิน',   co:'PDE',grp:'บริหาร',  startDate:'01/01/26',month:'Jan'},
+  {ec:'692203',name:'ชรินทร์ ยอดกระโทก',        co:'PEM',grp:'ปฏิบัติการ',startDate:'01/01/26',month:'Jan'},
+  {ec:'692204',name:'กัมปนาท ฦาชา',             co:'PSL',grp:'จัดการ/PM',startDate:'01/01/26',month:'Jan'},
+  {ec:'692205',name:'พงศ์ทวี เพชรัตน์',          co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692206',name:'นูรุดดีน หมัดล่า',          co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692207',name:'ไพศาล ชายพรม',              co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692208',name:'รเฉด หมัดล่า',              co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692209',name:'อดิสรณ์ หมานหวี',           co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692210',name:'ประวิทย์ หล่อฮอย',          co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692211',name:'เอกพล หนูรอง',              co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692212',name:'อัลลลัยษี หัดคง',           co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692213',name:'หมะยา แลแรมะ',              co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692214',name:'พิทยา แก้วทอง',             co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692215',name:'นัสอาบีดีน สนิหลำ',         co:'SBP',grp:'ปฏิบัติการ',startDate:'02/01/26',month:'Jan'},
+  {ec:'692200',name:'ธวัชชัย ศรีวงศ์ษา',         co:'PCC',grp:'วิชาชีพ',  startDate:'05/01/26',month:'Feb'},
+  {ec:'692201',name:'ชุตินาถ ชัยศาสตร์',         co:'PEM',grp:'วิชาชีพ',  startDate:'05/01/26',month:'Feb'},
+  {ec:'692216',name:'ลัภนพฤทธิ์ ศิรินพ',         co:'PEM',grp:'วิชาชีพ',  startDate:'02/02/26',month:'Mar'},
+  {ec:'692217',name:'มารียะฮ์ ลาไหน',            co:'PSP',grp:'วิชาชีพ',  startDate:'02/02/26',month:'Mar'},
+  {ec:'530511',name:'ณัฐเนตร นามจัด',            co:'PSP',grp:'จัดการ/PM',startDate:'Rehire',  month:'Mar'},
+  {ec:'621661',name:'บุษบา สกุลหรัง',            co:'PCE',grp:'วิชาชีพ',  startDate:'Rehire',  month:'Mar'},
+  {ec:'682189',name:'เนตรชนก รอดอินทร์',         co:'PDE',grp:'วิชาชีพ',  startDate:'09/06/25',month:'May'},
+  {ec:'682190',name:'อาทิตย์ อุ้มชู',            co:'PDE',grp:'วิชาชีพ',  startDate:'14/07/25',month:'May'},
+  {ec:'692218',name:'ณัฐวิภา ใจเที่ยง',          co:'PCC',grp:'วิชาชีพ',  startDate:'09/03/26',month:'May'},
+  {ec:'692219',name:'มัซนีย์ ตาสะเมาะ',          co:'PSP',grp:'ปฏิบัติการ',startDate:'16/03/26',month:'May'},
+  {ec:'692220',name:'อภิรักษ์ ยินมะเริง',        co:'PCC',grp:'จัดการ',   startDate:'16/03/26',month:'May'},
+  {ec:'692221',name:'ปนัสญา พรหมขุนทอง',         co:'PSL',grp:'ปฏิบัติการ',startDate:'01/04/26',month:'May'},
+  {ec:'692222',name:'ภัณฑิรา จันสักรา',          co:'PSL',grp:'จัดการ',   startDate:'01/04/26',month:'May'},
+  {ec:'692223',name:'รัตน์ติพงษ์ วงศ์แก้วมูล',   co:'PSL',grp:'วิชาชีพ',  startDate:'01/04/26',month:'May'},
+  {ec:'692224',name:'วิชุดา พึ่งภูมิ',           co:'PSP',grp:'วิชาชีพ',  startDate:'01/04/26',month:'May'},
+  {ec:'692225',name:'จิรทีปต์ บัวจันทร์',        co:'PSP',grp:'วิชาชีพ',  startDate:'01/04/26',month:'May'},
+  {ec:'692226',name:'อรุณวรรณ เทียมศรี',         co:'PEM',grp:'วิชาชีพ',  startDate:'01/04/26',month:'May'},
+  {ec:'692227',name:'วีระสิทธิ์ สนิท',           co:'PEM',grp:'ปฏิบัติการ',startDate:'01/04/26',month:'May'},
+];
+
+// ===================== STATE =====================
+let currentPeriod = 'ALL';
+let currentCompany = 'ALL';
+const chartInstances = {};
+
+function destroyChart(id){if(chartInstances[id]){try{chartInstances[id].destroy();}catch(e){}delete chartInstances[id];}}
+function makeChart(id,config){destroyChart(id);const el=document.getElementById(id);if(!el)return;chartInstances[id]=new Chart(el,config);return chartInstances[id];}
+
+function getMonths(){return currentPeriod==='ALL'?MONTHS_ALL:[currentPeriod];}
+function getOTMonths(){return currentPeriod==='ALL'?MONTHS_OT:(MONTHS_OT.includes(currentPeriod)?[currentPeriod]:[]);}
+function getSalMonths(){return currentPeriod==='ALL'?['Jan','Feb','Mar','Apr']:((['Jan','Feb','Mar','Apr']).includes(currentPeriod)?[currentPeriod]:[]);}
+
+// ===================== FILTER =====================
+function onPeriodChange(val){
+  currentPeriod = val;
+  const lbl = val==='ALL'?'All Months (Jan–May 26)':val+' 2026';
+  document.getElementById('filterLabel').textContent = 'v7 · '+lbl;
+  const activeTab = document.querySelector('.nav-tab.active');
+  const tabId = activeTab ? activeTab.dataset.tab : null;
+  if(tabId) refreshTab(tabId);
+}
+
+function onCompanyChange(val){
+  currentCompany=val;
+  const label = val==='ALL'?'ทุกบริษัท':val;
+  document.getElementById('filterLabel').textContent = 'v7 · '+(currentPeriod==='ALL'?'All Months':currentPeriod)+' · '+label;
+  const activeTab = document.querySelector('.nav-tab.active');
+  const tabId = activeTab ? activeTab.dataset.tab : null;
+  if(tabId) refreshTab(tabId);
+}
+
+
+function refreshTab(tabId){
+  if(tabId==='hc'){buildHCCharts();buildHCFlowChart();updateNHTable();}
+  else if(tabId==='ot'){buildOTCharts();updateOTTable();}
+  else if(tabId==='salary'){buildSalaryCharts();}
+  else if(tabId==='resign'){buildResignCharts();updateResignTable();}
+  else if(tabId==='training'){buildTrainingCharts();updateTrainingTable();}
+}
+
+// ===================== NAVIGATION =====================
+function goTab(tabId){
+  document.querySelectorAll('.section-view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const view=document.getElementById('view-'+tabId);
+  const tab=document.querySelector('[data-tab="'+tabId+'"]');
+  if(view)view.classList.add('active');
+  if(tab)tab.classList.add('active');
+  initChartsForTab(tabId);
+}
+
+function initChartsForTab(tabId){
+  Chart.defaults.font.family="'Sarabun',sans-serif";
+  Chart.defaults.font.size=11;
+  setTimeout(()=>{
+    if(tabId==='hc'){buildHCCharts();buildHCFlowChart();updateNHTable();}
+    else if(tabId==='ot'){buildOTCharts();updateOTTable();}
+    else if(tabId==='salary'){buildSalaryCharts();}
+    else if(tabId==='resign'){buildResignCharts();updateResignTable();}
+    else if(tabId==='training'){buildTrainingCharts();updateTrainingTable();}
+    else if(tabId==='engage'){buildEngageCharts();}
+    else if(tabId==='edu'){buildEduCharts();buildEduMatrix();}
+    else if(tabId==='wfp'){buildWFPCharts();}
+  },50);
+}
+
+
+// ===================== HC CHARTS v7 (period + company aware) =====================
+function buildHCCharts(){
+  const d = getHCData();
+  const month = currentPeriod==='ALL'?'May':currentPeriod;
+  const coLabel = currentCompany==='ALL'?'ทุกบริษัท':currentCompany;
+
+  const badge = document.getElementById('hc-period-badge');
+  if(badge) badge.textContent = (currentPeriod==='ALL'?'Data Jan–May 2026':currentPeriod+' 2026')+' · '+coLabel;
+
+  // Update KPI
+  const kpiEl = document.getElementById('hc-kpi-total'); if(kpiEl) kpiEl.textContent=d.total.toLocaleString();
+  const chgEl = document.getElementById('hc-kpi-chg');
+  if(chgEl){
+    const janTotal = currentCompany==='ALL'?813:(HC_MONTHLY_CO['Jan'][currentCompany]?.total||0);
+    const diff = d.total - janTotal;
+    chgEl.textContent = (diff>=0?'▲ +':'▼ ')+diff+' จาก Jan';
+    chgEl.className = 'kpi-chg '+(diff>=0?'up':'dn');
+  }
+
+  // HC Trend chart (all months for selected company)
+  const trendMonths = ['Jan','Feb','Mar','Apr','May'];
+  const trendVals = trendMonths.map(m=>{
+    const md = HC_MONTHLY_CO[m]||{};
+    if(currentCompany==='ALL') return Object.values(md).reduce((s,co)=>s+co.total,0);
+    return (md[currentCompany]||{}).total||0;
+  });
+  const minVal = Math.max(0, Math.min(...trendVals)-20);
+  const maxVal = Math.max(...trendVals)+20;
+  makeChart('hc-monthly',{type:'line',data:{labels:trendMonths,datasets:[{label:'Headcount',data:trendVals,borderColor:'#0077B6',backgroundColor:'rgba(0,119,182,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#0077B6',pointBorderColor:'#fff',pointBorderWidth:2}]},options:{plugins:{legend:{display:false}},scales:{y:{min:minVal,max:maxVal},x:{grid:{display:false}}}}});
+
+  // Company breakdown (for selected month, all companies or highlight selected)
+  const coKeys = ['PEM','PSP','SBP','PDE','PCC','PCE','PSL','PPP','CMI'];
+  const coNames = {PEM:'PEM',PSP:'PSP',SBP:'SBP',PDE:'PDE',PCC:'PCC',PCE:'PCE',PSL:'PSL',PPP:'PPP',CMI:'CMI'};
+  const coColors = {PEM:'#0077B6',PSP:'#48BB78',SBP:'#F26522',PDE:'#ED64A6',PCC:'#9F7AEA',PCE:'#F6AD55',PSL:'#4FD1C5',PPP:'#FC8181',CMI:'#CBD5E0'};
+  const mData = HC_MONTHLY_CO[month]||{};
+  const coVals = coKeys.map(k=>(mData[k]||{}).total||0);
+  const coBGs = coKeys.map(k=> currentCompany==='ALL'||currentCompany===k ? coColors[k] : 'rgba(200,200,200,.3)');
+  makeChart('hc-company',{type:'bar',data:{labels:coKeys,datasets:[{label:'HC',data:coVals,backgroundColor:coBGs}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
+
+  // Employee Group
+  const grpOrder = ['Ops','Prof','Mgr','MgrPM','Exec'];
+  const grpLabels = ['ปฏิบัติการ','วิชาชีพ','จัดการ/ชำนาญการ','จัดการ/PM','บริหาร/Expert'];
+  const grpColors = ['#0077B6','#48BB78','#9F7AEA','#F26522','#E53E3E'];
+  const grpVals = grpOrder.map(k=>d.byGroup[k]||0);
+  makeChart('hc-group',{type:'bar',data:{labels:grpLabels,datasets:[{label:'HC',data:grpVals,backgroundColor:grpColors}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
+
+  // Employment Type
+  const typeMap = {Perm:'ประจำ-รายเดือน',ContM:'สัญญาจ้าง-รายเดือน',ContSp:'สัญญาจ้างพิเศษ',ContD:'สัญญาจ้าง-รายวัน',RetM:'หลังเกษียณ'};
+  const typeColors = {Perm:'#0077B6',ContM:'#F6AD55',ContSp:'#F26522',ContD:'#FC8181',RetM:'#CBD5E0'};
+  const typeData = Object.entries(d.byType||{}).filter(([,v])=>v>0).map(([k,v])=>({label:typeMap[k]||k,val:v,color:typeColors[k]||'#999'}));
+  makeChart('hc-emptype',{type:'doughnut',data:{labels:typeData.map(t=>t.label+' ('+t.val+')'),datasets:[{data:typeData.map(t=>t.val),backgroundColor:typeData.map(t=>t.color),borderWidth:3,borderColor:'#fff'}]},options:{cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9},padding:6}}}}});
+
+  // Age & Service (fixed data from May - doesn't change by company/month as age is static)
+  makeChart('hc-age',{type:'bar',data:{labels:['<25','25-29','30-34','35-39','40-44','45-49','50+'],datasets:[{label:'คน',data:[13,102,190,162,126,106,98],backgroundColor:['#4FD1C5','#68D391','#0077B6','#0077B6','#F6AD55','#F26522','#E53E3E']}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false}}}}});
+  makeChart('hc-service',{type:'bar',data:{labels:['<1ปี','1-3ปี','3-5ปี','5-10ปี','10-15ปี','15-20ปี','20+ปี'],datasets:[{data:[36,38,69,273,153,97,131],backgroundColor:['#FC8181','#F6AD55','#F6E05E','#68D391','#0077B6','#2B6CB0','#1A365D']}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false}}}}});
+
+  // Revenue Stream
+  const rsOrder = ['Power Dist & EM','Intelligent Grid','Renewable Energy','Digital & ESG','Precise','BCG'];
+  const rsColors2 = ['#0077B6','#48BB78','#F6AD55','#ED64A6','#9F7AEA','#4FD1C5'];
+  const rsMap2 = {PEM:'Power Dist & EM',PSP:'Intelligent Grid',SBP:'Renewable Energy',PDE:'Digital & ESG',PCC:'Precise',PCE:'Renewable Energy',PSL:'BCG',PPP:'Renewable Energy',CMI:'Intelligent Grid'};
+  const rsAgg = {};
+  for(const co of (currentCompany==='ALL'?coKeys:[currentCompany])){
+    const rs = rsMap2[co]||'อื่นๆ';
+    rsAgg[rs] = (rsAgg[rs]||0)+((mData[co]||{}).total||0);
+  }
+  const rsLabels = rsOrder.filter(r=>rsAgg[r]>0);
+  const rsVals2 = rsLabels.map(r=>rsAgg[r]);
+  const rsClrs = rsLabels.map(r=>rsColors2[rsOrder.indexOf(r)]);
+  makeChart('hc-rs',{type:'doughnut',data:{labels:rsLabels.map((r,i)=>r+' ('+rsVals2[i]+')'),datasets:[{data:rsVals2,backgroundColor:rsClrs,borderWidth:2,borderColor:'#fff'}]},options:{cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}}}});
+
+  // Location
+  const locAgg = {};
+  for(const co of (currentCompany==='ALL'?coKeys:[currentCompany])){
+    const locData = (mData[co]||{}).byLoc||{};
+    for(const [loc,cnt] of Object.entries(locData)) locAgg[loc]=(locAgg[loc]||0)+cnt;
+  }
+  const locSorted = Object.entries(locAgg).sort((a,b)=>b[1]-a[1]);
+  const locColors2 = ['#0077B6','#48BB78','#F26522','#9F7AEA','#4FD1C5'];
+  makeChart('hc-loc',{type:'bar',data:{labels:locSorted.map(([k])=>k),datasets:[{label:'HC',data:locSorted.map(([,v])=>v),backgroundColor:locColors2}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{display:false},beginAtZero:true}}}});
+
+  // Company summary table
+  const tb=document.getElementById('hc-company-tbl');
+  if(tb){
+    const rows = coKeys.map(code=>{
+      const co = COMPANIES.find(c=>c.code===code)||{name:code,rs:'—',color:'#999'};
+      const n = (mData[code]||{}).total||0;
+      const pct=(n/(d.total||1)*100).toFixed(1);
+      const scale=n>=200?'<span class="badge bg">Major</span>':n>=50?'<span class="badge bo">Mid</span>':n>0?'<span class="badge bgr">Small</span>':'<span class="badge" style="opacity:.4">—</span>';
+      const hlStyle=currentCompany===code?'background:#EBF8FF;':'';
+      return `<tr style="${hlStyle}"><td><b>${co.name||code}</b></td><td><span class="badge bb">${code}</span></td><td style="font-size:10px;color:#718096">${co.rs||'—'}</td><td style="text-align:right;font-weight:800">${n.toLocaleString()}</td><td style="text-align:right">${pct}%</td><td>${scale}</td></tr>`;
+    });
+    tb.innerHTML = rows.join('');
+  }
+}
+
+// ===================== OT CHARTS =====================
+function buildOTCharts(){
+  const months = getOTMonths();
+  const reqVals = months.map(m=>OT_DATA[m]?.requests||0);
+  const costVals = months.map(m=>((OT_DATA[m]?.cost_est||0)/1e6).toFixed(2));
+  const empVals  = months.map(m=>OT_DATA[m]?.unique_emp||0);
+
+  const badge = document.getElementById('ot-period-badge');
+  if(badge) badge.textContent = currentPeriod==='ALL'?'Data Jan–Apr 2026':(MONTHS_OT.includes(currentPeriod)?currentPeriod+' 2026':'ไม่มีข้อมูลเดือนนี้');
+
+  // Update KPIs
+  const totalReq = months.reduce((s,m)=>s+(OT_DATA[m]?.requests||0),0);
+  const totalCost = months.reduce((s,m)=>s+(OT_DATA[m]?.cost_est||0),0);
+  const el_total=document.getElementById('ot-kpi-total');
+  const el_cost=document.getElementById('ot-kpi-cost');
+  if(el_total) el_total.textContent=totalReq.toLocaleString();
+  if(el_cost)  el_cost.textContent=(totalCost/1e6).toFixed(2);
+
+  makeChart('ot-monthly',{type:'bar',data:{labels:months,datasets:[{label:'OT Requests',data:reqVals,backgroundColor:reqVals.map(v=>v>=1500?'#E53E3E':v>=1000?'#F6AD55':'#68D391'),yAxisID:'y'},{label:'Unique Emp',data:empVals,type:'line',borderColor:'#9F7AEA',backgroundColor:'transparent',borderWidth:2,pointRadius:5,yAxisID:'y1'}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'Requests'},grid:{display:false}},y1:{position:'right',beginAtZero:true,title:{display:true,text:'Emp'},grid:{display:false}}}}});
+  makeChart('ot-company',{type:'bar',data:{labels:OT_BY_COMPANY_YTD.map(c=>c.name),datasets:[{data:OT_BY_COMPANY_YTD.map(c=>c.n),backgroundColor:OT_BY_COMPANY_YTD.map(c=>c.color)}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{display:false}}}}});
+  makeChart('ot-group',{type:'doughnut',data:{labels:OT_BY_GROUP_YTD.map(g=>g.name+' ('+g.n+')'),datasets:[{data:OT_BY_GROUP_YTD.map(g=>g.n),backgroundColor:OT_BY_GROUP_YTD.map(g=>g.color),borderWidth:2,borderColor:'#fff'}]},options:{cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:5}}}}});
+  makeChart('ot-cost',{type:'bar',data:{labels:months,datasets:[{label:'Est. Cost (MB)',data:costVals,backgroundColor:'#F26522',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'ล้านบาท'},grid:{display:false}},x:{grid:{display:false}}}}});
+}
+
+function updateOTTable(){
+  const months = getOTMonths();
+  const tb = document.getElementById('ot-tbl'); if(!tb) return;
+  const badge = document.getElementById('ot-tbl-count');
+  if(badge) badge.textContent = months.length+' เดือน';
+  tb.innerHTML = months.length===0
+    ? '<tr><td colspan="6" style="text-align:center;padding:24px;color:#A0AEC0">ไม่มีข้อมูล OT เดือนนี้</td></tr>'
+    : months.map(m=>{
+        const d=OT_DATA[m];
+        return `<tr><td><span class="month-pill mp-${m.toLowerCase()}">${m}</span></td><td style="text-align:right;font-weight:800">${(d.requests).toLocaleString()}</td><td style="text-align:right">${d.unique_emp}</td><td style="text-align:right">${d.cost_est.toLocaleString()}</td><td style="text-align:right;font-weight:800">${(d.cost_est/1e6).toFixed(2)}</td><td style="font-size:10px">${d.top_co}</td></tr>`;
+      }).join('');
+}
+
+// ===================== SALARY CHARTS =====================
+function buildSalaryCharts(){
+  const months = getSalMonths();
+  const totalVals = months.map(m=>SALARY_DATA.totalBasic[SALARY_DATA.months.indexOf(m)]||0);
+  const avgVals   = months.map(m=>SALARY_DATA.avgBasic[SALARY_DATA.months.indexOf(m)]||0);
+
+  const badge = document.getElementById('sal-period-badge');
+  if(badge) badge.textContent = currentPeriod==='ALL'?'Data Jan–Apr 2026':((['Jan','Feb','Mar','Apr']).includes(currentPeriod)?currentPeriod+' 2026':'ไม่มีข้อมูลเดือนนี้');
+
+  if(months.length>0){
+    const lastIdx = SALARY_DATA.months.indexOf(months[months.length-1]);
+    const el_avg=document.getElementById('sal-kpi-avg'); if(el_avg) el_avg.textContent=(SALARY_DATA.avgBasic[lastIdx]||0).toLocaleString();
+    const el_tot=document.getElementById('sal-kpi-total'); if(el_tot) el_tot.textContent=(SALARY_DATA.totalBasic[lastIdx]||0).toFixed(2);
+    const el_cnt=document.getElementById('sal-kpi-count'); if(el_cnt) el_cnt.textContent=(SALARY_DATA.count[lastIdx]||0).toLocaleString();
+  }
+
+  makeChart('sal-trend',{type:'bar',data:{labels:months,datasets:[{label:'Total Basic (MB)',data:totalVals,backgroundColor:'#0077B6',borderRadius:4,yAxisID:'y'},{label:'Avg Basic (บาท)',data:avgVals,type:'line',borderColor:'#F26522',backgroundColor:'transparent',borderWidth:2,pointRadius:5,pointBackgroundColor:'#F26522',yAxisID:'y1'}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:false,min:28,title:{display:true,text:'MB'},grid:{display:false}},y1:{position:'right',min:35000,max:40000,title:{display:true,text:'บาท'},grid:{display:false}},x:{grid:{display:false}}}}});
+  makeChart('sal-rs',{type:'doughnut',data:{labels:SALARY_DATA.byRS_Apr.labels,datasets:[{data:SALARY_DATA.byRS_Apr.data,backgroundColor:['#0077B6','#48BB78','#9F7AEA','#F6AD55','#ED64A6','#4FD1C5'],borderWidth:2,borderColor:'#fff'}]},options:{cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}}}}});
+  makeChart('sal-loc',{type:'bar',data:{labels:SALARY_DATA.byLoc_Apr.labels,datasets:[{label:'Total Basic (MB)',data:SALARY_DATA.byLoc_Apr.data,backgroundColor:['#0077B6','#48BB78','#9F7AEA','#F6AD55','#4FD1C5']}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,title:{display:true,text:'ล้านบาท'},grid:{display:false}}}}});
+  makeChart('sal-dist',{type:'bar',data:{labels:SALARY_DATA.distLabels,datasets:[{label:'คน',data:SALARY_DATA.distData,backgroundColor:['#FC8181','#F6AD55','#0077B6','#48BB78','#9F7AEA','#E53E3E']}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'คน'}},x:{grid:{display:false}}}}});
+  makeChart('sal-group',{type:'bar',data:{labels:SALARY_DATA.byGroup_Apr.map(g=>g.name),datasets:[{label:'Avg Salary (บาท)',data:SALARY_DATA.byGroup_Apr.map(g=>g.avg),backgroundColor:SALARY_DATA.byGroup_Apr.map(g=>g.color),borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
+
+  const totalPayroll = SALARY_DATA.byGroup_Apr.reduce((s,g)=>s+g.total,0);
+  const tb=document.getElementById('sal-group-tbl');
+  if(tb) tb.innerHTML=SALARY_DATA.byGroup_Apr.map(g=>{
+    const pct=(g.total/totalPayroll*100).toFixed(1);
+    return `<tr><td><b>${g.name}</b></td><td style="text-align:right">${g.n.toLocaleString()}</td><td style="text-align:right;font-weight:800">${g.avg.toLocaleString()}</td><td style="text-align:right">${g.total.toFixed(2)}</td><td style="text-align:right">${pct}%</td></tr>`;
+  }).join('');
+}
+
+// ===================== RESIGN CHARTS =====================
+function buildResignCharts(){
+  const months = getMonths();
+  const rsnVals  = months.map(m=>RESIGN_DATA[m]||0);
+  const rateVals = months.map(m=>RATE_DATA[m]||0);
+
+  makeChart('rsn-monthly',{type:'bar',data:{labels:months,datasets:[{label:'Resign',data:rsnVals,backgroundColor:rsnVals.map(v=>v>=8?'#FC8181':v>=6?'#F6AD55':'#68D391'),yAxisID:'y',order:2},{label:'Rate %',data:rateVals,type:'line',borderColor:'#E53E3E',backgroundColor:'transparent',borderWidth:2.5,pointRadius:5,yAxisID:'y1',order:1}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'ราย'},grid:{display:false}},y1:{position:'right',beginAtZero:true,max:1.6,title:{display:true,text:'Rate %'},grid:{display:false}}}}});
+  makeChart('rsn-reason',{type:'doughnut',data:{labels:['ไม่ระบุสาเหตุ (18)','เลิกจ้าง/วินัย (11)','ได้งานใหม่ (3)','ดูแลครอบครัว (2)','ธุรกิจส่วนตัว (1)','ใกล้บ้าน (1)'],datasets:[{data:[18,11,3,2,1,1],backgroundColor:['#CBD5E0','#FC8181','#F6AD55','#63B3ED','#9F7AEA','#68D391'],borderWidth:3,borderColor:'#fff'}]},options:{cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}}}}});
+  const byReason={'ไม่ระบุ':[4,6,5,2,1],'เลิกจ้าง':[2,0,1,2,0],'เลิกจ้าง (วินัย)':[0,0,0,0,3],'ได้งานใหม่':[0,0,0,3,0],'ดูแลครอบครัว':[0,0,0,2,0],'ธุรกิจส่วนตัว':[0,0,0,1,0],'ใกล้บ้าน':[1,0,0,0,0]};
+  const allMonths=['Jan','Feb','Mar','Apr','May'];
+  const filteredByReason={};
+  for(const k in byReason) filteredByReason[k]=months.map(m=>byReason[k][allMonths.indexOf(m)]||0);
+  const rsColors=['#CBD5E0','#FC8181','#E53E3E','#F6AD55','#63B3ED','#9F7AEA','#68D391'];
+  makeChart('rsn-stacked',{type:'bar',data:{labels:months,datasets:Object.keys(filteredByReason).map((k,i)=>({label:k,data:filteredByReason[k],backgroundColor:rsColors[i]}))},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9},padding:4}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true}}}});
+  makeChart('rsn-rate',{type:'line',data:{labels:months,datasets:[{label:'Turnover Rate %',data:rateVals,borderColor:'#E53E3E',backgroundColor:'rgba(229,62,62,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:6,pointBackgroundColor:rateVals.map(v=>v>=1?'#E53E3E':v>=0.8?'#F6AD55':'#68D391'),pointBorderColor:'#fff',pointBorderWidth:2},{label:'Target (0.8%)',data:months.map(()=>0.8),borderColor:'#48BB78',borderDash:[5,5],borderWidth:1.5,pointRadius:0}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{min:0,max:1.5,title:{display:true,text:'Rate (%)'},grid:{color:'#F5F7FA'}},x:{grid:{display:false}}}}});
+
+  // Flow charts
+  makeChart('rsn-flow',{type:'bar',data:{labels:months,datasets:[
+    {label:'เข้าใหม่',data:months.map(m=>NEW_HIRE_DATA[m]?.new||0),backgroundColor:'rgba(72,187,120,.8)',borderRadius:4},
+    {label:'ออก (ทุกสาเหตุ)',data:months.map(m=>NEW_HIRE_DATA[m]?.sep||0),backgroundColor:'rgba(229,62,62,.7)',borderRadius:4},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:6,font:{size:10}}}},scales:{x:{stacked:false,grid:{display:false}},y:{beginAtZero:true,title:{display:true,text:'คน'}}}}});
+
+  const netVals2=months.map(m=>(NEW_HIRE_DATA[m]?.new||0)-(NEW_HIRE_DATA[m]?.sep||0));
+  makeChart('rsn-net',{type:'bar',data:{labels:months,datasets:[{label:'Net (เข้า-ออก)',data:netVals2,backgroundColor:netVals2.map(v=>v>=0?'rgba(72,187,120,.8)':'rgba(229,62,62,.75)'),borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{title:{display:true,text:'คน'},grid:{color:'#F5F7FA'}}}}});
+
+}
+
+function updateResignTable(){
+  const tb=document.getElementById('rsn-tbl'); if(!tb) return;
+  const filtered=currentPeriod==='ALL'?RESIGN_RECORDS:RESIGN_RECORDS.filter(r=>r.month===currentPeriod);
+  const monthClass={Jan:'mp-jan',Feb:'mp-feb',Mar:'mp-mar',Apr:'mp-apr',May:'mp-may'};
+  const reasonBadge={'ไม่ระบุสาเหตุ':'<span class="badge bgr">ไม่ระบุ</span>','เลิกจ้าง':'<span class="badge br">เลิกจ้าง</span>','เลิกจ้าง (วินัย)':'<span class="badge br">เลิกจ้าง (วินัย)</span>','ได้งานใหม่':'<span class="badge bo">ได้งานใหม่</span>','ดูแลครอบครัว':'<span class="badge bb">ดูแลครอบครัว</span>','ธุรกิจส่วนตัว':'<span class="badge bp">ธุรกิจส่วนตัว</span>','ใกล้บ้าน/งานถนัด':'<span class="badge bg">ใกล้บ้าน</span>'};
+  const hdr=document.getElementById('rsn-tbl-title');const cnt=document.getElementById('rsn-tbl-count');
+  const period=currentPeriod==='ALL'?'Jan–May 2026':currentPeriod+' 2026';
+  if(hdr) hdr.textContent='รายชื่อผู้ลาออก ('+period+')';
+  if(cnt) cnt.textContent=filtered.length+' รายการ';
+  tb.innerHTML=filtered.length===0
+    ?'<tr><td colspan="5" style="text-align:center;padding:28px;color:#A0AEC0">ไม่มีข้อมูลเดือนนี้</td></tr>'
+    :filtered.map(r=>`<tr><td style="font-size:10px;color:#718096">${r.doc}</td><td><b>${r.name}</b></td><td>${r.endDate}</td><td><span class="month-pill ${monthClass[r.month]||''}">${r.month}</span></td><td>${reasonBadge[r.reason]||r.reason}</td></tr>`).join('');
+
+  // Update KPIs
+  const kpiTotal=document.getElementById('rsn-kpi-total'); if(kpiTotal) kpiTotal.textContent=filtered.length;
+  const totalMonths=currentPeriod==='ALL'?5:1;
+  const avgRate=currentPeriod==='ALL'?(0.86+0.74+0.75+1.24+0.50)/5:RATE_DATA[currentPeriod]||0;
+  const kpiRate=document.getElementById('rsn-kpi-rate'); if(kpiRate) kpiRate.textContent=avgRate.toFixed(2);
+}
+
+// ===================== TRAINING CHARTS =====================
+function buildTrainingCharts(){
+  const months = getSalMonths(); // Jan-Apr
+  const idxMap={Jan:0,Feb:1,Mar:2,Apr:3};
+  const hrsVals  = months.map(m=>TRAINING_DATA.total_hrs[idxMap[m]]||0);
+  const recVals  = months.map(m=>TRAINING_DATA.records[idxMap[m]]||0);
+  const hcVals   = months.map(m=>TRAINING_DATA.hc[idxMap[m]]||1);
+  const ratioVals= months.map((m,i)=>+(hrsVals[i]/hcVals[i]).toFixed(2));
+  const intVals  = months.map(m=>TRAINING_DATA.internal[idxMap[m]]||0);
+  const extVals  = months.map(m=>TRAINING_DATA.external[idxMap[m]]||0);
+
+  const badge=document.getElementById('tr-period-badge');
+  if(badge) badge.textContent=currentPeriod==='ALL'?'Real Data Jan–Apr 2026':((['Jan','Feb','Mar','Apr']).includes(currentPeriod)?currentPeriod+' 2026':'ไม่มีข้อมูลเดือนนี้');
+
+  const totalHrs=hrsVals.reduce((a,b)=>a+b,0);
+  const el_hrs=document.getElementById('tr-kpi-hrs'); if(el_hrs) el_hrs.textContent=totalHrs.toFixed(0);
+  const totalHC=currentPeriod==='ALL'?797:(TRAINING_DATA.hc[idxMap[currentPeriod]]||797);
+  const el_hpe=document.getElementById('tr-kpi-hperemp'); if(el_hpe) el_hpe.textContent=(totalHrs/totalHC).toFixed(2);
+
+  makeChart('tr-monthly',{type:'bar',data:{labels:months,datasets:[{label:'Training Hours',data:hrsVals,backgroundColor:'#9F7AEA',borderRadius:4,yAxisID:'y'},{label:'Records',data:recVals,type:'line',borderColor:'#F26522',backgroundColor:'transparent',borderWidth:2,pointRadius:5,yAxisID:'y1'}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true,title:{display:true,text:'Hours'},grid:{display:false}},y1:{position:'right',beginAtZero:true,title:{display:true,text:'Records'},grid:{display:false}},x:{grid:{display:false}}}}});
+  makeChart('tr-group',{type:'bar',data:{labels:TRAINING_DATA.byGroup_ytd.map(g=>g.name),datasets:[{label:'YTD Hours',data:TRAINING_DATA.byGroup_ytd.map(g=>g.hrs),backgroundColor:TRAINING_DATA.byGroup_ytd.map(g=>g.color),borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
+  makeChart('tr-type',{type:'bar',data:{labels:months,datasets:[{label:'Internal',data:intVals,backgroundColor:'#0077B6',borderRadius:4},{label:'External',data:extVals,backgroundColor:'#F26522',borderRadius:4}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{x:{stacked:false,grid:{display:false}},y:{beginAtZero:true}}}});
+  makeChart('tr-ratio',{type:'line',data:{labels:months,datasets:[{label:'Hrs/คน',data:ratioVals,borderColor:'#9F7AEA',backgroundColor:'rgba(159,122,234,.12)',fill:true,tension:.3,borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#9F7AEA',pointBorderColor:'#fff',pointBorderWidth:2},{label:'Target (4h/คน)',data:months.map(()=>4),borderColor:'#48BB78',borderDash:[5,5],borderWidth:1.5,pointRadius:0}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{min:0,max:5,title:{display:true,text:'Hrs/คน'},grid:{color:'#F5F7FA'}},x:{grid:{display:false}}}}});
+}
+
+function updateTrainingTable(){
+  const months = getSalMonths();
+  const idxMap={Jan:0,Feb:1,Mar:2,Apr:3};
+  const tb=document.getElementById('tr-tbl'); if(!tb) return;
+  const badge=document.getElementById('tr-tbl-count'); if(badge) badge.textContent=months.length+' เดือน';
+  tb.innerHTML=months.length===0
+    ?'<tr><td colspan="7" style="text-align:center;padding:24px;color:#A0AEC0">ไม่มีข้อมูลเดือนนี้</td></tr>'
+    :months.map(m=>{
+        const i=idxMap[m];
+        const hrs=TRAINING_DATA.total_hrs[i];
+        const hc=TRAINING_DATA.hc[i];
+        return `<tr><td><span class="month-pill mp-${m.toLowerCase()}">${m}</span></td><td style="text-align:right">${TRAINING_DATA.records[i]}</td><td style="text-align:right">${TRAINING_DATA.unique_emp[i]}</td><td style="text-align:right">${TRAINING_DATA.courses[i]}</td><td style="text-align:right;font-weight:800">${hrs.toFixed(1)}</td><td style="text-align:right">${(hrs/hc).toFixed(2)}</td><td style="font-size:10px">${TRAINING_DATA.internal[i]} Int / ${TRAINING_DATA.external[i]} Ext</td></tr>`;
+      }).join('');
+}
+
+// ===================== ENGAGEMENT CHARTS =====================
+function buildEngageCharts(){
+  makeChart('eng-trend',{type:'line',data:{labels:['2566 (2023)','2567 (2024)','2568 (2025)'],datasets:[{label:'Overall Avg',data:[3.882,3.174,4.020],borderColor:'#48BB78',backgroundColor:'rgba(72,187,120,.15)',fill:true,tension:.3,borderWidth:3,pointRadius:7,pointBackgroundColor:['#48BB78','#E53E3E','#48BB78'],pointBorderColor:'#fff',pointBorderWidth:2}]},options:{plugins:{legend:{display:false}},scales:{y:{min:2.8,max:4.5,title:{display:true,text:'Score /5'}},x:{grid:{display:false}}}}});
+  makeChart('eng-radar',{type:'radar',data:{labels:ENG_DATA.dims,datasets:[{label:'2568',data:ENG_DATA.y68,borderColor:'#48BB78',backgroundColor:'rgba(72,187,120,.18)',borderWidth:2,pointRadius:4},{label:'2567',data:ENG_DATA.y67,borderColor:'#E53E3E',backgroundColor:'rgba(229,62,62,.08)',borderWidth:2,borderDash:[4,4],pointRadius:3},{label:'2566',data:ENG_DATA.y66,borderColor:'#0077B6',backgroundColor:'rgba(0,119,182,.06)',borderWidth:1.5,borderDash:[2,3],pointRadius:2}]},options:{scales:{r:{min:2.8,max:4.5,ticks:{stepSize:.3,font:{size:9}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8}}}}});
+
+  const tb=document.getElementById('eng-tbl'); if(!tb) return;
+  tb.innerHTML=ENG_DATA.dims.map((d,i)=>{
+    const a=ENG_DATA.y66[i],b=ENG_DATA.y67[i],c=ENG_DATA.y68[i];
+    const diff=(c-a).toFixed(2);
+    const arrow=diff>0?'▲ +'+diff:diff<0?'▼ '+Math.abs(diff):'—';
+    const cls=diff>0?'bg':diff<0?'br':'bgr';
+    const status=c>=4.2?'<span class="badge bg">Excellent</span>':c>=4.0?'<span class="badge bb">Good</span>':c>=3.8?'<span class="badge bo">Fair</span>':'<span class="badge br">Watch</span>';
+    const y67chg=b<a?'<span class="badge br">▼ '+(b-a).toFixed(2)+'</span>':'<span class="badge bg">▲ '+(b-a).toFixed(2)+'</span>';
+    return `<tr><td><b>${d}</b></td><td style="text-align:right">${a.toFixed(2)}</td><td style="text-align:right">${b.toFixed(2)} ${y67chg}</td><td style="text-align:right;font-weight:800">${c.toFixed(2)}</td><td><span class="badge ${cls}">${arrow}</span></td><td>${status}</td></tr>`;
+  }).join('');
+}
+
+
+// ===================== WORKFORCE PLANNING CHARTS =====================
+function buildWFPCharts(){
+  // Pyramid
+  const pyramid = document.getElementById('wfp-pyramid');
+  if(pyramid){
+    const grps = [
+      {label:'บริหาร/ผู้เชี่ยวชาญ',n:14,color:'#E53E3E',pct:1.8},
+      {label:'จัดการ/ชำนาญการ',n:80,color:'#9F7AEA',pct:10.0},
+      {label:'จัดการ/ชำนาญการ/PM',n:113,color:'#F26522',pct:14.2},
+      {label:'กลุ่ม วิชาชีพ',n:192,color:'#48BB78',pct:24.1},
+      {label:'กลุ่ม ปฏิบัติการ',n:398,color:'#0077B6',pct:49.9},
+    ];
+    const maxW=398;
+    pyramid.innerHTML = '<div style="padding:4px 0;">'+grps.map(g=>{
+      const barW=Math.round(g.n/maxW*100);
+      return `<div class="pyramid-row"><div style="width:160px;text-align:right;padding-right:10px;font-size:11px;font-weight:700;color:#2D3748;">${g.label}</div><div class="pyramid-bar-wrap" style="flex:1;"><div class="pyramid-bar" style="width:${barW}%;background:${g.color};">${g.n}</div></div><div style="width:50px;text-align:left;padding-left:8px;font-size:10px;color:#718096;">${g.pct}%</div></div>`;
+    }).join('')+'</div>';
+  }
+
+  // HC Trend by Company (Jan-May)
+  const trendMonths=['Jan','Feb','Mar','Apr','May'];
+  const coKeys=['PEM','PSP','SBP','PDE','PCC'];
+  const coColors={PEM:'#0077B6',PSP:'#48BB78',SBP:'#F26522',PDE:'#ED64A6',PCC:'#9F7AEA'};
+  const datasets = coKeys.map(co=>({
+    label:co,
+    data:trendMonths.map(m=>(HC_MONTHLY_CO[m]||{})[co]?.total||0),
+    borderColor:coColors[co],
+    backgroundColor:'transparent',
+    borderWidth:2,
+    pointRadius:4,
+    pointBackgroundColor:coColors[co],
+    tension:.2,
+  }));
+  makeChart('wfp-co-trend',{type:'line',data:{labels:trendMonths,datasets},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10}}}},scales:{y:{beginAtZero:false,min:0},x:{grid:{display:false}}}}});
+
+  // Company cards
+  const grid = document.getElementById('wfp-co-grid');
+  if(grid){
+    const grpOrder=['Ops','Prof','Mgr','MgrPM','Exec'];
+    const grpColors2={Ops:'#0077B6',Prof:'#48BB78',MgrPM:'#F26522',Mgr:'#9F7AEA',Exec:'#E53E3E'};
+    const grpLabels2={Ops:'Ops',Prof:'Prof',MgrPM:'Mgr/PM',Mgr:'Mgr',Exec:'Exec'};
+    const allCos = Object.keys(WFP_BU_DATA);
+    grid.innerHTML = allCos.map(co=>{
+      const wfp = WFP_BU_DATA[co];
+      const mTotal = HC_MONTHLY_CO['May'][co]?.total||0;
+      const mGroup = HC_MONTHLY_CO['May'][co]?.byGroup||{};
+      // Stacked bar for group mix
+      const stackSegs = grpOrder.filter(g=>mGroup[g]>0).map(g=>{
+        const pct=mTotal>0?Math.round(mGroup[g]/mTotal*100):0;
+        return pct>0?`<div class="stack-seg" style="width:${pct}%;background:${grpColors2[g]};" title="${grpLabels2[g]}: ${mGroup[g]}">${pct>=8?grpLabels2[g]:''}</div>`:'';
+      }).join('');
+      // BU rows (max 5)
+      const buRows = wfp.units.slice(0,5).map(u=>{
+        const buTotal=u.Ops+u.Prof+u.MgrPM+u.Mgr+u.Exec;
+        const buPct=mTotal>0?Math.round(buTotal/mTotal*100):0;
+        return `<div class="bu-row"><div class="bu-name" title="${u.n}">${u.n}</div><div class="bu-bar"><div class="bu-bar-inner" style="width:${buPct*3}%;max-width:100%;background:${wfp.color};"></div></div><div class="bu-cnt">${buTotal}</div></div>`;
+      }).join('');
+      const moreCount = wfp.units.length-5;
+      return `<div class="co-card">
+        <div class="co-card-head">
+          <div class="co-badge" style="background:${wfp.color};">${co}</div>
+          <div><div class="co-name">${COMPANIES.find(c=>c.code===co)?.name?.replace('บริษัท ','').replace(' จำกัด (สำนักงานใหญ่)','').replace(' จำกัด','').replace(' (มหาชน)','').trim()||co}</div><div class="co-sub">${wfp.rs} · ${wfp.units.length} BUs</div></div>
+        </div>
+        <div class="co-total">${mTotal}<span style="font-size:12px;font-weight:600;color:#718096;"> คน</span></div>
+        <div class="stack-bar" style="margin-bottom:10px;">${stackSegs}</div>
+        <div style="margin-bottom:4px;">${buRows}</div>
+        ${moreCount>0?`<div style="font-size:10px;color:#0077B6;text-align:center;margin-top:4px;font-weight:700;">+${moreCount} BUs เพิ่มเติม</div>`:''}
+      </div>`;
+    }).join('');
+  }
+
+  // Age distribution
+  makeChart('wfp-age',{type:'bar',data:{labels:['<25','25-29','30-34','35-39','40-44','45-49','50+'],datasets:[{label:'คน',data:[13,102,190,162,126,106,98],backgroundColor:['#4FD1C5','#68D391','#0077B6','#F6AD55','#F26522','#E53E3E','#C53030'],borderRadius:4}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>`${ctx.raw} คน (${(ctx.raw/797*100).toFixed(1)}%)`}}},scales:{y:{beginAtZero:true,title:{display:true,text:'คน'}},x:{grid:{display:false}}}}});
+
+  // Service year distribution
+  makeChart('wfp-svc',{type:'bar',data:{labels:['<1ปี','1-3ปี','3-5ปี','5-10ปี','10-15ปี','15-20ปี','20+ปี'],datasets:[{label:'คน',data:[36,38,69,273,153,97,131],backgroundColor:['#FC8181','#F6AD55','#F6E05E','#68D391','#0077B6','#2B6CB0','#1A365D'],borderRadius:4}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>`${ctx.raw} คน (${(ctx.raw/797*100).toFixed(1)}%)`}}},scales:{y:{beginAtZero:true,title:{display:true,text:'คน'}},x:{grid:{display:false}}}}});
+
+  // Group mix per company stacked
+  const cos5=['PEM','PSP','SBP','PDE','PCC','PCE','PSL','PPP','CMI'];
+  const grpSets=['Ops','Prof','Mgr','MgrPM','Exec'].map((g,i)=>({
+    label:['ปฏิบัติการ','วิชาชีพ','จัดการ/ชำนาญการ','จัดการ/PM','บริหาร'][i],
+    data:cos5.map(co=>(HC_MONTHLY_CO['May'][co]||{}).byGroup?.[g]||0),
+    backgroundColor:['#0077B6','#48BB78','#9F7AEA','#F26522','#E53E3E'][i],
+    borderRadius:3,
+  }));
+  makeChart('wfp-co-group',{type:'bar',data:{labels:cos5,datasets:grpSets},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true,title:{display:true,text:'HC'}}}}});
+}
+
+
+// ===================== HC FLOW CHART =====================
+function buildHCFlowChart(){
+  const months = ['Jan','Feb','Mar','Apr','May'];
+  const filtered = getMonths();
+  const newVals = filtered.map(m=>NEW_HIRE_DATA[m]?.new||0);
+  const sepVals = filtered.map(m=>NEW_HIRE_DATA[m]?.sep||0);
+  const netVals = filtered.map(m=>(NEW_HIRE_DATA[m]?.new||0)-(NEW_HIRE_DATA[m]?.sep||0));
+
+  // Update KPIs
+  const filteredMonths = currentPeriod==='ALL'?months:[currentPeriod];
+  const totalNew = filteredMonths.reduce((s,m)=>s+(NEW_HIRE_DATA[m]?.new||0),0);
+  const totalSep = filteredMonths.reduce((s,m)=>s+(NEW_HIRE_DATA[m]?.sep||0),0);
+  const totalNet = totalNew - totalSep;
+  const nhEl=document.getElementById('nh-kpi-total'); if(nhEl) nhEl.textContent=totalNew;
+  const sepEl=document.getElementById('sep-kpi-total'); if(sepEl) sepEl.textContent=totalSep;
+  const netEl=document.getElementById('net-kpi-total');
+  if(netEl){
+    netEl.textContent=(totalNet>=0?'+':'')+totalNet;
+    netEl.closest('.kpi-card').querySelector('.kpi-chg').className='kpi-chg '+(totalNet>=0?'up':'dn');
+  }
+
+  makeChart('hc-flow',{type:'bar',data:{labels:filtered,datasets:[
+    {label:'เข้าใหม่ (New Hire)',data:newVals,backgroundColor:'rgba(72,187,120,.85)',borderRadius:4,borderSkipped:false},
+    {label:'ออก (Separation)',data:sepVals.map(v=>-v),backgroundColor:'rgba(229,62,62,.75)',borderRadius:4,borderSkipped:false},
+    {label:'Net',data:netVals,type:'line',borderColor:'#9F7AEA',backgroundColor:'transparent',borderWidth:2.5,pointRadius:6,pointBackgroundColor:netVals.map(v=>v>=0?'#48BB78':'#E53E3E'),pointBorderColor:'#fff',pointBorderWidth:2,yAxisID:'y'},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10}}},tooltip:{callbacks:{label:(ctx)=>{const v=ctx.raw;return ctx.dataset.label+': '+(v<0?Math.abs(v):v);}}}},scales:{y:{title:{display:true,text:'คน'},grid:{color:'#F5F7FA'}},x:{grid:{display:false}}}}});
+}
+
+function updateNHTable(){
+  const tb=document.getElementById('nh-tbl'); if(!tb) return;
+  const filtered=currentPeriod==='ALL'?NEW_HIRE_RECORDS:NEW_HIRE_RECORDS.filter(r=>r.month===currentPeriod);
+  const monthClass={Jan:'mp-jan',Feb:'mp-feb',Mar:'mp-mar',Apr:'mp-apr',May:'mp-may'};
+  const grpColor={'บริหาร':'#E53E3E','จัดการ/PM':'#F26522','จัดการ':'#9F7AEA','วิชาชีพ':'#48BB78','ปฏิบัติการ':'#0077B6'};
+  const hdr=document.getElementById('nh-tbl-title');
+  const cnt=document.getElementById('nh-tbl-count');
+  const period=currentPeriod==='ALL'?'Jan–May 2026':currentPeriod+' 2026';
+  if(hdr) hdr.textContent='รายชื่อพนักงานเข้าใหม่ ('+period+')';
+  if(cnt) cnt.textContent=filtered.length+' รายการ';
+
+  // Filter by company if applicable
+  const coFiltered = currentCompany==='ALL'?filtered:filtered.filter(r=>r.co===currentCompany);
+  if(cnt) cnt.textContent=coFiltered.length+' รายการ';
+  if(hdr && currentCompany!=='ALL') hdr.textContent='พนักงานเข้าใหม่ — '+currentCompany+' ('+period+')';
+
+  tb.innerHTML=coFiltered.length===0
+    ?'<tr><td colspan="6" style="text-align:center;padding:24px;color:#A0AEC0">ไม่มีข้อมูลพนักงานเข้าใหม่</td></tr>'
+    :coFiltered.map(r=>{
+        const gc=grpColor[r.grp]||'#718096';
+        const badge=`<span class="badge" style="background:${gc}20;color:${gc};border:1px solid ${gc}40;">${r.grp}</span>`;
+        const isRehire=r.startDate==='Rehire';
+        return `<tr><td style="font-size:10px;font-weight:700;color:#0077B6">${r.ec}</td><td><b>${r.name}</b>${isRehire?'<span style="font-size:9px;color:#DD6B20;margin-left:4px;">🔄 Rehire</span>':''}</td><td><span class="badge bb">${r.co}</span></td><td>${badge}</td><td style="font-size:10px;color:#718096">${r.startDate}</td><td><span class="month-pill mp-${r.month.toLowerCase()}">${r.month}</span></td></tr>`;
+      }).join('');
+}
+
+// ===================== EDUCATION CHARTS =====================
+function buildEduCharts(){
+  makeChart('edu-level',{type:'bar',data:{labels:['ปริญญาตรี','ปวส.','ม.6','ปวช.','ไม่ระบุ','ปริญญาโท','ม.3','ประถม','ปริญญาเอก'],datasets:[{label:'คน',data:[339,133,119,75,48,39,33,10,1],backgroundColor:['#0077B6','#48BB78','#F6AD55','#ED64A6','#CBD5E0','#9F7AEA','#4FD1C5','#FC8181','#F26522']}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
+  makeChart('edu-major',{type:'bar',data:{labels:['วิศวกรรมไฟฟ้า','ไฟฟ้ากำลัง','ช่างไฟฟ้ากำลัง','การบัญชี','วิศวกรรมไฟฟ้ากำลัง','การจัดการ','คอมพิวเตอร์ธุรกิจ','วิศวกรรมอุตสาหการ','การตลาด','วิศวกรรมคอมพิวเตอร์'],datasets:[{label:'คน',data:[56,52,36,31,22,21,21,20,13,13],backgroundColor:['#0077B6','#0077B6','#48BB78','#F6AD55','#0077B6','#9F7AEA','#ED64A6','#4FD1C5','#F26522','#48BB78']}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
+  makeChart('edu-school',{type:'bar',data:{labels:['ว.ทค.ปทุมธานี','ม.เกษตรศาสตร์','ม.ราชมงคลธัญบุรี','พระจอมเกล้าเหนือ','ศนร./กศน.','แหลมทอง','พระจอมเกล้าธนบุรี','ม.นเรศวร','ม.สงขลา','ม.สุโขทัย'],datasets:[{label:'คน',data:[51,33,37,22,20,15,13,12,11,11],backgroundColor:'#0077B6'}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
+  makeChart('edu-pie',{type:'doughnut',data:{labels:['ปริญญา (379)','ปวส.+ปวช. (208)','ม.6 (119)','ม.3+ประถม (43)','ไม่ระบุ (48)'],datasets:[{data:[379,208,119,43,48],backgroundColor:['#0077B6','#48BB78','#F6AD55','#FC8181','#CBD5E0'],borderWidth:3,borderColor:'#fff'}]},options:{cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:8}}}}});
+}
+
+// ===================== EDUCATION MATRIX =====================
+const EDU_COLS = ['ปริญญาตรี','ปวส.','ม.6','ปวช.','ปริญญาโท','ม.3','ประถม','ปริญญาเอก','ไม่ระบุ'];
+const EG_ORDER = ['กลุ่ม ปฏิบัติการ','กลุ่ม วิชาชีพ','จัดการ/ชำนาญการ','จัดการ/ชำนาญการ/PM','บริหาร/ผู้เชี่ยวชาญ'];
+const EG_FULL  = {'จัดการ/ชำนาญการ/PM':'จัดการ/ชำนาญการ/ผู้จัดการโครงการ','บริหาร/ผู้เชี่ยวชาญ':'บริหาร/ผู้เชี่ยวชาญ / ผู้บริหารโครงการ'};
+
+function getCellColor(pct){
+  if(pct<=0) return '#F7FAFC';
+  if(pct<10) return 'rgba(0,119,182,0.10)';
+  if(pct<25) return 'rgba(0,119,182,0.22)';
+  if(pct<50) return 'rgba(0,119,182,0.42)';
+  return 'rgba(0,119,182,0.72)';
+}
+function getCellText(pct){ return pct>35?'#fff':'#1A2B4A'; }
+
+function buildEduMatrix(){
+  const tbody = document.getElementById('edu-matrix-body'); if(!tbody) return;
+  tbody.innerHTML = EG_ORDER.map(eg=>{
+    const egKey = EG_FULL[eg] || eg;
+    const egData = EDU_MATRIX[egKey] || EDU_MATRIX[eg] || {};
+    const total = EMP_GROUP.find(g=>g.name===eg||g.name.startsWith(eg.split('/')[0]))?.n || Object.values(egData).reduce((s,d)=>s+d.total,0);
+    const cells = EDU_COLS.map(edu=>{
+      const d = egData[edu];
+      const cnt = d?.total||0;
+      const pct = total>0?Math.round(cnt/total*100):0;
+      const bg = getCellColor(pct);
+      const fg = getCellText(pct);
+      if(cnt===0) return `<td class="matrix-cell empty"><div class="mc-val" style="color:#CBD5E0">—</div></td>`;
+      return `<td class="matrix-cell" style="background:${bg};color:${fg}" onclick="showDrill('${eg}','${edu}')" title="${eg} × ${edu}: ${cnt} คน (${pct}%)"><div class="mc-val">${cnt}</div><div class="mc-pct">${pct}%</div></td>`;
+    }).join('');
+    return `<tr><td style="background:#0077B6;color:#fff;font-size:11px;font-weight:800;padding:9px 12px;white-space:nowrap;">${eg.replace('กลุ่ม ','')}<span style="font-weight:400;font-size:9px;opacity:.8;margin-left:4px">(${total})</span></td>${cells}<td style="background:#1A2B4A;color:#fff;text-align:center;font-weight:900;font-size:13px;padding:9px 8px;">${total}</td></tr>`;
+  }).join('');
+
+  // Total row
+  const totalRow = EDU_COLS.map(edu=>{
+    const cnt = EG_ORDER.reduce((s,eg)=>{
+      const egKey=EG_FULL[eg]||eg;
+      const d=(EDU_MATRIX[egKey]||EDU_MATRIX[eg]||{})[edu];
+      return s+(d?.total||0);
+    },0);
+    return `<td style="background:#0A1628;color:#fff;text-align:center;font-weight:800;font-size:11px;padding:7px 6px;">${cnt}</td>`;
+  }).join('');
+  tbody.innerHTML+=`<tr><td style="background:#0A1628;color:#fff;font-size:11px;font-weight:800;padding:9px 12px;">รวมทั้งหมด</td>${totalRow}<td style="background:#0A1628;color:#F26522;text-align:center;font-weight:900;font-size:14px;padding:9px 8px;">797</td></tr>`;
+}
+
+function showDrill(eg, edu){
+  const egKey = EG_FULL[eg] || eg;
+  const d = (EDU_MATRIX[egKey]||EDU_MATRIX[eg]||{})[edu];
+  if(!d||d.total===0) return;
+  const panel = document.getElementById('drill-panel');
+  const title = document.getElementById('drill-title-text');
+  const bars  = document.getElementById('drill-bars');
+  if(!panel||!title||!bars) return;
+  title.textContent = `📊 สาขาวิชา — ${eg.replace('กลุ่ม ','')} × ${edu} (${d.total} คน)`;
+  const tops = d.top.length>0 ? d.top : [{n:'ไม่ระบุสาขา',c:d.total}];
+  const maxC = Math.max(...tops.map(t=>t.c),1);
+  bars.innerHTML = tops.map(t=>{
+    const w=Math.round(t.c/maxC*100);
+    return `<div class="drill-bar-row"><div class="drill-bar-label" title="${t.n}">${t.n}</div><div class="drill-bar-track"><div class="drill-bar-fill" style="width:${w}%"></div></div><div class="drill-bar-cnt">${t.c}</div></div>`;
+  }).join('');
+  panel.classList.add('open');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function closeDrill(){ document.getElementById('drill-panel')?.classList.remove('open'); }
+
+// ===================== PORTAL GRID =====================
+const MODULES = [
+  {id:'hc',icon:'👥',t:'Headcount Analytics',sub:'HC Trend · Company · Age · Gender · Service Year · Location',acc:'#0077B6',metrics:[['797','Total HC'],['May 26','Updated'],['762','ประจำ']],dataTag:'live'},
+  {id:'ot',icon:'⏱️',t:'OT Control Dashboard',sub:'Requests · Est. Cost · Employee Group · Company · Trend',acc:'#DD6B20',metrics:[['5,706','OT ใบ'],['2.67MB','Est.Cost'],['Jan–Apr','ข้อมูล']],dataTag:'live'},
+  {id:'salary',icon:'💰',t:'Salary & Compensation',sub:'Avg Rate · Total Payroll · By Group · RS · Location · Distribution',acc:'#E53E3E',metrics:[['37.4K','Avg Sal'],['30.3MB','Total Apr'],['Jan–Apr','ข้อมูล']],dataTag:'live'},
+  {id:'resign',icon:'📉',t:'Resign & Turnover',sub:'Monthly Trend · Reasons · 33 Records · Rate vs Target',acc:'#C53030',metrics:[['33','YTD ราย'],['0.82%','Avg Rate'],['9.8%','Annual']],dataTag:'live'},
+  {id:'training',icon:'📚',t:'Learning & Development',sub:'Training Hours · Courses · Internal/External · By Group',acc:'#9F7AEA',metrics:[['2,677','YTD Hrs'],['3.36','Hrs/คน'],['Jan–Apr','ข้อมูล']],dataTag:'live'},
+  {id:'engage',icon:'💚',t:'Engagement & Retention',sub:'Survey 7-Dim · 3-Year Trend · 2566–2568 · ข้อมูลจริง',acc:'#38A169',metrics:[['4.02','/5 Score'],['3ปี','Trend'],['2568','ล่าสุด']],dataTag:'live'},
+  {id:'edu',icon:'🎓',t:'Education & Analytics Matrix',sub:'Level · Major · School · Employee Group Matrix · Drill-Down',acc:'#0077B6',metrics:[['42.5%','ป.ตรี+'],['208','สายอาชีพ'],['Matrix','Drill-Down']],dataTag:'live'},
+  {id:'wfp',icon:'🏗️',t:'Workforce Planning',sub:'Structure Unit · BU Pyramid · Age · Service · Company Mix',acc:'#2B6CB0',metrics:[['34','BUs'],['9','บริษัท'],['May 26','Updated']],dataTag:'live'},
+  {id:'perf',icon:'⭐',t:'Performance & Potential',sub:'KPI · 9-Box · Bell Curve · HiPo — รอข้อมูล 2026',acc:'#F26522',metrics:[['—','KPI'],['—','9-Box'],['รอ','Data']],dataTag:'plan'},
+];
+function tint(hex,a=.13){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgba(${r},${g},${b},${a})`;}
+const grid=document.getElementById('portalGrid');
+if(grid){MODULES.forEach(m=>{
+  const c=document.createElement('div');c.className='portal-card';
+  c.style.setProperty('--accent',m.acc);c.style.setProperty('--accent-l',tint(m.acc));
+  const dt=m.dataTag==='live'?'<span class="data-tag dt-live">● LIVE</span>':'<span class="data-tag dt-plan">⬜ PENDING</span>';
+  c.innerHTML=`<div class="card-icon">${m.icon}</div>${dt}<div class="card-arrow">→</div><div class="card-title">${m.t}</div><div class="card-sub">${m.sub}</div><div class="card-metrics">${m.metrics.map(([v,l])=>`<div class="card-metric"><div class="m-val">${v}</div><div class="m-lbl">${l}</div></div>`).join('')}</div>`;
+  c.onclick=()=>{goTab(m.id);window.scrollTo({top:0,behavior:'smooth'});};
+  grid.appendChild(c);
+});}
+
+// ===================== INIT =====================
+let _initiated=false;
+function safeInit(){
+  if(_initiated)return;
+  _initiated=true;
+  setTimeout(()=>initChartsForTab('home'),150);
+}
+document.addEventListener('DOMContentLoaded',safeInit);
+window.addEventListener('load',()=>setTimeout(safeInit,200));
+</script>
+</body>
+</html>
