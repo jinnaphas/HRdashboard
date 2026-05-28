@@ -185,7 +185,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="logo-circle">PCC</div>
-  <div class="brand"><h1>Human Capital Analytics Portal</h1><p>Precise Corporation Group · v7.0 · Real Data Jan–May 2026</p></div>
+  <div class="brand"><h1>Human Capital Analytics Portal</h1><p>Precise Corporation Group · v7.1 · Real Data Jan–Jun 2026</p></div>
   <div class="topbar-right">
     <button class="btn-top" onclick="goTab('home')">🏠 Portal</button>
     <button class="btn-top" onclick="goTab('hc')">👥 Headcount</button>
@@ -249,12 +249,13 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
 <div class="filter-bar">
   <span class="filter-label">🔎 ช่วงเวลา</span>
   <select class="filter-select" id="periodFilter" onchange="onPeriodChange(this.value)">
-    <option value="ALL">ทั้งหมด (Jan–May 2026)</option>
+    <option value="ALL">ทั้งหมด (Jan–Jun 2026)</option>
     <option value="Jan">January 2026</option>
     <option value="Feb">February 2026</option>
     <option value="Mar">March 2026</option>
     <option value="Apr">April 2026</option>
     <option value="May">May 2026</option>
+    <option value="Jun">June 2026</option>
   </select>
   <span class="filter-label" style="margin-left:8px">👥 บริษัท</span>
   <select class="filter-select" id="companyFilter" onchange="onCompanyChange(this.value)">
@@ -265,7 +266,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
     <option value="PDE">PDE — พรีไซซ ดิจิตอล</option>
     <option value="PCC">PCC — พรีไซซ คอร์ป</option>
   </select>
-  <div class="last-update-sm"><div class="live-dot"></div><span id="filterLabel">v7 · All Months (Jan–May 26)</span></div>
+  <div class="last-update-sm"><div class="live-dot"></div><span id="filterLabel">v7.1 · All Months (Jan–Jun 26)</span></div>
 </div>
 
 <!-- NAV TABS -->
@@ -291,7 +292,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
 
 <!-- ========== HEADCOUNT ========== -->
 <div id="view-hc" class="section-view">
-  <div class="sec-title"><span style="font-size:18px">👥</span><h3>Headcount Analytics Dashboard</h3><span class="s-badge" id="hc-period-badge">Data Jan–May 2026</span></div>
+  <div class="sec-title"><span style="font-size:18px">👥</span><h3>Headcount Analytics Dashboard</h3><span class="s-badge" id="hc-period-badge">Data Jan–Jun 2026</span></div>
   <div class="kpi-row" id="hc-kpi-row">
     <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👥</div><div class="kpi-val" id="hc-kpi-total">797</div><div class="kpi-label">Total Headcount</div><span class="kpi-chg dn" id="hc-kpi-chg">▼ -16 จาก Jan</span></div>
     <div class="kpi-card" style="--kc:#D53F8C"><div class="kpi-icon">👩</div><div class="kpi-val">282<span class="kpi-unit">คน</span></div><div class="kpi-label">พนักงานหญิง (May)</div><span class="kpi-chg neu">35.4%</span></div>
@@ -301,7 +302,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
     <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">📍</div><div class="kpi-val">5<span class="kpi-unit">แห่ง</span></div><div class="kpi-label">Locations</div><span class="kpi-chg neu">ปทุมธานีสูงสุด</span></div>
   </div>
   <div class="charts-row">
-    <div class="chart-box"><h4>📈 Headcount Trend (Jan–May 2026)</h4><canvas id="hc-monthly"></canvas></div>
+    <div class="chart-box"><h4>📈 Headcount Trend (Jan–Jun 2026)</h4><canvas id="hc-monthly"></canvas></div>
     <div class="chart-box"><h4>🏢 Headcount by Company (May 2026)</h4><canvas id="hc-company"></canvas></div>
   </div>
   <div class="charts-row">
@@ -329,16 +330,16 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
   <!-- Movement Flow Section -->
   <div class="sec-title" style="margin-top:4px;"><span style="font-size:15px">🔄</span><h3 style="font-size:14px;">Workforce Movement — New Hire & Separation Flow</h3></div>
   <div class="charts-row">
-    <div class="chart-box" style="grid-column:1/-1"><h4>📊 HC Movement Flow: เข้าใหม่ vs ออก (Jan–May 2026) — จาก Database Comparison</h4><canvas id="hc-flow" style="max-height:200px"></canvas></div>
+    <div class="chart-box" style="grid-column:1/-1"><h4>📊 HC Movement Flow: เข้าใหม่ vs ออก (Jan–Jun 2026) — จาก Database Comparison</h4><canvas id="hc-flow" style="max-height:200px"></canvas></div>
   </div>
   <div class="kpi-row" style="margin-bottom:10px;">
-    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">🆕</div><div class="kpi-val" id="nh-kpi-total">32</div><div class="kpi-label">New Hires YTD (Jan–May)</div><span class="kpi-chg up">Jan–May 2026</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">🆕</div><div class="kpi-val" id="nh-kpi-total">40</div><div class="kpi-label">New Hires YTD (Jan–Jun)</div><span class="kpi-chg up">Jan–Jun 2026</span></div>
     <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">🚪</div><div class="kpi-val" id="sep-kpi-total">41</div><div class="kpi-label">Separations YTD</div><span class="kpi-chg dn">All Reasons</span></div>
     <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">📉</div><div class="kpi-val" id="net-kpi-total">-9</div><div class="kpi-label">Net HC Movement (Feb–May)</div><span class="kpi-chg dn">804+12-19=797</span></div>
     <div class="kpi-card" style="--kc:#F6AD55"><div class="kpi-icon">🔄</div><div class="kpi-val">78%</div><div class="kpi-label">New Hire ปฏิบัติการ+วิชาชีพ</div><span class="kpi-chg neu">25/32 คน</span></div>
   </div>
   <div class="dtbl-wrap">
-    <div class="dtbl-head"><h4 id="nh-tbl-title">รายชื่อพนักงานเข้าใหม่ (Jan–May 2026)</h4><span class="badge bg" id="nh-tbl-count">32 รายการ</span></div>
+    <div class="dtbl-head"><h4 id="nh-tbl-title">รายชื่อพนักงานเข้าใหม่ (Jan–Jun 2026)</h4><span class="badge bg" id="nh-tbl-count">40 รายการ</span></div>
     <table><thead><tr><th>รหัสพนักงาน</th><th>ชื่อ-สกุล</th><th>บริษัท</th><th>กลุ่มพนักงาน</th><th>วันเริ่มงาน</th><th>เดือน</th></tr></thead>
     <tbody id="nh-tbl"></tbody></table>
   </div>
@@ -613,7 +614,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
     <div class="chart-box"><h4>🔺 Workforce Pyramid — Employee Group (May 2026)</h4>
       <div id="wfp-pyramid" style="padding:8px 0;"></div>
     </div>
-    <div class="chart-box"><h4>📊 HC by Company — Trend (Jan–May 2026)</h4><canvas id="wfp-co-trend"></canvas></div>
+    <div class="chart-box"><h4>📊 HC by Company — Trend (Jan–Jun 2026)</h4><canvas id="wfp-co-trend"></canvas></div>
   </div>
 
   <!-- BU Structure by Company -->
@@ -656,7 +657,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
 </div>
 </div><!-- end main-area -->
 
-<div class="footer">PCC Group · HC Analytics Portal v7.0 · Real HR Data Jan–May 2026 · Employee Group / Type / Company · OT Cost Calc · Education Matrix Drill-Down · Built by Earth (HR Strategy & OD) · <span style="color:#F26522">Powered by Claude AI</span></div>
+<div class="footer">PCC Group · HC Analytics Portal v7.1 · Real HR Data Jan–Jun 2026 · Employee Group / Type / Company · OT Cost Calc · Education Matrix Drill-Down · Built by Earth (HR Strategy & OD) · <span style="color:#F26522">Powered by Claude AI</span></div>
 <script>
 
 // ===================== HC MONTHLY DATA (per company, per month) =====================
@@ -711,10 +712,19 @@ const HC_MONTHLY_CO = {
     SBP:{total:64,byGroup:{Ops:44,Prof:13,MgrPM:1,Mgr:5,Exec:1},byType:{Perm:47,ContM:4,ContSp:11,ContD:2},byLoc:{'จะนะ':63,'บางซื่อ':1},byGender:{M:45,F:19}},
     PDE:{total:45,byGroup:{Ops:0,Prof:28,MgrPM:7,Mgr:9,Exec:1},byType:{Perm:44,RetM:1},byLoc:{'ปากเกร็ด':42,'จะนะ':3},byGender:{M:25,F:20}},
     PCC:{total:43,byGroup:{Ops:10,Prof:9,MgrPM:14,Mgr:6,Exec:4},byType:{Perm:41,RetM:2},byLoc:{'บางซื่อ':38,'ศรีเทพ':3,'เมืองปทุมธานี':2},byGender:{M:13,F:30}},
-    PCE:{total:9,byGroup:{Ops:5,Prof:2,MgrPM:1,Mgr:1},byType:{Perm:8,ContM:1},byLoc:{'จะนะ':9},byGender:{M:6,F:3}},
-    PSL:{total:9,byGroup:{Ops:4,Prof:2,MgrPM:1,Mgr:2},byType:{Perm:6,ContM:3},byLoc:{'ศรีเทพ':9},byGender:{M:3,F:6}},
+    PCE:{total:9,byGroup:{Ops:5,Prof:2,MgrPM:1,Mgr:1,Exec:0},byType:{Perm:8,ContM:1},byLoc:{'จะนะ':9},byGender:{M:6,F:3}},
+    PSL:{total:9,byGroup:{Ops:4,Prof:2,MgrPM:1,Mgr:2,Exec:0},byType:{Perm:6,ContM:3},byLoc:{'ศรีเทพ':9},byGender:{M:3,F:6}},
     PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
-    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
+  },
+  Jun:{
+    PEM:{total:407,byGroup:{Ops:274,Prof:51,MgrPM:44,Mgr:35,Exec:3},byType:{Perm:400,ContD:7},byLoc:{'เมืองปทุมธานี':403,'ปากเกร็ด':4},byGender:{M:276,F:131}},
+    PSP:{total:211,byGroup:{Ops:57,Prof:86,MgrPM:43,Mgr:21,Exec:4},byType:{Perm:202,RetM:1,ContSp:2,ContM:6},byLoc:{'ปากเกร็ด':211},byGender:{M:140,F:71}},
+    SBP:{total:64,byGroup:{Ops:44,Prof:13,MgrPM:1,Mgr:5,Exec:1},byType:{Perm:47,ContM:4,ContD:2,ContSp:11},byLoc:{'จะนะ':63,'บางซื่อ':1},byGender:{M:45,F:19}},
+    PDE:{total:45,byGroup:{Ops:0,Prof:29,MgrPM:7,Mgr:8,Exec:1},byType:{RetM:1,Perm:44},byLoc:{'ปากเกร็ด':42,'จะนะ':3},byGender:{M:25,F:20}},
+    PCC:{total:43,byGroup:{Ops:10,Prof:9,MgrPM:14,Mgr:6,Exec:4},byType:{RetM:2,Perm:41},byLoc:{'บางซื่อ':38,'ศรีเทพ':3,'เมืองปทุมธานี':2},byGender:{M:13,F:30}},
+    PCE:{total:10,byGroup:{Ops:6,Prof:2,MgrPM:1,Mgr:1,Exec:0},byType:{Perm:8,ContM:2},byLoc:{'จะนะ':10},byGender:{M:6,F:4}},
+    PSL:{total:9,byGroup:{Ops:4,Prof:2,MgrPM:1,Mgr:2,Exec:0},byType:{ContM:3,Perm:6},byLoc:{'ศรีเทพ':9},byGender:{M:3,F:6}},
+    PPP:{total:5,byGroup:{Ops:1,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:5},byLoc:{'บางซื่อ':4,'จะนะ':1},byGender:{M:4,F:1}},
   },
 };
 
@@ -767,8 +777,8 @@ const WFP_BU_DATA = {
 
 // Helper: get HC data for current period+company filter
 function getHCData(){
-  const month = currentPeriod === 'ALL' ? 'May' : currentPeriod;
-  const mData = HC_MONTHLY_CO[month] || HC_MONTHLY_CO['May'];
+  const month = currentPeriod === 'ALL' ? 'Jun' : currentPeriod;
+  const mData = HC_MONTHLY_CO[month] || HC_MONTHLY_CO['Jun'];
   if(currentCompany === 'ALL'){
     // Aggregate all companies
     const agg = {total:0,byGroup:{Ops:0,Prof:0,MgrPM:0,Mgr:0,Exec:0},byType:{Perm:0,ContM:0,ContSp:0,ContD:0,RetM:0},byLoc:{},byGender:{M:0,F:0}};
@@ -787,48 +797,47 @@ function getHCData(){
 }
 
 // ===================== CORE DATA =====================
-const MONTHS_ALL = ['Jan','Feb','Mar','Apr','May'];
+const MONTHS_ALL = ['Jan','Feb','Mar','Apr','May','Jun'];
 const MONTHS_OT  = ['Jan','Feb','Mar','Apr'];
-const HC_DATA  = {Jan:813,Feb:809,Mar:804,Apr:804,May:797};
-const HC_ARR   = [813,809,804,804,797];
+const HC_DATA  = {Jan:813,Feb:809,Mar:804,Apr:804,May:793,Jun:794};
+const HC_ARR   = [813,809,804,804,793,794];
 const RESIGN_DATA = {Jan:7,Feb:6,Mar:6,Apr:10,May:4};
 const RESIGN_ARR  = [7,6,6,10,4];
 const RATE_DATA   = {Jan:0.86,Feb:0.74,Mar:0.75,Apr:1.24,May:0.50};
 const RATE_ARR    = [0.86,0.74,0.75,1.24,0.50];
 
 const COMPANIES = [
-  {code:'PEM',name:'พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง',n:406,rs:'Power Dist & EM',color:'#0077B6'},
+  {code:'PEM',name:'พรีไซซ อีเลคตริค แมนูแฟคเจอริ่ง',n:407,rs:'Power Dist & EM',color:'#0077B6'},
   {code:'PSP',name:'พรีไซซ ซิสเท็ม แอนด์ โปรเจ็ค',n:211,rs:'Intelligent Grid',color:'#48BB78'},
   {code:'SBP',name:'สงขลาไบโอเพาเวอร์',n:64,rs:'Renewable Energy',color:'#F26522'},
   {code:'PDE',name:'พรีไซซ ดิจิตอล อีโคโนมี่',n:45,rs:'Digital & ESG',color:'#ED64A6'},
   {code:'PCC',name:'พรีไซซ คอร์ปอเรชั่น',n:43,rs:'Precise',color:'#9F7AEA'},
-  {code:'PCE',name:'พรีไซซ คลีน เอ็นเนอร์จี',n:9,rs:'Renewable Energy',color:'#F6AD55'},
+  {code:'PCE',name:'พรีไซซ คลีน เอ็นเนอร์จี',n:10,rs:'Renewable Energy',color:'#F6AD55'},
   {code:'PSL',name:'พรีไซซ สมาร์ท ไลฟ์',n:9,rs:'BCG',color:'#4FD1C5'},
-  {code:'PPP',name:'พรีไซซ เพาเวอร์ โปรดิวเซอร์',n:6,rs:'Renewable Energy',color:'#FC8181'},
-  {code:'CMI',name:'โคเอลเม่ อินเตอร์เนชั่นแนล',n:4,rs:'Intelligent Grid',color:'#CBD5E0'},
+  {code:'PPP',name:'พรีไซซ เพาเวอร์ โปรดิวเซอร์',n:5,rs:'Renewable Energy',color:'#FC8181'},
 ];
 
 const EMP_GROUP = [
-  {name:'กลุ่ม ปฏิบัติการ',n:398,color:'#0077B6'},
+  {name:'กลุ่ม ปฏิบัติการ',n:396,color:'#0077B6'},
   {name:'กลุ่ม วิชาชีพ',n:192,color:'#48BB78'},
-  {name:'จัดการ/ชำนาญการ',n:80,color:'#9F7AEA'},
+  {name:'จัดการ/ชำนาญการ',n:79,color:'#9F7AEA'},
   {name:'จัดการ/ชำนาญการ/PM',n:113,color:'#F26522'},
   {name:'บริหาร/ผู้เชี่ยวชาญ',n:14,color:'#E53E3E'},
 ];
 
 const EMP_TYPE = [
-  {name:'ประจำ-รายเดือน',n:762,color:'#0077B6'},
-  {name:'สัญญาจ้างกำหนดระยะ-รายเดือน',n:14,color:'#F6AD55'},
+  {name:'ประจำ-รายเดือน',n:753,color:'#0077B6'},
+  {name:'สัญญาจ้างกำหนดระยะ-รายเดือน',n:15,color:'#F6AD55'},
   {name:'สัญญาจ้างพิเศษ-รายเดือน',n:13,color:'#F26522'},
   {name:'หลังเกษียน-รายเดือน',n:4,color:'#CBD5E0'},
-  {name:'สัญญาจ้าง-รายวัน',n:4,color:'#FC8181'},
+  {name:'สัญญาจ้าง-รายวัน',n:9,color:'#FC8181'},
 ];
 
 const LOCATION = [
-  {name:'เมืองปทุมธานี',n:408,color:'#0077B6'},
+  {name:'เมืองปทุมธานี',n:405,color:'#0077B6'},
   {name:'ปากเกร็ด',n:257,color:'#48BB78'},
-  {name:'จะนะ',n:76,color:'#F26522'},
-  {name:'บางซื่อ',n:44,color:'#9F7AEA'},
+  {name:'จะนะ',n:77,color:'#F26522'},
+  {name:'บางซื่อ',n:43,color:'#9F7AEA'},
   {name:'ศรีเทพ',n:12,color:'#4FD1C5'},
 ];
 
@@ -855,28 +864,27 @@ const OT_BY_GROUP_YTD = [
 ];
 
 const SALARY_DATA = {
-  months:['Jan','Feb','Mar','Apr'],
-  totalBasic:[31.96,30.43,30.33,30.27],
-  avgBasic:[37122,37429,37404,37368],
-  count:[861,813,811,810],
-  byRS_Apr:{
+  months:['Jan','Feb','Mar','Apr','May'],
+  totalBasic:[31.96,30.43,30.33,30.27,31.32],
+  avgBasic:[37122,37429,37404,37368,39495],
+  count:[861,813,811,810,793],
+  byRS_May:{
     labels:['Power Dist & EM','Intelligent Grid','Precise','Renewable','Digital & ESG','BCG'],
     data:[13.10,9.17,3.14,2.58,1.82,0.18],
   },
-  byLoc_Apr:{
+  byLoc_May:{
     labels:['เมืองปทุมธานี','ปากเกร็ด','บางซื่อ','จะนะ','ศรีเทพ'],
-    data:[12.98,11.22,3.62,2.11,0.34],
+    data:[13.36,11.71,3.70,2.21,0.35],
   },
-  byGroup_Apr:[
-    {name:'กลุ่ม ปฏิบัติการ', n:403, avg:24272, total:9.78, color:'#0077B6'},
-    {name:'กลุ่ม วิชาชีพ',    n:190, avg:32517, total:6.18, color:'#48BB78'},
-    {name:'จัดการ/ชำนาญการ', n:79,  avg:44797, total:3.54, color:'#9F7AEA'},
-    {name:'จัดการ/ชำนาญการ/PM',n:113,avg:67598, total:7.64, color:'#F26522'},
-    {name:'บริหาร/ผู้เชี่ยวชาญ',n:14,avg:204519,total:2.86, color:'#E53E3E'},
-    {name:'ไม่ระบุ',          n:11,  avg:24262, total:0.27, color:'#CBD5E0'},
+  byGroup_May:[
+    {name:'กลุ่ม ปฏิบัติการ', n:395, avg:25243, total:9.97, color:'#0077B6'},
+    {name:'กลุ่ม วิชาชีพ',    n:191, avg:34078, total:6.51, color:'#48BB78'},
+    {name:'จัดการ/ชำนาญการ', n:80,  avg:47004, total:3.76, color:'#9F7AEA'},
+    {name:'จัดการ/ชำนาญการ/PM',n:113,avg:71553, total:8.09, color:'#F26522'},
+    {name:'บริหาร/ผู้เชี่ยวชาญ',n:14,avg:214000,total:3.00, color:'#E53E3E'},
   ],
   distLabels:['< 15K','15-20K','20-30K','30-50K','50-80K','80K+'],
-  distData:[10,18,424,218,106,34],
+  distData:[9,13,384,236,109,42],
 };
 
 const ENG_DATA = {
@@ -985,6 +993,7 @@ const NEW_HIRE_DATA = {
   Mar:{new:4, sep:9,  byCo:{PSP:2,PCE:1,PEM:1},          byGrp:{วิชาชีพ:3,'จัดการ/PM':1}},
   Apr:{new:0, sep:0,  byCo:{},                            byGrp:{}},
   May:{new:12,sep:19, byCo:{PSL:3,PSP:3,PCC:2,PDE:2,PEM:2},byGrp:{วิชาชีพ:7,ปฏิบัติการ:3,จัดการ:2}},
+  Jun:{new:8, sep:7,  byCo:{PEM:5,PDE:1,PSP:1,PCE:1},         byGrp:{ปฏิบัติการ:6,วิชาชีพ:2}},
 };
 // Note: Apr sep=0 because Apr resignees (end date 30 Apr) appear in May diff (sep=19 includes Apr leavers)
 // Total YTD: New=32, Separated=41 (includes all reasons: resign, terminate, contract end)
@@ -1022,6 +1031,14 @@ const NEW_HIRE_RECORDS = [
   {ec:'692225',name:'จิรทีปต์ บัวจันทร์',        co:'PSP',grp:'วิชาชีพ',  startDate:'01/04/26',month:'May'},
   {ec:'692226',name:'อรุณวรรณ เทียมศรี',         co:'PEM',grp:'วิชาชีพ',  startDate:'01/04/26',month:'May'},
   {ec:'692227',name:'วีระสิทธิ์ สนิท',           co:'PEM',grp:'ปฏิบัติการ',startDate:'01/04/26',month:'May'},
+  {ec:'692228',name:'จุฬาลักษณ์ หนูไชยแก้ว',co:'PCE',grp:'ปฏิบัติการ',startDate:'04/05/26',month:'Jun'},
+  {ec:'692229',name:'อภิเดช เทพสนิท',          co:'PDE',grp:'วิชาชีพ',  startDate:'04/05/26',month:'Jun'},
+  {ec:'692230',name:'สราวุธ สมุหศิลป์',        co:'PEM',grp:'ปฏิบัติการ',startDate:'14/05/26',month:'Jun'},
+  {ec:'692231',name:'เกียรติวุฒิ รักสนิท',    co:'PEM',grp:'ปฏิบัติการ',startDate:'14/05/26',month:'Jun'},
+  {ec:'692232',name:'พันธมิตร ผลเหม',        co:'PEM',grp:'ปฏิบัติการ',startDate:'14/05/26',month:'Jun'},
+  {ec:'692233',name:'บุญสิทธิ์ บัวลอย',          co:'PEM',grp:'ปฏิบัติการ',startDate:'14/05/26',month:'Jun'},
+  {ec:'692234',name:'พีรพล พวงพันธ์',          co:'PEM',grp:'ปฏิบัติการ',startDate:'14/05/26',month:'Jun'},
+  {ec:'692235',name:'ภาสวิชญ์ แสงดี',          co:'PSP',grp:'วิชาชีพ',  startDate:'18/05/26',month:'Jun'},
 ];
 
 // ===================== STATE =====================
@@ -1034,13 +1051,13 @@ function makeChart(id,config){destroyChart(id);const el=document.getElementById(
 
 function getMonths(){return currentPeriod==='ALL'?MONTHS_ALL:[currentPeriod];}
 function getOTMonths(){return currentPeriod==='ALL'?MONTHS_OT:(MONTHS_OT.includes(currentPeriod)?[currentPeriod]:[]);}
-function getSalMonths(){return currentPeriod==='ALL'?['Jan','Feb','Mar','Apr']:((['Jan','Feb','Mar','Apr']).includes(currentPeriod)?[currentPeriod]:[]);}
+function getSalMonths(){return currentPeriod==='ALL'?['Jan','Feb','Mar','Apr','May']:((['Jan','Feb','Mar','Apr','May']).includes(currentPeriod)?[currentPeriod]:[]);}
 
 // ===================== FILTER =====================
 function onPeriodChange(val){
   currentPeriod = val;
-  const lbl = val==='ALL'?'All Months (Jan–May 26)':val+' 2026';
-  document.getElementById('filterLabel').textContent = 'v7 · '+lbl;
+  const lbl = val==='ALL'?'All Months (Jan–Jun 26)':val+' 2026';
+  document.getElementById('filterLabel').textContent = 'v7.1 · '+lbl;
   const activeTab = document.querySelector('.nav-tab.active');
   const tabId = activeTab ? activeTab.dataset.tab : null;
   if(tabId) refreshTab(tabId);
@@ -1049,7 +1066,7 @@ function onPeriodChange(val){
 function onCompanyChange(val){
   currentCompany=val;
   const label = val==='ALL'?'ทุกบริษัท':val;
-  document.getElementById('filterLabel').textContent = 'v7 · '+(currentPeriod==='ALL'?'All Months':currentPeriod)+' · '+label;
+  document.getElementById('filterLabel').textContent = 'v7.1 · '+(currentPeriod==='ALL'?'All Months':currentPeriod)+' · '+label;
   const activeTab = document.querySelector('.nav-tab.active');
   const tabId = activeTab ? activeTab.dataset.tab : null;
   if(tabId) refreshTab(tabId);
@@ -1094,11 +1111,11 @@ function initChartsForTab(tabId){
 // ===================== HC CHARTS v7 (period + company aware) =====================
 function buildHCCharts(){
   const d = getHCData();
-  const month = currentPeriod==='ALL'?'May':currentPeriod;
+  const month = currentPeriod==='ALL'?'Jun':currentPeriod;
   const coLabel = currentCompany==='ALL'?'ทุกบริษัท':currentCompany;
 
   const badge = document.getElementById('hc-period-badge');
-  if(badge) badge.textContent = (currentPeriod==='ALL'?'Data Jan–May 2026':currentPeriod+' 2026')+' · '+coLabel;
+  if(badge) badge.textContent = (currentPeriod==='ALL'?'Data Jan–Jun 2026':currentPeriod+' 2026')+' · '+coLabel;
 
   // Update KPI
   const kpiEl = document.getElementById('hc-kpi-total'); if(kpiEl) kpiEl.textContent=d.total.toLocaleString();
@@ -1111,7 +1128,7 @@ function buildHCCharts(){
   }
 
   // HC Trend chart (all months for selected company)
-  const trendMonths = ['Jan','Feb','Mar','Apr','May'];
+  const trendMonths = ['Jan','Feb','Mar','Apr','May','Jun'];
   const trendVals = trendMonths.map(m=>{
     const md = HC_MONTHLY_CO[m]||{};
     if(currentCompany==='ALL') return Object.values(md).reduce((s,co)=>s+co.total,0);
@@ -1240,14 +1257,14 @@ function buildSalaryCharts(){
   }
 
   makeChart('sal-trend',{type:'bar',data:{labels:months,datasets:[{label:'Total Basic (MB)',data:totalVals,backgroundColor:'#0077B6',borderRadius:4,yAxisID:'y'},{label:'Avg Basic (บาท)',data:avgVals,type:'line',borderColor:'#F26522',backgroundColor:'transparent',borderWidth:2,pointRadius:5,pointBackgroundColor:'#F26522',yAxisID:'y1'}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:false,min:28,title:{display:true,text:'MB'},grid:{display:false}},y1:{position:'right',min:35000,max:40000,title:{display:true,text:'บาท'},grid:{display:false}},x:{grid:{display:false}}}}});
-  makeChart('sal-rs',{type:'doughnut',data:{labels:SALARY_DATA.byRS_Apr.labels,datasets:[{data:SALARY_DATA.byRS_Apr.data,backgroundColor:['#0077B6','#48BB78','#9F7AEA','#F6AD55','#ED64A6','#4FD1C5'],borderWidth:2,borderColor:'#fff'}]},options:{cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}}}}});
-  makeChart('sal-loc',{type:'bar',data:{labels:SALARY_DATA.byLoc_Apr.labels,datasets:[{label:'Total Basic (MB)',data:SALARY_DATA.byLoc_Apr.data,backgroundColor:['#0077B6','#48BB78','#9F7AEA','#F6AD55','#4FD1C5']}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,title:{display:true,text:'ล้านบาท'},grid:{display:false}}}}});
+  makeChart('sal-rs',{type:'doughnut',data:{labels:SALARY_DATA.byRS_May.labels,datasets:[{data:SALARY_DATA.byRS_May.data,backgroundColor:['#0077B6','#48BB78','#9F7AEA','#F6AD55','#ED64A6','#4FD1C5'],borderWidth:2,borderColor:'#fff'}]},options:{cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}}}}});
+  makeChart('sal-loc',{type:'bar',data:{labels:SALARY_DATA.byLoc_May.labels,datasets:[{label:'Total Basic (MB)',data:SALARY_DATA.byLoc_May.data,backgroundColor:['#0077B6','#48BB78','#9F7AEA','#F6AD55','#4FD1C5']}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,title:{display:true,text:'ล้านบาท'},grid:{display:false}}}}});
   makeChart('sal-dist',{type:'bar',data:{labels:SALARY_DATA.distLabels,datasets:[{label:'คน',data:SALARY_DATA.distData,backgroundColor:['#FC8181','#F6AD55','#0077B6','#48BB78','#9F7AEA','#E53E3E']}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'คน'}},x:{grid:{display:false}}}}});
-  makeChart('sal-group',{type:'bar',data:{labels:SALARY_DATA.byGroup_Apr.map(g=>g.name),datasets:[{label:'Avg Salary (บาท)',data:SALARY_DATA.byGroup_Apr.map(g=>g.avg),backgroundColor:SALARY_DATA.byGroup_Apr.map(g=>g.color),borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
+  makeChart('sal-group',{type:'bar',data:{labels:SALARY_DATA.byGroup_May.map(g=>g.name),datasets:[{label:'Avg Salary (บาท)',data:SALARY_DATA.byGroup_May.map(g=>g.avg),backgroundColor:SALARY_DATA.byGroup_May.map(g=>g.color),borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{display:false}}}}});
 
-  const totalPayroll = SALARY_DATA.byGroup_Apr.reduce((s,g)=>s+g.total,0);
+  const totalPayroll = SALARY_DATA.byGroup_May.reduce((s,g)=>s+g.total,0);
   const tb=document.getElementById('sal-group-tbl');
-  if(tb) tb.innerHTML=SALARY_DATA.byGroup_Apr.map(g=>{
+  if(tb) tb.innerHTML=SALARY_DATA.byGroup_May.map(g=>{
     const pct=(g.total/totalPayroll*100).toFixed(1);
     return `<tr><td><b>${g.name}</b></td><td style="text-align:right">${g.n.toLocaleString()}</td><td style="text-align:right;font-weight:800">${g.avg.toLocaleString()}</td><td style="text-align:right">${g.total.toFixed(2)}</td><td style="text-align:right">${pct}%</td></tr>`;
   }).join('');
@@ -1283,7 +1300,7 @@ function buildResignCharts(){
 function updateResignTable(){
   const tb=document.getElementById('rsn-tbl'); if(!tb) return;
   const filtered=currentPeriod==='ALL'?RESIGN_RECORDS:RESIGN_RECORDS.filter(r=>r.month===currentPeriod);
-  const monthClass={Jan:'mp-jan',Feb:'mp-feb',Mar:'mp-mar',Apr:'mp-apr',May:'mp-may'};
+  const monthClass={Jan:'mp-jan',Feb:'mp-feb',Mar:'mp-mar',Apr:'mp-apr',May:'mp-may',Jun:'mp-jun'};
   const reasonBadge={'ไม่ระบุสาเหตุ':'<span class="badge bgr">ไม่ระบุ</span>','เลิกจ้าง':'<span class="badge br">เลิกจ้าง</span>','เลิกจ้าง (วินัย)':'<span class="badge br">เลิกจ้าง (วินัย)</span>','ได้งานใหม่':'<span class="badge bo">ได้งานใหม่</span>','ดูแลครอบครัว':'<span class="badge bb">ดูแลครอบครัว</span>','ธุรกิจส่วนตัว':'<span class="badge bp">ธุรกิจส่วนตัว</span>','ใกล้บ้าน/งานถนัด':'<span class="badge bg">ใกล้บ้าน</span>'};
   const hdr=document.getElementById('rsn-tbl-title');const cnt=document.getElementById('rsn-tbl-count');
   const period=currentPeriod==='ALL'?'Jan–May 2026':currentPeriod+' 2026';
@@ -1365,12 +1382,12 @@ function buildWFPCharts(){
   if(pyramid){
     const grps = [
       {label:'บริหาร/ผู้เชี่ยวชาญ',n:14,color:'#E53E3E',pct:1.8},
-      {label:'จัดการ/ชำนาญการ',n:80,color:'#9F7AEA',pct:10.0},
+      {label:'จัดการ/ชำนาญการ',n:79,color:'#9F7AEA',pct:9.9},
       {label:'จัดการ/ชำนาญการ/PM',n:113,color:'#F26522',pct:14.2},
-      {label:'กลุ่ม วิชาชีพ',n:192,color:'#48BB78',pct:24.1},
-      {label:'กลุ่ม ปฏิบัติการ',n:398,color:'#0077B6',pct:49.9},
+      {label:'กลุ่ม วิชาชีพ',n:192,color:'#48BB78',pct:24.2},
+      {label:'กลุ่ม ปฏิบัติการ',n:396,color:'#0077B6',pct:49.9},
     ];
-    const maxW=398;
+    const maxW=396;
     pyramid.innerHTML = '<div style="padding:4px 0;">'+grps.map(g=>{
       const barW=Math.round(g.n/maxW*100);
       return `<div class="pyramid-row"><div style="width:160px;text-align:right;padding-right:10px;font-size:11px;font-weight:700;color:#2D3748;">${g.label}</div><div class="pyramid-bar-wrap" style="flex:1;"><div class="pyramid-bar" style="width:${barW}%;background:${g.color};">${g.n}</div></div><div style="width:50px;text-align:left;padding-left:8px;font-size:10px;color:#718096;">${g.pct}%</div></div>`;
@@ -1378,7 +1395,7 @@ function buildWFPCharts(){
   }
 
   // HC Trend by Company (Jan-May)
-  const trendMonths=['Jan','Feb','Mar','Apr','May'];
+  const trendMonths=['Jan','Feb','Mar','Apr','May','Jun'];
   const coKeys=['PEM','PSP','SBP','PDE','PCC'];
   const coColors={PEM:'#0077B6',PSP:'#48BB78',SBP:'#F26522',PDE:'#ED64A6',PCC:'#9F7AEA'};
   const datasets = coKeys.map(co=>({
@@ -1402,8 +1419,8 @@ function buildWFPCharts(){
     const allCos = Object.keys(WFP_BU_DATA);
     grid.innerHTML = allCos.map(co=>{
       const wfp = WFP_BU_DATA[co];
-      const mTotal = HC_MONTHLY_CO['May'][co]?.total||0;
-      const mGroup = HC_MONTHLY_CO['May'][co]?.byGroup||{};
+      const mTotal = HC_MONTHLY_CO['Jun'][co]?.total||0;
+      const mGroup = HC_MONTHLY_CO['Jun'][co]?.byGroup||{};
       // Stacked bar for group mix
       const stackSegs = grpOrder.filter(g=>mGroup[g]>0).map(g=>{
         const pct=mTotal>0?Math.round(mGroup[g]/mTotal*100):0;
@@ -1430,16 +1447,16 @@ function buildWFPCharts(){
   }
 
   // Age distribution
-  makeChart('wfp-age',{type:'bar',data:{labels:['<25','25-29','30-34','35-39','40-44','45-49','50+'],datasets:[{label:'คน',data:[13,102,190,162,126,106,98],backgroundColor:['#4FD1C5','#68D391','#0077B6','#F6AD55','#F26522','#E53E3E','#C53030'],borderRadius:4}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>`${ctx.raw} คน (${(ctx.raw/797*100).toFixed(1)}%)`}}},scales:{y:{beginAtZero:true,title:{display:true,text:'คน'}},x:{grid:{display:false}}}}});
+  makeChart('wfp-age',{type:'bar',data:{labels:['<25','25-29','30-34','35-39','40-44','45-49','50+'],datasets:[{label:'คน',data:[16,104,191,158,122,106,97],backgroundColor:['#4FD1C5','#68D391','#0077B6','#F6AD55','#F26522','#E53E3E','#C53030'],borderRadius:4}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>`${ctx.raw} คน (${(ctx.raw/794*100).toFixed(1)}%)`}}},scales:{y:{beginAtZero:true,title:{display:true,text:'คน'}},x:{grid:{display:false}}}}});
 
   // Service year distribution
-  makeChart('wfp-svc',{type:'bar',data:{labels:['<1ปี','1-3ปี','3-5ปี','5-10ปี','10-15ปี','15-20ปี','20+ปี'],datasets:[{label:'คน',data:[36,38,69,273,153,97,131],backgroundColor:['#FC8181','#F6AD55','#F6E05E','#68D391','#0077B6','#2B6CB0','#1A365D'],borderRadius:4}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>`${ctx.raw} คน (${(ctx.raw/797*100).toFixed(1)}%)`}}},scales:{y:{beginAtZero:true,title:{display:true,text:'คน'}},x:{grid:{display:false}}}}});
+  makeChart('wfp-svc',{type:'bar',data:{labels:['<1ปี','1-3ปี','3-5ปี','5-10ปี','10-15ปี','15-20ปี','20+ปี'],datasets:[{label:'คน',data:[43,36,60,276,149,100,130],backgroundColor:['#FC8181','#F6AD55','#F6E05E','#68D391','#0077B6','#2B6CB0','#1A365D'],borderRadius:4}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>`${ctx.raw} คน (${(ctx.raw/794*100).toFixed(1)}%)`}}},scales:{y:{beginAtZero:true,title:{display:true,text:'คน'}},x:{grid:{display:false}}}}});
 
   // Group mix per company stacked
-  const cos5=['PEM','PSP','SBP','PDE','PCC','PCE','PSL','PPP','CMI'];
+  const cos5=['PEM','PSP','SBP','PDE','PCC','PCE','PSL','PPP'];
   const grpSets=['Ops','Prof','Mgr','MgrPM','Exec'].map((g,i)=>({
     label:['ปฏิบัติการ','วิชาชีพ','จัดการ/ชำนาญการ','จัดการ/PM','บริหาร'][i],
-    data:cos5.map(co=>(HC_MONTHLY_CO['May'][co]||{}).byGroup?.[g]||0),
+    data:cos5.map(co=>(HC_MONTHLY_CO['Jun'][co]||{}).byGroup?.[g]||0),
     backgroundColor:['#0077B6','#48BB78','#9F7AEA','#F26522','#E53E3E'][i],
     borderRadius:3,
   }));
@@ -1449,7 +1466,7 @@ function buildWFPCharts(){
 
 // ===================== HC FLOW CHART =====================
 function buildHCFlowChart(){
-  const months = ['Jan','Feb','Mar','Apr','May'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun'];
   const filtered = getMonths();
   const newVals = filtered.map(m=>NEW_HIRE_DATA[m]?.new||0);
   const sepVals = filtered.map(m=>NEW_HIRE_DATA[m]?.sep||0);
@@ -1478,11 +1495,11 @@ function buildHCFlowChart(){
 function updateNHTable(){
   const tb=document.getElementById('nh-tbl'); if(!tb) return;
   const filtered=currentPeriod==='ALL'?NEW_HIRE_RECORDS:NEW_HIRE_RECORDS.filter(r=>r.month===currentPeriod);
-  const monthClass={Jan:'mp-jan',Feb:'mp-feb',Mar:'mp-mar',Apr:'mp-apr',May:'mp-may'};
+  const monthClass={Jan:'mp-jan',Feb:'mp-feb',Mar:'mp-mar',Apr:'mp-apr',May:'mp-may',Jun:'mp-jun'};
   const grpColor={'บริหาร':'#E53E3E','จัดการ/PM':'#F26522','จัดการ':'#9F7AEA','วิชาชีพ':'#48BB78','ปฏิบัติการ':'#0077B6'};
   const hdr=document.getElementById('nh-tbl-title');
   const cnt=document.getElementById('nh-tbl-count');
-  const period=currentPeriod==='ALL'?'Jan–May 2026':currentPeriod+' 2026';
+  const period=currentPeriod==='ALL'?'Jan–Jun 2026':currentPeriod+' 2026';
   if(hdr) hdr.textContent='รายชื่อพนักงานเข้าใหม่ ('+period+')';
   if(cnt) cnt.textContent=filtered.length+' รายการ';
 
