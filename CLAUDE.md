@@ -4,9 +4,9 @@
 > Owner: Earth — HR Strategy & Agentic AI Transformation Lead.
 
 ## Project
-- **HC_Analytics_Portal_v7.html** — single-file HTML dashboard (no backend). ข้อมูลทั้งหมดฝังเป็น JavaScript constants ในไฟล์เดียว.
+- **index.html** — single-file HTML dashboard (no backend). ข้อมูลทั้งหมดฝังเป็น JavaScript constants ในไฟล์เดียว. (เดิมชื่อ `HC_Analytics_Portal_v7.html` — เปลี่ยนเป็น index.html เพื่อให้ URL สั้นและไม่ผูกกับเลขเวอร์ชัน; เวอร์ชันดูจาก badge ในหน้า/ git.)
 - Library: Chart.js 4.4.1 (CDN) + Sarabun font. ขนาด ~142 KB.
-- **Live:** https://jinnaphas.github.io/HRdashboard/HC_Analytics_Portal_v7.html (GitHub Pages)
+- **Live:** https://jinnaphas.github.io/HRdashboard/ (GitHub Pages, serve จาก `main`)
 - **Repo:** https://github.com/jinnaphas/HRdashboard (public)
 - **Tabs:** HC · OT · Salary · Resign · Training · WFP
 - Raw data source: รายเดือน `Employee Database <Month> 2026.xlsx` (Google Drive, ~220 columns).
