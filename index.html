@@ -222,7 +222,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
         <div class="bsc-stats">
           <div class="bsc-stat"><div class="v green">2,677</div><div class="l">ชม. (YTD)</div></div>
           <div class="bsc-stat"><div class="v acc">3.36</div><div class="l">ชม./คน</div></div>
-          <div class="bsc-stat"><div class="v">5,706</div><div class="l">OT ใบ</div></div>
+          <div class="bsc-stat"><div class="v">8,629</div><div class="l">OT ใบ</div></div>
         </div>
       </div>
       <div class="bsc-card">
@@ -240,7 +240,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
 <!-- ALERT STRIP -->
 <div class="alert-strip">
   <div class="alert-pill crit"><span class="alert-tag">ALERT</span>Apr Turnover Rate 1.24% เกิน Target — SBP สูงสุด</div>
-  <div class="alert-pill warn"><span class="alert-tag">WATCH</span>OT Mar สูงสุด 1,817 ใบ — PEM 72% ของทั้งหมด</div>
+  <div class="alert-pill crit"><span class="alert-tag">WATCH</span>OT May พุ่งสูงสุด 2,923 ใบ (+90% จาก Apr) — PEM 83% ของทั้งหมด</div>
   <div class="alert-pill good"><span class="alert-tag">GOOD</span>Engagement 2568 ฟื้นตัว 4.02/5 — สูงสุดใน 3 ปี</div>
   <div class="alert-pill info"><span class="alert-tag">INFO</span>Training YTD 2,677 ชม. · 3.36 ชม./คน Jan–Apr 2026</div>
 </div>
@@ -353,18 +353,18 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
 
 <!-- ========== OT ========== -->
 <div id="view-ot" class="section-view">
-  <div class="sec-title"><span style="font-size:18px">⏱️</span><h3>Overtime Control Dashboard</h3><span class="s-badge" id="ot-period-badge">Data Jan–Apr 2026</span></div>
+  <div class="sec-title"><span style="font-size:18px">⏱️</span><h3>Overtime Control Dashboard</h3><span class="s-badge" id="ot-period-badge">Data Jan–May 2026</span></div>
   <div class="kpi-row" id="ot-kpi-row">
-    <div class="kpi-card" style="--kc:#DD6B20"><div class="kpi-icon">📋</div><div class="kpi-val" id="ot-kpi-total">5,706</div><div class="kpi-label">OT Requests (Jan–Apr)</div><span class="kpi-chg neu">ทั้งหมด Approved</span></div>
+    <div class="kpi-card" style="--kc:#DD6B20"><div class="kpi-icon">📋</div><div class="kpi-val" id="ot-kpi-total">8,629</div><div class="kpi-label">OT Requests (Jan–May)</div><span class="kpi-chg neu">ทั้งหมด Approved</span></div>
     <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">👥</div><div class="kpi-val" id="ot-kpi-emp">907</div><div class="kpi-label">รวม Unique Emp (session)</div><span class="kpi-chg neu">Max 262 คน/เดือน</span></div>
-    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">💰</div><div class="kpi-val" id="ot-kpi-cost">2.67</div><div class="kpi-label">Est. OT Cost (MB, YTD)</div><span class="kpi-chg warn">Salary/30 × 3h × 1.5x</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">💰</div><div class="kpi-val" id="ot-kpi-cost">4.07</div><div class="kpi-label">Est. OT Cost (MB, YTD)</div><span class="kpi-chg warn">Salary/30 × 3h × 1.5x</span></div>
     <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">🏭</div><div class="kpi-val">1,817</div><div class="kpi-label">Peak OT — Mar 2026</div><span class="kpi-chg dn">PEM 72%</span></div>
-    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">📊</div><div class="kpi-val">1,427</div><div class="kpi-label">Avg OT/เดือน</div><span class="kpi-chg neu">Jan–Apr</span></div>
+    <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">📊</div><div class="kpi-val">1,726</div><div class="kpi-label">Avg OT/เดือน</div><span class="kpi-chg neu">Jan–May</span></div>
     <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👤</div><div class="kpi-val">238</div><div class="kpi-label">Max Unique Emp (Apr)</div><span class="kpi-chg neu">29.9% ของ HC</span></div>
   </div>
   <div class="charts-row">
-    <div class="chart-box"><h4>📊 OT Requests Trend (Jan–Apr 2026)</h4><canvas id="ot-monthly"></canvas></div>
-    <div class="chart-box"><h4>🏢 OT by Company (Jan–Apr YTD)</h4><canvas id="ot-company"></canvas></div>
+    <div class="chart-box"><h4>📊 OT Requests Trend (Jan–May 2026)</h4><canvas id="ot-monthly"></canvas></div>
+    <div class="chart-box"><h4>🏢 OT by Company (Jan–May YTD)</h4><canvas id="ot-company"></canvas></div>
   </div>
   <div class="charts-row">
     <div class="chart-box"><h4>👤 OT by Employee Group</h4><canvas id="ot-group"></canvas></div>
@@ -373,14 +373,14 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
   <div class="insight-box">
     <div class="insight-title">🤖 OT Control Insight</div>
     <ul>
-      <li class="warn">⚠️ OT พุ่งสูงสุดในเดือน Mar (1,817 ใบ) เพิ่มขึ้น 118% จาก Feb — ต้องวิเคราะห์ Production Load</li>
-      <li class="info">📊 กลุ่ม ปฏิบัติการ ทำ OT สูงสุด (~83%) สอดคล้องกับ Shop Floor Operations</li>
-      <li class="info">📊 PEM สูงสุดทุกเดือน (57-72% ของ OT ทั้งหมด) — สะท้อน Production Volume ที่สูง</li>
-      <li class="warn">⚠️ Est. OT Cost เฉลี่ย 0.67MB/เดือน — ควรมี OT Budget Tracking อย่างเป็นระบบ</li>
+      <li class="warn">🚨 OT พุ่งสูงสุดในเดือน May (2,923 ใบ) เพิ่มขึ้น 90% จาก Apr (1,538) — ต้องวิเคราะห์ Production Load ด่วน</li>
+      <li class="info">📊 กลุ่ม ปฏิบัติการ ทำ OT สูงสุด (~87% YTD) สอดคล้องกับ Shop Floor Operations</li>
+      <li class="info">📊 PEM สูงสุดทุกเดือน (57-83% ของ OT ทั้งหมด) — สะท้อน Production Volume ที่สูง</li>
+      <li class="warn">⚠️ Est. OT Cost YTD 4.07MB (เฉลี่ย 0.81MB/เดือน) — ควรมี OT Budget Tracking อย่างเป็นระบบ</li>
     </ul>
   </div>
   <div class="dtbl-wrap">
-    <div class="dtbl-head"><h4 id="ot-tbl-title">OT Summary by Month (Jan–Apr 2026)</h4><span class="badge bo" id="ot-tbl-count">4 เดือน</span></div>
+    <div class="dtbl-head"><h4 id="ot-tbl-title">OT Summary by Month (Jan–May 2026)</h4><span class="badge bo" id="ot-tbl-count">5 เดือน</span></div>
     <table><thead><tr><th>เดือน</th><th style="text-align:right">OT Requests</th><th style="text-align:right">Unique Emp</th><th style="text-align:right">Est. Cost (บาท)</th><th style="text-align:right">Est. Cost (MB)</th><th>Peak Company</th></tr></thead>
     <tbody id="ot-tbl"></tbody></table>
   </div>
@@ -798,7 +798,7 @@ function getHCData(){
 
 // ===================== CORE DATA =====================
 const MONTHS_ALL = ['Jan','Feb','Mar','Apr','May','Jun'];
-const MONTHS_OT  = ['Jan','Feb','Mar','Apr'];
+const MONTHS_OT  = ['Jan','Feb','Mar','Apr','May'];
 const HC_DATA  = {Jan:813,Feb:809,Mar:804,Apr:804,May:793,Jun:794};
 const HC_ARR   = [813,809,804,804,793,794];
 const RESIGN_DATA = {Jan:7,Feb:6,Mar:6,Apr:10,May:4};
@@ -846,21 +846,22 @@ const OT_DATA = {
   Feb:{requests:831, unique_emp:161,cost_est:397048,top_co:'PEM (467)'},
   Mar:{requests:1817,unique_emp:262,cost_est:857923,top_co:'PEM (1308)'},
   Apr:{requests:1538,unique_emp:238,cost_est:711809,top_co:'PEM (1165)'},
+  May:{requests:2923,unique_emp:299,cost_est:1393974,top_co:'PEM (2415)'},
 };
 const OT_BY_COMPANY_YTD = [
-  {name:'PEM',n:3816,color:'#0077B6'},
-  {name:'PSP',n:705,color:'#48BB78'},
-  {name:'SBP',n:646,color:'#F26522'},
-  {name:'PCC',n:314,color:'#9F7AEA'},
-  {name:'PCE+PPP',n:57,color:'#4FD1C5'},
-  {name:'อื่นๆ',n:91,color:'#CBD5E0'},
+  {name:'PEM',n:6231,color:'#0077B6'},
+  {name:'PSP',n:1026,color:'#48BB78'},
+  {name:'SBP',n:723,color:'#F26522'},
+  {name:'PCC',n:385,color:'#9F7AEA'},
+  {name:'PCE+PPP',n:83,color:'#4FD1C5'},
+  {name:'อื่นๆ',n:104,color:'#CBD5E0'},
 ];
 const OT_BY_GROUP_YTD = [
-  {name:'กลุ่ม ปฏิบัติการ',n:4869,color:'#0077B6'},
-  {name:'กลุ่ม วิชาชีพ',n:613,color:'#48BB78'},
-  {name:'จัดการ/ชำนาญการ',n:129,color:'#F26522'},
+  {name:'กลุ่ม ปฏิบัติการ',n:7516,color:'#0077B6'},
+  {name:'กลุ่ม วิชาชีพ',n:827,color:'#48BB78'},
+  {name:'จัดการ/ชำนาญการ',n:187,color:'#F26522'},
   {name:'จัดการ/ชำนาญการ/PM',n:4,color:'#9F7AEA'},
-  {name:'ไม่ระบุ',n:91,color:'#CBD5E0'},
+  {name:'ไม่ระบุ',n:95,color:'#CBD5E0'},
 ];
 
 const SALARY_DATA = {
@@ -1211,7 +1212,7 @@ function buildOTCharts(){
   const empVals  = months.map(m=>OT_DATA[m]?.unique_emp||0);
 
   const badge = document.getElementById('ot-period-badge');
-  if(badge) badge.textContent = currentPeriod==='ALL'?'Data Jan–Apr 2026':(MONTHS_OT.includes(currentPeriod)?currentPeriod+' 2026':'ไม่มีข้อมูลเดือนนี้');
+  if(badge) badge.textContent = currentPeriod==='ALL'?'Data Jan–May 2026':(MONTHS_OT.includes(currentPeriod)?currentPeriod+' 2026':'ไม่มีข้อมูลเดือนนี้');
 
   // Update KPIs
   const totalReq = months.reduce((s,m)=>s+(OT_DATA[m]?.requests||0),0);
@@ -1593,7 +1594,7 @@ function closeDrill(){ document.getElementById('drill-panel')?.classList.remove(
 // ===================== PORTAL GRID =====================
 const MODULES = [
   {id:'hc',icon:'👥',t:'Headcount Analytics',sub:'HC Trend · Company · Age · Gender · Service Year · Location',acc:'#0077B6',metrics:[['797','Total HC'],['May 26','Updated'],['762','ประจำ']],dataTag:'live'},
-  {id:'ot',icon:'⏱️',t:'OT Control Dashboard',sub:'Requests · Est. Cost · Employee Group · Company · Trend',acc:'#DD6B20',metrics:[['5,706','OT ใบ'],['2.67MB','Est.Cost'],['Jan–Apr','ข้อมูล']],dataTag:'live'},
+  {id:'ot',icon:'⏱️',t:'OT Control Dashboard',sub:'Requests · Est. Cost · Employee Group · Company · Trend',acc:'#DD6B20',metrics:[['8,629','OT ใบ'],['4.07MB','Est.Cost'],['Jan–May','ข้อมูล']],dataTag:'live'},
   {id:'salary',icon:'💰',t:'Salary & Compensation',sub:'Avg Rate · Total Payroll · By Group · RS · Location · Distribution',acc:'#E53E3E',metrics:[['37.4K','Avg Sal'],['30.3MB','Total Apr'],['Jan–Apr','ข้อมูล']],dataTag:'live'},
   {id:'resign',icon:'📉',t:'Resign & Turnover',sub:'Monthly Trend · Reasons · 33 Records · Rate vs Target',acc:'#C53030',metrics:[['33','YTD ราย'],['0.82%','Avg Rate'],['9.8%','Annual']],dataTag:'live'},
   {id:'training',icon:'📚',t:'Learning & Development',sub:'Training Hours · Courses · Internal/External · By Group',acc:'#9F7AEA',metrics:[['2,677','YTD Hrs'],['3.36','Hrs/คน'],['Jan–Apr','ข้อมูล']],dataTag:'live'},
