@@ -19,11 +19,11 @@
 | Resign | Jun 2026 (Jun = 4 ราย, ไม่ระบุสาเหตุ; YTD 37) |
 | OT | Jun 2026 (May พีค 2,923 ใบ, Jun 2,373; YTD 11,002 / ~5.16 MB est.) |
 | Training | Jun 2026 — May/Jun จากรายงานอบรม; e-learning ประจำปี = 0 ชม. จึงนับชั่วโมงจริงไม่ inflate (records/internal นับรวม e-learning ตามฟอร์แมตเดิม) |
-| WFP | ⚠️ ยังเป็น snapshot เก่า (`WFP_BU_DATA` รวม CMI ≈ 796–800) — ยังไม่ได้ refresh เป็น Jun (ไม่มีไฟล์ source) |
+| WFP | ⚠️ ยังเป็น snapshot เก่า (`WFP_BU_DATA` ≈ 796, ลบ CMI ออกแล้ว) — ยังไม่ได้ refresh เป็น Jun (ไม่มีไฟล์ source) |
 
 > OT cost = est. จากสูตรในโค้ด `basic/30/8 × 3h × 1.5x` ต่อใบ (ไฟล์ OT มีแค่ doc/วันที่/ชื่อ/สถานะ ไม่มียอดเงินจริง).
 
-HC monthly total: Jan 813 · Feb 809 · Mar 804 · Apr 804 · May 793 · Jun 794.
+HC monthly total (ex-CMI): Jan 809 · Feb 805 · Mar 800 · Apr 800 · May 793 · Jun 794. (Jan–Apr restate ตัด CMI 4 คน/เดือนออกแล้ว — CMI ออกจากกลุ่ม พ.ค. 2569)
 
 ## Companies & Revenue Stream (RS) — verified against raw Jun 2026 data
 ค่า RS ด้านล่างตรวจสอบกับข้อมูลดิบคอลัมน์ "ชื่อหน่วยงาน (ระดับ 1)" (col 125) ครบทั้ง 794 คน
@@ -39,7 +39,7 @@ HC monthly total: Jan 813 · Feb 809 · Mar 804 · Apr 804 · May 793 · Jun 794
 | PSL | พรีไซซ สมาร์ท ไลฟ์ | 9 | Bio-Circular-Green Economy (BCG) |
 | PPP | พรีไซซ เพาเวอร์ โปรดิวเซอร์ | 5 | Renewable Energy |
 
-> CMI ออกจากกลุ่ม พ.ค. 2569 — ไม่มีใน May/Jun snapshot แล้ว.
+> CMI ออกจากกลุ่ม พ.ค. 2569 — ลบออกจาก dashboard ทุกจุดแล้ว (HC_MONTHLY_CO Jan–Apr, WFP_BU_DATA, coKeys/rsMap2); Jan–Apr restate เป็น ex-CMI.
 
 ## Employee Group (EG) — ลำดับการแสดงผลที่ถูกต้อง
 Ops (กลุ่ม ปฏิบัติการ) → Prof (กลุ่ม วิชาชีพ) → Mgr (จัดการ/ชำนาญการ) → MgrPM (จัดการ/ชำนาญการ/PM) → Exec (บริหาร/ผู้เชี่ยวชาญ)

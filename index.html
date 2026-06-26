@@ -294,7 +294,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
 <div id="view-hc" class="section-view">
   <div class="sec-title"><span style="font-size:18px">👥</span><h3>Headcount Analytics Dashboard</h3><span class="s-badge" id="hc-period-badge">Data Jan–Jun 2026</span></div>
   <div class="kpi-row" id="hc-kpi-row">
-    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👥</div><div class="kpi-val" id="hc-kpi-total">794</div><div class="kpi-label">Total Headcount</div><span class="kpi-chg dn" id="hc-kpi-chg">▼ -19 จาก Jan</span></div>
+    <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👥</div><div class="kpi-val" id="hc-kpi-total">794</div><div class="kpi-label">Total Headcount</div><span class="kpi-chg dn" id="hc-kpi-chg">▼ -15 จาก Jan</span></div>
     <div class="kpi-card" style="--kc:#D53F8C"><div class="kpi-icon">👩</div><div class="kpi-val">282<span class="kpi-unit">คน</span></div><div class="kpi-label">พนักงานหญิง (Jun)</div><span class="kpi-chg neu">35.5%</span></div>
     <div class="kpi-card" style="--kc:#0077B6"><div class="kpi-icon">👨</div><div class="kpi-val">512<span class="kpi-unit">คน</span></div><div class="kpi-label">พนักงานชาย (Jun)</div><span class="kpi-chg neu">64.5%</span></div>
     <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">🏢</div><div class="kpi-val">753<span class="kpi-unit">คน</span></div><div class="kpi-label">พนักงานประจำ (Jun)</div><span class="kpi-chg up">94.8%</span></div>
@@ -320,7 +320,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
   <div class="insight-box">
     <div class="insight-title">🤖 Headcount Analytics Insight</div>
     <ul>
-      <li class="warn">⚠️ HC ลดลง 19 คนจาก Jan (813 → 794) — Turnover > New Hire สุทธิ ต้องเร่ง Recruitment</li>
+      <li class="warn">⚠️ HC ลดลง 15 คนจาก Jan (809 → 794) — Turnover > New Hire สุทธิ ต้องเร่ง Recruitment</li>
       <li class="info">📊 กลุ่ม ปฏิบัติการ 396 คน (49.9%) เป็น Core Workforce — ส่วนใหญ่อยู่ที่ PEM และ SBP</li>
       <li class="good">✅ พนักงานประจำ 753 คน (94.8%) สะท้อน Workforce Stability ที่ดี</li>
       <li class="info">📊 Service Year 10+ ปี มี 381 คน (47.8%) — Experienced Workforce สูง ต้อง Plan Succession</li>
@@ -597,7 +597,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
 
 <!-- ========== WORKFORCE PLANNING ========== -->
 <div id="view-wfp" class="section-view">
-  <div class="sec-title"><span style="font-size:18px">🏗️</span><h3>Workforce Planning Dashboard</h3><span class="s-badge">Structure Unit · May 2026 · 797 คน</span></div>
+  <div class="sec-title"><span style="font-size:18px">🏗️</span><h3>Workforce Planning Dashboard</h3><span class="s-badge">Structure Unit · May 2026 · 796 คน</span></div>
 
   <!-- KPI Row -->
   <div class="kpi-row">
@@ -605,7 +605,7 @@ body{font-family:'Sarabun','Inter',sans-serif;background:#F0F4F8;color:#2D3748;f
     <div class="kpi-card" style="--kc:#48BB78"><div class="kpi-icon">🏗️</div><div class="kpi-val">34</div><div class="kpi-label">Business Units (L3)</div><span class="kpi-chg neu">May 2026</span></div>
     <div class="kpi-card" style="--kc:#F26522"><div class="kpi-icon">👑</div><div class="kpi-val">14</div><div class="kpi-label">บริหาร/ผู้เชี่ยวชาญ</div><span class="kpi-chg warn">1.8% Exec Layer</span></div>
     <div class="kpi-card" style="--kc:#9F7AEA"><div class="kpi-icon">📐</div><div class="kpi-val">28.5</div><div class="kpi-label">Avg Span of Control</div><span class="kpi-chg up">Ops Layer</span></div>
-    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">⚠️</div><div class="kpi-val">10.5%</div><div class="kpi-label">HC ลดลง YTD</div><span class="kpi-chg dn">813→797 (-16 คน)</span></div>
+    <div class="kpi-card" style="--kc:#E53E3E"><div class="kpi-icon">⚠️</div><div class="kpi-val">10.5%</div><div class="kpi-label">HC ลดลง YTD</div><span class="kpi-chg dn">809→794 (-15 คน)</span></div>
     <div class="kpi-card" style="--kc:#4FD1C5"><div class="kpi-icon">📊</div><div class="kpi-val">49.9%</div><div class="kpi-label">กลุ่ม ปฏิบัติการ</div><span class="kpi-chg neu">Core Workforce</span></div>
   </div>
 
@@ -671,7 +671,6 @@ const HC_MONTHLY_CO = {
     PCE:{total:9,byGroup:{Ops:6,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:8,ContM:1},byLoc:{'จะนะ':9},byGender:{M:6,F:3}},
     PSL:{total:6,byGroup:{Ops:3,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:6},byLoc:{'ศรีเทพ':6},byGender:{M:3,F:3}},
     PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
-    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
   },
   Feb:{
     PEM:{total:414,byGroup:{Ops:280,Prof:50,MgrPM:45,Mgr:36,Exec:3},byType:{Perm:411,ContD:3},byLoc:{'เมืองปทุมธานี':410,'ปากเกร็ด':4},byGender:{M:280,F:134}},
@@ -682,7 +681,6 @@ const HC_MONTHLY_CO = {
     PCE:{total:9,byGroup:{Ops:6,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:8,ContM:1},byLoc:{'จะนะ':9},byGender:{M:6,F:3}},
     PSL:{total:6,byGroup:{Ops:3,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:6},byLoc:{'ศรีเทพ':6},byGender:{M:3,F:3}},
     PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
-    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
   },
   Mar:{
     PEM:{total:413,byGroup:{Ops:279,Prof:51,MgrPM:44,Mgr:36,Exec:3},byType:{Perm:410,ContD:3},byLoc:{'เมืองปทุมธานี':409,'ปากเกร็ด':4},byGender:{M:279,F:134}},
@@ -693,7 +691,6 @@ const HC_MONTHLY_CO = {
     PCE:{total:10,byGroup:{Ops:6,Prof:2,MgrPM:1,Mgr:1},byType:{Perm:9,ContM:1},byLoc:{'จะนะ':10},byGender:{M:6,F:4}},
     PSL:{total:6,byGroup:{Ops:3,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:6},byLoc:{'ศรีเทพ':6},byGender:{M:3,F:3}},
     PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
-    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
   },
   Apr:{
     PEM:{total:413,byGroup:{Ops:279,Prof:51,MgrPM:44,Mgr:36,Exec:3},byType:{Perm:410,ContD:3},byLoc:{'เมืองปทุมธานี':409,'ปากเกร็ด':4},byGender:{M:279,F:134}},
@@ -704,7 +701,6 @@ const HC_MONTHLY_CO = {
     PCE:{total:10,byGroup:{Ops:6,Prof:2,MgrPM:1,Mgr:1},byType:{Perm:9,ContM:1},byLoc:{'จะนะ':10},byGender:{M:6,F:4}},
     PSL:{total:6,byGroup:{Ops:3,Prof:1,MgrPM:1,Mgr:1},byType:{Perm:6},byLoc:{'ศรีเทพ':6},byGender:{M:3,F:3}},
     PPP:{total:6,byGroup:{Ops:2,Prof:0,MgrPM:2,Mgr:1,Exec:1},byType:{Perm:6},byLoc:{'บางซื่อ':5,'จะนะ':1},byGender:{M:5,F:1}},
-    CMI:{total:4,byGroup:{Ops:3,Prof:1},byType:{Perm:4},byLoc:{'เมืองปทุมธานี':4},byGender:{M:4}},
   },
   May:{
     PEM:{total:406,byGroup:{Ops:273,Prof:51,MgrPM:44,Mgr:35,Exec:3},byType:{Perm:404,ContD:2},byLoc:{'เมืองปทุมธานี':402,'ปากเกร็ด':4},byGender:{M:275,F:131}},
@@ -772,7 +768,6 @@ const WFP_BU_DATA = {
   PCE:{color:'#F6AD55',rs:'Renewable Energy',units:[{n:'Managing Director Office',Ops:5,Prof:1,MgrPM:1,Mgr:1,Exec:0},{n:'Corporate',Ops:0,Prof:1,MgrPM:1,Mgr:0,Exec:0}]},
   PSL:{color:'#4FD1C5',rs:'BCG',units:[{n:'Corporate (All)',Ops:4,Prof:2,MgrPM:1,Mgr:2,Exec:0}]},
   PPP:{color:'#FC8181',rs:'Renewable Energy',units:[{n:'Corporate / COO / CTO',Ops:3,Prof:0,MgrPM:3,Mgr:1,Exec:1}]},
-  CMI:{color:'#CBD5E0',rs:'Intelligent Grid',units:[{n:'Corporate',Ops:3,Prof:1,MgrPM:0,Mgr:0,Exec:0}]},
 };
 
 // Helper: get HC data for current period+company filter
@@ -799,8 +794,8 @@ function getHCData(){
 // ===================== CORE DATA =====================
 const MONTHS_ALL = ['Jan','Feb','Mar','Apr','May','Jun'];
 const MONTHS_OT  = ['Jan','Feb','Mar','Apr','May','Jun'];
-const HC_DATA  = {Jan:813,Feb:809,Mar:804,Apr:804,May:793,Jun:794};
-const HC_ARR   = [813,809,804,804,793,794];
+const HC_DATA  = {Jan:809,Feb:805,Mar:800,Apr:800,May:793,Jun:794};
+const HC_ARR   = [809,805,800,800,793,794];
 const RESIGN_DATA = {Jan:7,Feb:6,Mar:6,Apr:10,May:4,Jun:4};
 const RESIGN_ARR  = [7,6,6,10,4,4];
 const RATE_DATA   = {Jan:0.86,Feb:0.74,Mar:0.75,Apr:1.24,May:0.50,Jun:0.50};
@@ -902,7 +897,7 @@ const TRAINING_DATA = {
   unique_emp:[618,237,312,358,625,595],
   courses:[17,25,24,20,31,16],
   total_hrs:[716.8,496.6,673.0,791.0,481.8,414.0],
-  hc:[813,809,804,804,793,794],
+  hc:[809,805,800,800,793,794],
   internal:[781,218,298,384,782,733],
   external:[15,30,22,36,34,25],
   byGroup_ytd:[
@@ -1127,7 +1122,7 @@ function buildHCCharts(){
   const kpiEl = document.getElementById('hc-kpi-total'); if(kpiEl) kpiEl.textContent=d.total.toLocaleString();
   const chgEl = document.getElementById('hc-kpi-chg');
   if(chgEl){
-    const janTotal = currentCompany==='ALL'?813:(HC_MONTHLY_CO['Jan'][currentCompany]?.total||0);  // Jan baseline always 813
+    const janTotal = currentCompany==='ALL'?809:(HC_MONTHLY_CO['Jan'][currentCompany]?.total||0);  // Jan baseline always 809 (ex-CMI)
     const diff = d.total - janTotal;
     chgEl.textContent = (diff>=0?'▲ +':'▼ ')+diff+' จาก Jan';
     chgEl.className = 'kpi-chg '+(diff>=0?'up':'dn');
@@ -1145,9 +1140,9 @@ function buildHCCharts(){
   makeChart('hc-monthly',{type:'line',data:{labels:trendMonths,datasets:[{label:'Headcount',data:trendVals,borderColor:'#0077B6',backgroundColor:'rgba(0,119,182,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#0077B6',pointBorderColor:'#fff',pointBorderWidth:2}]},options:{plugins:{legend:{display:false}},scales:{y:{min:minVal,max:maxVal},x:{grid:{display:false}}}}});
 
   // Company breakdown (for selected month, all companies or highlight selected)
-  const coKeys = ['PEM','PSP','SBP','PDE','PCC','PCE','PSL','PPP','CMI'];
-  const coNames = {PEM:'PEM',PSP:'PSP',SBP:'SBP',PDE:'PDE',PCC:'PCC',PCE:'PCE',PSL:'PSL',PPP:'PPP',CMI:'CMI'};
-  const coColors = {PEM:'#0077B6',PSP:'#48BB78',SBP:'#F26522',PDE:'#ED64A6',PCC:'#9F7AEA',PCE:'#F6AD55',PSL:'#4FD1C5',PPP:'#FC8181',CMI:'#CBD5E0'};
+  const coKeys = ['PEM','PSP','SBP','PDE','PCC','PCE','PSL','PPP'];
+  const coNames = {PEM:'PEM',PSP:'PSP',SBP:'SBP',PDE:'PDE',PCC:'PCC',PCE:'PCE',PSL:'PSL',PPP:'PPP'};
+  const coColors = {PEM:'#0077B6',PSP:'#48BB78',SBP:'#F26522',PDE:'#ED64A6',PCC:'#9F7AEA',PCE:'#F6AD55',PSL:'#4FD1C5',PPP:'#FC8181'};
   const mData = HC_MONTHLY_CO[month]||{};
   const coVals = coKeys.map(k=>(mData[k]||{}).total||0);
   const coBGs = coKeys.map(k=> currentCompany==='ALL'||currentCompany===k ? coColors[k] : 'rgba(200,200,200,.3)');
@@ -1173,7 +1168,7 @@ function buildHCCharts(){
   // Revenue Stream
   const rsOrder = ['Power Dist & EM','Intelligent Grid','Renewable Energy','Digital & ESG','Precise','BCG'];
   const rsColors2 = ['#0077B6','#48BB78','#F6AD55','#ED64A6','#9F7AEA','#4FD1C5'];
-  const rsMap2 = {PEM:'Power Dist & EM',PSP:'Intelligent Grid',SBP:'Renewable Energy',PDE:'Digital & ESG',PCC:'Precise',PCE:'Renewable Energy',PSL:'BCG',PPP:'Renewable Energy',CMI:'Intelligent Grid'};
+  const rsMap2 = {PEM:'Power Dist & EM',PSP:'Intelligent Grid',SBP:'Renewable Energy',PDE:'Digital & ESG',PCC:'Precise',PCE:'Renewable Energy',PSL:'BCG',PPP:'Renewable Energy'};
   const rsAgg = {};
   for(const co of (currentCompany==='ALL'?coKeys:[currentCompany])){
     const rs = rsMap2[co]||'อื่นๆ';
@@ -1605,7 +1600,7 @@ const MODULES = [
   {id:'training',icon:'📚',t:'Learning & Development',sub:'Training Hours · Courses · Internal/External · By Group',acc:'#9F7AEA',metrics:[['3,573','YTD Hrs'],['4.48','Hrs/คน'],['Jan–Jun','ข้อมูล']],dataTag:'live'},
   {id:'engage',icon:'💚',t:'Engagement & Retention',sub:'Survey 7-Dim · 3-Year Trend · 2566–2568 · ข้อมูลจริง',acc:'#38A169',metrics:[['4.02','/5 Score'],['3ปี','Trend'],['2568','ล่าสุด']],dataTag:'live'},
   {id:'edu',icon:'🎓',t:'Education & Analytics Matrix',sub:'Level · Major · School · Employee Group Matrix · Drill-Down',acc:'#0077B6',metrics:[['42.5%','ป.ตรี+'],['208','สายอาชีพ'],['Matrix','Drill-Down']],dataTag:'live'},
-  {id:'wfp',icon:'🏗️',t:'Workforce Planning',sub:'Structure Unit · BU Pyramid · Age · Service · Company Mix',acc:'#2B6CB0',metrics:[['34','BUs'],['9','บริษัท'],['May 26','Updated']],dataTag:'live'},
+  {id:'wfp',icon:'🏗️',t:'Workforce Planning',sub:'Structure Unit · BU Pyramid · Age · Service · Company Mix',acc:'#2B6CB0',metrics:[['34','BUs'],['8','บริษัท'],['May 26','Updated']],dataTag:'live'},
   {id:'perf',icon:'⭐',t:'Performance & Potential',sub:'KPI · 9-Box · Bell Curve · HiPo — รอข้อมูล 2026',acc:'#F26522',metrics:[['—','KPI'],['—','9-Box'],['รอ','Data']],dataTag:'plan'},
 ];
 function tint(hex,a=.13){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgba(${r},${g},${b},${a})`;}
