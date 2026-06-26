@@ -11,15 +11,17 @@
 - **Tabs:** HC · OT · Salary · Resign · Training · WFP
 - Raw data source: รายเดือน `Employee Database <Month> 2026.xlsx` (Google Drive, ~220 columns).
 
-## Data status (as of Jun 2026, v7.1)
+## Data status (as of Jun 2026, v7.2)
 | Tab | Data through |
 |-----|--------------|
 | HC | Jun 2026 |
-| WFP | Jun 2026 |
-| Salary | May 2026 (Jun pending; `byRS_May` เป็นค่าประมาณ scale จาก Apr ×1.044) |
-| Resign | May 2026 |
-| OT | Apr 2026 |
-| Training | Apr 2026 |
+| Salary | Jun 2026 — `byRS_Jun`/`byLoc_Jun`/`byGroup_Jun` เป็นข้อมูลจริงจาก payroll register แล้ว (เลิกใช้ค่าประมาณ) |
+| Resign | Jun 2026 (Jun = 4 ราย, ไม่ระบุสาเหตุ; YTD 37) |
+| OT | Jun 2026 (May พีค 2,923 ใบ, Jun 2,373; YTD 11,002 / ~5.16 MB est.) |
+| Training | Jun 2026 — May/Jun จากรายงานอบรม; e-learning ประจำปี = 0 ชม. จึงนับชั่วโมงจริงไม่ inflate (records/internal นับรวม e-learning ตามฟอร์แมตเดิม) |
+| WFP | ⚠️ ยังเป็น snapshot เก่า (`WFP_BU_DATA` รวม CMI ≈ 796–800) — ยังไม่ได้ refresh เป็น Jun (ไม่มีไฟล์ source) |
+
+> OT cost = est. จากสูตรในโค้ด `basic/30/8 × 3h × 1.5x` ต่อใบ (ไฟล์ OT มีแค่ doc/วันที่/ชื่อ/สถานะ ไม่มียอดเงินจริง).
 
 HC monthly total: Jan 813 · Feb 809 · Mar 804 · Apr 804 · May 793 · Jun 794.
 
